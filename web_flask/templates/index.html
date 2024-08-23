@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Home</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="../static/css/styles.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    </head>
+    <body>
+        <div class="container-fluid bg-light rounded">
+            <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+                <img src="static/images/Logo.png.webp">
+
+              <ul class="nav col-12 col-md-auto mb-2 justify-content-center ms-md-5 mb-md-0">
+                <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+                <li><a href="#services" class="nav-link px-2">Services</a></li>
+                <li><a href="#contact" class="nav-link px-2">Contact</a></li>
+                <li><a href="#about" class="nav-link px-2">About</a></li>
+              </ul>
+
+              <div class="col-md-3 text-end">
+                <button type="button" class="btn btn-outline-primary me-2">Login</button>
+                <button type="button" class="btn btn-primary">Sign-up</button>
+              </div>
+            </header>
+          </div>
+        <section class="hero-section d-flex h-100 text-center text-bg-dark">
+          <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+            <header class="mb-auto">
+              <div>
+                <nav class="nav nav-masthead justify-content-center float-md-end">
+                </nav>
+              </div>
+            </header>
+
+            <main class="px-3">
+              <h1 class="text-dark">Raseel Medical Care Center</h1>
+              <p class="lead text-dark">Welcome to Raseel Medical Care Center
+
+                At Raseel Medical Care Center, we are dedicated to providing exceptional healthcare services tailored to your needs. Our team of experienced medical professionals is committed to ensuring the highest standards of care in a compassionate and welcoming environment. Whether you're visiting for a routine check-up or specialized treatment, we're here to support your health journey every step of the way.
+
+                </p>
+              <p class="lead">
+                <a href="#services" class="btn btn-lg fw-bold border-white text-dark">View Services</a>
+              </p>
+            </main>
+        </section>
+        <section class="bg-white">
+            <div class="container col-xxl-8 px-4 py-5">
+                <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+                  <div class="col-10 col-sm-8 col-lg-6">
+                    <img src="../static/images/raseel1.jpg" class="d-block mx-lg-auto img-fluid rounded float-end" alt="Room Image" width="700" height="500" loading="lazy">
+                  </div>
+                  <div class="col-lg-6">
+                    <p class="text-primary fw-bold font-monospace">Quality healthcare</p>
+                    <h1 class="display-5 fw-bold lh-1 mb-3">Accessible for everyone</h1>
+                    <p class="lead">Raseel Medical Care Center in Riyadh delivers comprehensive medical services through a clinical web-based system. We prioritize accessible and quality healthcare, ensuring that every patient receives the care they need. Our dedicated team of professionals is committed to improving health outcomes and enhancing patient satisfaction. Experience healthcare like never before with Raseel Medical Care Center, where your health is our mission.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <a href="#contact" class="text-dark">Get in touch</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </section>
+
+
+        <section id="services" class="bg-light mt-5">
+            <!-- Services -->
+             <div class="container">
+                 <p class="text-primary fw-bold font-monospace">
+                     Our Services
+                 </p>
+                 <h3 class="fw-bold">
+                     Comprehensive medical solutions
+                 </h3>
+                 <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                        <a href="#" class="card h-100 text-decoration-none">
+                            <img src="../static/images/dentist.png" alt="Telemedicine" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">Telemedicine</h5>
+                                <p class="card-text">Connect with healthcare professionals from the comfort of your home.</p>
+                            </div>
+                        </a>
+                    </div>
+                <div class="col">
+                    <a href="#" class="card h-100 text-decoration-none">
+                        <img src="../static/images/bone.png" class="card-img-top" alt="Chronic Disease Management">
+                        <div class="card-body">
+                            <h5 class="card-title">Chronic Disease Management</h5>
+                            <p class="card-text">Expert care and support for managing chronic health conditions.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="card h-100 text-decoration-none">
+                        <img src="../static/images/eyes.png" class="card-img-top" alt="Health Screenings">
+                        <div class="card-body">
+                            <h5 class="card-title">Health Screenings</h5>
+                            <p class="card-text">Proactive health checks to catch issues early.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </section>
+        <section class="mt-5 bg-white" id="contact">
+            <div class="container-lg">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-6">
+                        <p class="font-monospace fw-bold text-primary">GET IN TOUCH</p>
+                        <h3>We're here to help</h3>
+                        <form action="">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" required aria-required="true" aria-label="Name">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" required aria-required="true" aria-label="email">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" pattern="\d{10}" required aria-required="true" aria-label="phone">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea style="resize: none;" class="form-control" id="message" rows="3" required aria-required="true" aria-label="message"></textarea>
+                            <input type="checkbox" class="form-check-input" id="terms" required aria-required="true" aria-label="terms">
+                            <label for="terms" class="form-label">I allow this website to store my submission so they can respond to my inquiry.</label>
+                            <button type="submit" class="w-100 btn btn-primary mt-3">Submit</button>
+                        </form>
+                    </div>
+                    <div class="col-12 col-lg-6 bg-light mt-5">
+                        <div class="map-container">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3627.500922629352!2d46.7507757!3d24.6064144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f08b3afe4c751%3A0xe5a1837786f45ffe!2sRaseel%20Medical%20Center!5e0!3m2!1sen!2ssa!4v1724270796411!5m2!1sen!2ssa" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" aria-hidden="false"></iframe>
+                        </div>
+                        <h3 class="fw-bold">Get in touch</h3>
+                        <a href="mailto:info@raseelcenter.sa"><i class="bi bi-envelope"></i> info@raseelcenter.sa</a>
+                        <h3 class="fw-bold">Location</h3>
+                        <a href="https://maps.app.goo.gl/LquVQ1gyek8GQCAF7" target="_blank"><i class="bi bi-geo-alt"></i> معن بن زائدة, Al Mansourah, Riyadh 12693</a>
+                        <h3 class="fw-bold">Hours</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Saturday
+                                <span>9:00am – 6:00pm</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              Sunday
+                              <span>9:00am – 12:00pm</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              Monday
+                              <span>9:00am – 10:00pm</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              Tuesday
+                              <span>9:00am – 10:00pm</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              Wednesday
+                              <span>9:00am – 10:00pm</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              Thursday
+                              <span>9:00am – 10:00pm</span>
+                            </li>
+                          </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="bg-light rounded">
+              <div class="container-fluid">
+                <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                  <p class="col-md-3 mb-0 text-dark">&copy; 2024 Raseel Medical Care Center</p>
+
+                  <ul class="nav col-md-4 justify-content-center align-items-center list-unstyled d-flex">
+                    <li class="ms-3"><a href="https://x.com/raseel_center" target="_blank"><h4><i class="bi bi-twitter-x"></i></h4></a></li>
+                    <li class="ms-3"><a href="https://www.instagram.com/raseel_center/" target="_blank"><h4><i class="bi bi-instagram"></i></h4></a></li>
+                    <li class="ms-3"><a href="https://wa.me/966112047700" target="_blank"><h4><i class="bi bi-whatsapp"></i></h4></a></li>
+                  </ul>
+
+                  <ul class="nav col-md-4 justify-content-end">
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-dark fw-bold">Schedule appointment</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-dark fw-bold">Complete Intake</a></li>
+                    <li class="nav-item"><a href="#services" class="nav-link px-2 text-dark fw-bold">Services</a></li>
+                  </ul>
+                </footer>
+              </div>
+        </section>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </body>
+</html>
