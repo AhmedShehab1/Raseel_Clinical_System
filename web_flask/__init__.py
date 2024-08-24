@@ -12,6 +12,8 @@ migrate = Migrate(app, db)  # This is the migration engine
 
 from web_flask import routes
 from models import base_model
-from models import patient
+from models.patient import patient
 from models.department import Department
 from models.doctor import Doctor
+from models.appointments import Appointment
+from models.timeslot import TimeSlot
