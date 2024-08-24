@@ -40,5 +40,5 @@ class BaseModel(db.Model):
     def __str__(self):
         """String representation of the BaseModel class"""
         return "[{:s}] ({:s}) {}".format(
-            self.__class__.__name__, self.id, self.__dict__
+            self.__class__.__name__, self.id or "", self.__dict__
         )

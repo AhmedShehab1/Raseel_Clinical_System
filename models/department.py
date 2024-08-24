@@ -1,7 +1,6 @@
 from typing import List
-from models.base_model import BaseModel
-from models.doctor import Doctor
-from models.patient import Patient
+import models as m
+from .base_model import BaseModel
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
@@ -11,9 +10,9 @@ class Department(BaseModel):
     name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
                                             nullable=False)
     description: so.Mapped[str] = so.mapped_column(sa.String(256))
-    doctors: so.Mapped[List["Doctor"]] = so.relationship(
+    doctors: so.Mapped[List["m.Doctor"]] = so.relationship(
         "Doctor", back_populates="department"
     )
-    patients: so.Mapped[List["Patient"]] = so.relationship(
+    patients: so.Mapped[List["m.Patient"]] = so.relationship(
         "Patient", back_populates="department"
     )

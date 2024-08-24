@@ -1,6 +1,5 @@
-from models.base_model import BaseModel
-from models.doctor import Doctor
-from models.patient import Patient
+import models as m
+from .base_model import BaseModel
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from enum import Enum
@@ -32,9 +31,9 @@ class Appointment(BaseModel):
     )
     reason: so.Mapped[str] = so.mapped_column(sa.String(256))
     notes: so.Mapped[str] = so.mapped_column(sa.String(256))
-    patient: so.Mapped["Patient"] = so.relationship(
+    patient: so.Mapped["m.Patient"] = so.relationship(
         "Patient", back_populates="appointments"
     )
-    doctor: so.Mapped["Doctor"] = so.relationship(
+    doctor: so.Mapped["m.Doctor"] = so.relationship(
         "Doctor", back_populates="appointments"
     )

@@ -7,6 +7,14 @@ class PasswordMixin:
     """
     password_hash = None
 
+    def __init__(self, passwd: str):
+        """
+        initializes the password hash
+        Args:
+            passwd (str): password to be hashed
+        """
+        self.set_password(passwd)
+
     def set_password(self, passwd: str):
         """
         sets the password hash for the patient

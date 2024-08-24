@@ -1,5 +1,5 @@
-from models.base_model import BaseModel
-from models.doctor import Doctor
+import models as m
+from .base_model import BaseModel
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from enum import Enum
@@ -28,8 +28,8 @@ class TimeSlot(BaseModel):
     )
     end_time: so.Mapped[sa.Time] = so.mapped_column(sa.Time, index=True,
                                                     nullable=False)
-    doctor: so.Mapped["Doctor"] = so.relationship("Doctor",
-                                                  back_populates="timeslots")
+    doctor: so.Mapped["m.Doctor"] = so.relationship("Doctor",
+                                                    back_populates="timeslots")
     status: so.Mapped[TimeSlotStatus] = so.mapped_column(
         sa.Enum(TimeSlotStatus),
         index=True,

@@ -1,8 +1,6 @@
 from typing import List, Optional
-from models.appointments import Appointment
-from models.base_model import BaseModel
-from models.department import Department
-from models.timeslot import TimeSlot
+import models as m
+from .base_model import BaseModel
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from utils import PasswordMixin
@@ -16,28 +14,43 @@ class Doctor(BaseModel, PasswordMixin):
         PasswordMixin (): Password mixin class
     """
 
+    def __init__(self, passwd: str, **kwargs):
+        """
+        Constructor for the Doctor class
+        Args:
+            passwd (str): Password for the doctor
+            **kwargs: Arbitrary keyword arguments
+        """
+        PasswordMixin.__init__(self, passwd)
+        super().__init__(**kwargs)
+
     __tablename__ = "doctors"
     name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
                                             nullable=False)
     email: so.Mapped[str] = so.mapped_column(
         sa.String(120), index=True, unique=True, nullable=False
     )
-    certificates: so.Mapped[str] = so.mapped_column(sa.String(256))
+    certificates: so.Mapped[str] = so.mapped_column(sa.String(256),
+                                                    nullable=False)
+
     phone: so.Mapped[Optional[str]] = so.mapped_column(
         sa.String(10), index=True, unique=True
     )
+
     department_id: so.Mapped[str] = so.mapped_column(
         sa.ForeignKey("departments.id"), index=True,
         nullable=False
     )
+
     password_hash: so.Mapped[str] = so.mapped_column(sa.String(256),
                                                      nullable=False)
-    department: so.Mapped["Department"] = so.relationship(
+
+    department: so.Mapped["m.Department"] = so.relationship(
         "Department", back_populates="doctors"
     )
-    appointments: so.Mapped[List["Appointment"]] = so.relationship(
+    appointments: so.Mapped[List["m.Appointment"]] = so.relationship(
         "Appointment", back_populates="doctor"
     )
-    timeslots: so.Mapped[List["TimeSlot"]] = so.relationship(
+    timeslots: so.Mapped[List["m.TimeSlot"]] = so.relationship(
         "TimeSlot", back_populates="doctor"
     )
