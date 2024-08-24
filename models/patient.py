@@ -35,6 +35,5 @@ class Patient(BaseModel, PasswordMixin):
         sa.ForeignKey("departments.id"), nullable=False
     )
     appointments: so.Mapped[List["Appointment"]] = so.relationship(
-        "Appointment", back_populates="patient",
-        cascade="all, delete, delete-orphan"
+        "Appointment", back_populates="patient"
     )

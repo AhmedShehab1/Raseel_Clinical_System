@@ -12,10 +12,8 @@ class Department(BaseModel):
                                             nullable=False)
     description: so.Mapped[str] = so.mapped_column(sa.String(256))
     doctors: so.Mapped[List["Doctor"]] = so.relationship(
-        "Doctor", back_populates="department",
-        cascade="all, delete, delete-orphan"
+        "Doctor", back_populates="department"
     )
     patients: so.Mapped[List["Patient"]] = so.relationship(
-        "Patient", back_populates="department",
-        cascade="all, delete-orphan"
+        "Patient", back_populates="department"
     )

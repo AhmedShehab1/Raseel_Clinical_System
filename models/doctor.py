@@ -36,10 +36,8 @@ class Doctor(BaseModel, PasswordMixin):
         "Department", back_populates="doctors"
     )
     appointments: so.Mapped[List["Appointment"]] = so.relationship(
-        "Appointment", back_populates="doctor",
-        cascade="all, delete, delete-orphan"
+        "Appointment", back_populates="doctor"
     )
     timeslots: so.Mapped[List["TimeSlot"]] = so.relationship(
-        "TimeSlot", back_populates="doctor",
-        cascade="all, delete, delete-orphan"
+        "TimeSlot", back_populates="doctor"
     )
