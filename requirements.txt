@@ -6,7 +6,6 @@ flask-wtf~=1.2.1
 SQLAlchemy~=2.0.31
 werkzeug~=3.0.3
 WTForms~=3.1.2
-bcrypt~=4.2.0
 cryptography>=3.3
 Jinja2~=3.1.4
 MarkupSafe~=2.1.5
