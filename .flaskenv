@@ -1,0 +1,3 @@
+FLASK_APP=web_flask.clinical_system
+FLASK_DEBUG=1
+FLASK_ENV=development

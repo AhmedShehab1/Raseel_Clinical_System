@@ -17,4 +17,4 @@ coverage>=7.0
 pretty-errors~=1.2.15
 # Development and Testing
 flake8>=5.0  # Consider moving to requirements-dev.txt
-
+python-dotenv>=1.0
