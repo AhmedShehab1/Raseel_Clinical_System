@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_user, current_user, logout_user, login_required
 from urllib.parse import urlsplit
 from web_flask import app, db
-from web_flask.forms import LoginForm, RegistrationForm
+from web_flask.forms import LoginForm, RegistrationForm, EditProfileInfo
 import sqlalchemy as sa
 
 
@@ -69,17 +69,32 @@ def register():
 def about():
     return render_template("about.html", title="About - Raseel")
 
-
-@app.route('/user/<string:username>')
-@login_required
-def user(username):
-    user = db.first_or_404(
-        sa.select(m.Patient).where(m.Patient.name == username)
-    )
-    return render_template("user.html", user=user, title=f"{username} - Raseel")
-
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = m.base_model.gen_datetime()
         db.session.commit()
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileInfo(current_user.email, current_user.contact_number)
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.email = form.email.data
+        current_user.contact_number = form.contact_number.data
+        current_user.address = form.address.data
+        current_user.medical_history = form.medical_history.data
+        current_user.current_medications = form.current_medications.data
+        db.session.commit()
+        flash('Your changes have been saved', 'success')
+        return redirect(url_for('edit_profile'))
+    elif request.method == 'GET':
+        form.name.data = current_user.name
+        form.email.data = current_user.email
+        form.contact_number.data = current_user.contact_number
+        form.address.data = current_user.address
+        form.medical_history.data = current_user.medical_history
+        form.current_medications.data = current_user.current_medications
+    return render_template('edit_profile.html', title='Edit Profile',
+                           form=form)
