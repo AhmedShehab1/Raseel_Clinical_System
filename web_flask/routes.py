@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 import models as m
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_user, current_user, logout_user, login_required
@@ -67,3 +68,18 @@ def register():
 @app.route("/about")
 def about():
     return render_template("about.html", title="About - Raseel")
+
+
+@app.route('/user/<string:username>')
+@login_required
+def user(username):
+    user = db.first_or_404(
+        sa.select(m.Patient).where(m.Patient.name == username)
+    )
+    return render_template("user.html", user=user, title=f"{username} - Raseel")
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = m.base_model.gen_datetime()
+        db.session.commit()

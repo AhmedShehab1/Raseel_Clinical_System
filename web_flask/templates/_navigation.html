@@ -8,7 +8,6 @@
   <li><a href="#contact" class="nav-link px-2">Contact</a></li>
   <li><a href="{{ url_for('about') }}" class="nav-link px-2 {% if request.endpoint == 'about' %}link-secondary{% else %}{% endif %}">About</a></li>
 </ul>
-
 <div class="col-md-3 text-end">
   <button type="button" class="btn btn-outline-primary me-2">Login</button>
   <button type="button" class="btn btn-primary">Sign-up</button>
