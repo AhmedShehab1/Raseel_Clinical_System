@@ -11,41 +11,20 @@
     <body>
         <div class="container-fluid bg-light rounded">
             <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-                <img src="static/images/Logo.png.webp">
-
-              <ul class="nav col-12 col-md-auto mb-2 justify-content-center ms-md-5 mb-md-0">
-                <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-                <li><a href="#services" class="nav-link px-2">Services</a></li>
-                <li><a href="#contact" class="nav-link px-2">Contact</a></li>
-                <li><a href="#about" class="nav-link px-2">About</a></li>
-              </ul>
-
-              <div class="col-md-3 text-end">
-                <button type="button" class="btn btn-outline-primary me-2">Login</button>
-                <button type="button" class="btn btn-primary">Sign-up</button>
-              </div>
+                {% include "_navigation.html" %}
             </header>
           </div>
         <section class="hero-section d-flex h-100 text-center text-bg-dark">
           <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-            <header class="mb-auto">
-              <div>
-                <nav class="nav nav-masthead justify-content-center float-md-end">
-                </nav>
-              </div>
             </header>
-
-            <main class="px-3">
               <h1 class="text-dark">Raseel Medical Care Center</h1>
               <p class="lead text-dark">Welcome to Raseel Medical Care Center
-
                 At Raseel Medical Care Center, we are dedicated to providing exceptional healthcare services tailored to your needs. Our team of experienced medical professionals is committed to ensuring the highest standards of care in a compassionate and welcoming environment. Whether you're visiting for a routine check-up or specialized treatment, we're here to support your health journey every step of the way.
-
-                </p>
+             </p>
               <p class="lead">
                 <a href="#services" class="btn btn-lg fw-bold border-white text-dark">View Services</a>
               </p>
-            </main>
+          </div>
         </section>
         <section class="bg-white">
             <div class="container col-xxl-8 px-4 py-5">
