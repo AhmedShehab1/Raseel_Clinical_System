@@ -23,7 +23,11 @@ class RegistrationForm(FlaskForm):
         DataRequired(),
         Length(10, message="Contact number must be 10 digits"),
         Regexp(r'^05[0-9]{8}$',
-               message="Ensure contact number in the following format: 05XXXXXXXX")
+               message=(
+                   "Ensure contact"
+                   " number in the following format: 05XXXXXXXX"
+                )
+               )
         ])
     password = PasswordField("Password", validators=[DataRequired()])
     confirm_password = PasswordField("Repeat Password", validators=[
@@ -57,17 +61,20 @@ class EditProfileInfo(FlaskForm):
         DataRequired(),
         Length(10, message="Contact number must be 10 digits"),
         Regexp(r'^05[0-9]{8}$',
-               message=
-                   "Ensure contact number in the following format: 05XXXXXXXX")
+               message=(
+                    "Ensure contact number in "
+                    "the following format: 05XXXXXXXX"
+                   )
+               )
         ])
     address = TextAreaField('Address', validators=[Length(min=0, max=256)])
-    medical_history = TextAreaField('Medical History',\
+    medical_history = TextAreaField('Medical History',
                                     validators=[Length(min=0, max=400)])
     current_medications = TextAreaField('Current Medication',
                                         validators=[Length(min=0, max=256)])
     submit = SubmitField("Update")
 
-    def __init__(self, original_email, original_contact_number,\
+    def __init__(self, original_email, original_contact_number,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.original_email = original_email
