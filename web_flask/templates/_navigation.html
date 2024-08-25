@@ -1,0 +1,14 @@
+
+
+<img src="../static/images/Logo.png.webp">
+
+<ul class="nav col-12 col-md-auto mb-2 justify-content-center ms-md-5 mb-md-0">
+  <li><a href="{{ url_for('index') }}" class="nav-link px-2 {% if request.endpoint == 'index' %}link-secondary{% else %}{% endif %}">Home</a></li>
+  <li><a href="#services" class="nav-link px-2">Services</a></li>
+  <li><a href="#contact" class="nav-link px-2">Contact</a></li>
+  <li><a href="{{ url_for('about') }}" class="nav-link px-2 {% if request.endpoint == 'about' %}link-secondary{% else %}{% endif %}">About</a></li>
+</ul>
+<div class="col-md-3 text-end">
+  <button type="button" class="btn btn-outline-primary me-2">Login</button>
+  <button type="button" class="btn btn-primary">Sign-up</button>
+</div>

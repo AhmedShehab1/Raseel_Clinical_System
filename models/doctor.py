@@ -1,6 +1,6 @@
 from typing import List, Optional
 import models as m
-from .base_model import BaseModel
+from .base_model import BaseModel, gen_datetime
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from utils import PasswordMixin
@@ -53,4 +53,7 @@ class Doctor(BaseModel, PasswordMixin):
     )
     timeslots: so.Mapped[List["m.TimeSlot"]] = so.relationship(
         "TimeSlot", back_populates="doctor"
+    )
+    last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
+        sa.DateTime, default=gen_datetime
     )

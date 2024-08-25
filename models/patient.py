@@ -1,25 +1,26 @@
-from typing import List
+from typing import List, Optional
 import models as m
-from .base_model import BaseModel
+from .base_model import BaseModel, gen_datetime
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from utils import PasswordMixin
+from flask_login import UserMixin
 
 
-class Patient(BaseModel, PasswordMixin):
+class Patient(BaseModel, PasswordMixin, UserMixin):
     """
     Patient model class
     Args:
         BaseModel (): Base model class
     """
-    def __init__(self, passwd: str, **kwargs):
+    def __init__(self, password: str, **kwargs):
         """
         Constructor for the Patient class
         Args:
             passwd (str): Password for the patient
             **kwargs: Arbitrary keyword arguments
         """
-        PasswordMixin.__init__(self, passwd)
+        PasswordMixin.__init__(self, password)
         super().__init__(**kwargs)
 
     __tablename__ = "patients"
@@ -33,15 +34,24 @@ class Patient(BaseModel, PasswordMixin):
     )
     password_hash: so.Mapped[str] = so.mapped_column(sa.String(256),
                                                      nullable=False)
-    address: so.Mapped[str] = so.mapped_column(sa.String(256))
-    medical_history: so.Mapped[str] = so.mapped_column(sa.String(400))
-    current_medications: so.Mapped[str] = so.mapped_column(sa.String(256))
+    address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
+
+    medical_history: so.Mapped[Optional[str]] =\
+        so.mapped_column(sa.String(400))
+
+    current_medications: so.Mapped[Optional[str]] = \
+        so.mapped_column(sa.String(256))
+
+    department_id: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.ForeignKey("departments.id")
+    )
     department: so.Mapped["m.Department"] = so.relationship(
         "Department", back_populates="patients"
     )
-    department_id: so.Mapped[str] = so.mapped_column(
-        sa.ForeignKey("departments.id"), nullable=False
-    )
     appointments: so.Mapped[List["m.Appointment"]] = so.relationship(
         "Appointment", back_populates="patient"
+    )
+
+    last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
+        sa.DateTime, default=gen_datetime
     )
