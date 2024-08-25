@@ -1,0 +1,10 @@
+Add email configuration, logging, and profile editing
+
+- Added email server configuration to [`.flaskenv`]
+- Updated models to include `last_seen` field for `Doctor` and `Patient`.
+- Created migration script to add `last_seen` column.
+- Implemented logging for errors and info in [`web_flask/__init__.py`]
+- Added error handling routes in [`web_flask/errors.py`]
+- Enhanced `RegistrationForm` and added `EditProfileInfo` form in [`web_flask/forms.py`]
+- Updated routes to include profile editing and last seen update in [`web_flask/routes.py`]
+- Created templates for error pages and profile editing.

@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List, Optional
 import models as m
 from .base_model import BaseModel, gen_datetime
@@ -37,9 +36,11 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
                                                      nullable=False)
     address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
-    medical_history: so.Mapped[Optional[str]] = so.mapped_column(sa.String(400))
+    medical_history: so.Mapped[Optional[str]] =\
+        so.mapped_column(sa.String(400))
 
-    current_medications: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
+    current_medications: so.Mapped[Optional[str]] = \
+        so.mapped_column(sa.String(256))
 
     department_id: so.Mapped[Optional[str]] = so.mapped_column(
         sa.ForeignKey("departments.id")

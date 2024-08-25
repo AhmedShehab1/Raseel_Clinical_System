@@ -1,3 +1,4 @@
+# flake8: noqa
 """added last_seen column in patient
 
 Revision ID: d850d5ff4e18
