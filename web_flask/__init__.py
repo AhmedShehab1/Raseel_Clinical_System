@@ -8,6 +8,7 @@ from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
+from .doctor_bp import doctor_bp
 
 pretty_errors.activate()
 
@@ -15,6 +16,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)  # This is the database engine
 migrate = Migrate(app, db)  # This is the migration engine
+app.register_blueprint(doctor_bp)
 
 if not app.debug:
     if app.config['MAIL_SERVER']:
