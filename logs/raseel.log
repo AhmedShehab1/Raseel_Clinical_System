@@ -1,0 +1,73 @@
+2024-08-25 23:22:45,005 INFO: Raseel startup [in /mnt/d/imt/cworkspace/ALX_C/Raseel_Clinical_System/web_flask/__init__.py:44]
+2024-08-25 23:24:43,908 INFO: Raseel startup [in /mnt/d/imt/cworkspace/ALX_C/Raseel_Clinical_System/web_flask/__init__.py:44]
+2024-08-25 23:25:37,040 ERROR: Exception on /edit_profile [GET] [in /usr/local/lib/python3.8/dist-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/ahmed/.local/lib/python3.8/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/mnt/d/imt/cworkspace/ALX_C/Raseel_Clinical_System/web_flask/routes.py", line 83, in edit_profile
+    form = EditProfileInfo(current_user.email, current_user.contact_number)
+  File "/home/ahmed/.local/lib/python3.8/site-packages/wtforms/form.py", line 208, in __call__
+    return type.__call__(cls, *args, **kwargs)
+TypeError: __init__() takes from 1 to 2 positional arguments but 3 were given
+2024-08-25 23:27:20,756 INFO: Raseel startup [in /mnt/d/imt/cworkspace/ALX_C/Raseel_Clinical_System/web_flask/__init__.py:44]
+2024-08-25 23:27:23,334 ERROR: Exception on /edit_profile [GET] [in /usr/local/lib/python3.8/dist-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/ahmed/.local/lib/python3.8/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/mnt/d/imt/cworkspace/ALX_C/Raseel_Clinical_System/web_flask/routes.py", line 83, in edit_profile
+    form = EditProfileInfo(current_user.email, current_user.contact_number)
+  File "/home/ahmed/.local/lib/python3.8/site-packages/wtforms/form.py", line 208, in __call__
+    return type.__call__(cls, *args, **kwargs)
+TypeError: __init__() takes from 1 to 2 positional arguments but 3 were given
+2024-08-25 23:32:13,518 INFO: Raseel startup [in /mnt/d/imt/cworkspace/ALX_C/Raseel_Clinical_System/web_flask/__init__.py:44]
+2024-08-25 23:32:17,449 ERROR: Exception on /edit_profile [GET] [in /usr/local/lib/python3.8/dist-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/ahmed/.local/lib/python3.8/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/mnt/d/imt/cworkspace/ALX_C/Raseel_Clinical_System/web_flask/routes.py", line 83, in edit_profile
+    form = EditProfileInfo(current_user.email, current_user.contact_number)
+  File "/home/ahmed/.local/lib/python3.8/site-packages/wtforms/form.py", line 208, in __call__
+    return type.__call__(cls, *args, **kwargs)
+TypeError: __init__() takes from 1 to 2 positional arguments but 3 were given
+2024-08-25 23:35:51,800 INFO: Raseel startup [in /mnt/d/imt/cworkspace/ALX_C/Raseel_Clinical_System/web_flask/__init__.py:44]
+2024-08-25 23:35:55,965 ERROR: Exception on /edit_profile [GET] [in /usr/local/lib/python3.8/dist-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.8/dist-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/ahmed/.local/lib/python3.8/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/mnt/d/imt/cworkspace/ALX_C/Raseel_Clinical_System/web_flask/routes.py", line 83, in edit_profile
+    form = EditProfileInfo(current_user.email, current_user.contact_number)
+  File "/home/ahmed/.local/lib/python3.8/site-packages/wtforms/form.py", line 208, in __call__
+    return type.__call__(cls, *args, **kwargs)
+TypeError: __init__() takes from 1 to 2 positional arguments but 3 were given
