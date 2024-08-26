@@ -8,7 +8,7 @@
         <link rel="icon" href="{{ url_for('static', filename='images/Logo.png.webp') }}">
     </head>
     <body>
-        <hr>
+        <div class="container mt-3">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% for category, message in  messages %}
             <div class="alert alert-{{ category }}" role="alert">
@@ -18,5 +18,6 @@
         {% endwith %}
         {% block content %}
         {% endblock content %}
+        </div>
     </body>
 </html>
