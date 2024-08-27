@@ -60,3 +60,13 @@ a[href="#services"]:hover.btn {
 .cover-container {
   max-width: 42em;
 }
+
+
+.mission {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    height: 500px;
+    width: 70%;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
