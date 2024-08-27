@@ -24,7 +24,8 @@ class BaseModel(db.Model):
 
     __abstract__ = True
     id: so.Mapped[str] = so.mapped_column(
-        sa.String(128), primary_key=True, default=lambda: str(uuid.uuid4()),
+        sa.String(128), primary_key=True,
+        default=lambda: str(uuid.uuid4()),
         index=True
     )
     created_at: so.Mapped[sa.DateTime] = so.mapped_column(

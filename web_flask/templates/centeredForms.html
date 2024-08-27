@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "macros.html" as macro %}
+{% block content %}
+<div class="text-center mb-3">
+    <img class="img-fluid" style="text-align: center;" src="../static/images/Logo.png.webp" alt="Raseel logo" width="auto" height="auto">
+</div>
+<div class="col-md-10 mx-auto col-lg-5 p-4 p-md-5 border rounded-3 bg-body-tertiary">
+    <h1>{{ heading }}</h1>
+    {{ macro.create_form(form) }}
+    {% block options %}
+    {% endblock options %}
+</div>
+{% endblock content %}

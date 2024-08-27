@@ -16,6 +16,8 @@ def make_shell_context():
         "Appointment": m.Appointment,
         "Department": m.Department,
         "TimeSlot": m.TimeSlot,
-        'sa': sa,
-        'so': so
+        "WorkingHours": m.WorkingHours,
+        "AppointmentStatus": m.AppointmentStatus,
+        "sa": sa,
+        "so": so,
     }
