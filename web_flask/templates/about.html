@@ -252,6 +252,15 @@
                             <td>Rheumatology Clinic</td>
                             <td>د. أيمن عبد الفتاح<br>ماجستير الأمراض الروماتيزمية<br>أخصائي الأمراض الروماتيزمية</td>
                         </tr>
+                        {% set counter = 1 %}
+                        {% for doctor in doctors %}
+                        <tr>
+                            <th scope="row">{{ counter }}</th>
+                            <td>{{ doctor.department.name }}</td>
+                            <td>{{ doctor.name }}<br>{{ doctor.certificates }}</td>
+                        </tr>
+                        {%set counter = counter + 1%}
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

@@ -1,9 +1,8 @@
-# flake8: noqa
 """empty message
 
-Revision ID: 83d326736d96
-Revises: 8463654b59f6
-Create Date: 2024-08-24 14:10:06.305795
+Revision ID: c283f531414c
+Revises: 
+Create Date: 2024-08-27 14:35:49.167061
 
 """
 from alembic import op
@@ -11,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '83d326736d96'
-down_revision = '8463654b59f6'
+revision = 'c283f531414c'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -39,6 +38,7 @@ def upgrade():
     sa.Column('phone', sa.String(length=10), nullable=True),
     sa.Column('department_id', sa.String(length=128), nullable=False),
     sa.Column('password_hash', sa.String(length=256), nullable=False),
+    sa.Column('last_seen', sa.DateTime(), nullable=True),
     sa.Column('id', sa.String(length=128), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
@@ -57,11 +57,13 @@ def upgrade():
     sa.Column('name', sa.String(length=64), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('contact_number', sa.String(length=10), nullable=False),
+    sa.Column('birth_date', sa.DateTime(), nullable=True),
     sa.Column('password_hash', sa.String(length=256), nullable=False),
-    sa.Column('address', sa.String(length=256), nullable=False),
-    sa.Column('medical_history', sa.String(length=400), nullable=False),
-    sa.Column('current_medications', sa.String(length=256), nullable=False),
-    sa.Column('department_id', sa.String(length=128), nullable=False),
+    sa.Column('address', sa.String(length=256), nullable=True),
+    sa.Column('medical_history', sa.String(length=400), nullable=True),
+    sa.Column('current_medications', sa.String(length=256), nullable=True),
+    sa.Column('department_id', sa.String(length=128), nullable=True),
+    sa.Column('last_seen', sa.DateTime(), nullable=True),
     sa.Column('id', sa.String(length=128), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),

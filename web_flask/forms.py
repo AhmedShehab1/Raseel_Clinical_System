@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, \
-    BooleanField, TextAreaField
+    BooleanField, TextAreaField, DateField
 
 from wtforms.validators import DataRequired, Email, Length, Regexp, \
     EqualTo, ValidationError
@@ -29,7 +29,11 @@ class RegistrationForm(FlaskForm):
                 )
                )
         ])
+
+    birth_date = DateField("Birth Date", validators=[DataRequired()])
+
     password = PasswordField("Password", validators=[DataRequired()])
+
     confirm_password = PasswordField("Repeat Password", validators=[
         DataRequired(),
         EqualTo('password', message="Passwords must match")
@@ -67,6 +71,7 @@ class EditProfileInfo(FlaskForm):
                    )
                )
         ])
+    birth_date = DateField("Birth Date", validators=[DataRequired()])
     address = TextAreaField('Address', validators=[Length(min=0, max=256)])
     medical_history = TextAreaField('Medical History',
                                     validators=[Length(min=0, max=400)])

@@ -68,7 +68,8 @@ def register():
 
 @app.route("/about")
 def about():
-    return render_template("about.html", title="About - Raseel")
+    doctors = db.session.scalars(sa.select(m.Doctor))
+    return render_template("about.html", title="About - Raseel", doctors=doctors)
 
 
 @app.before_request
@@ -89,6 +90,7 @@ def edit_profile():
         current_user.address = form.address.data
         current_user.medical_history = form.medical_history.data
         current_user.current_medications = form.current_medications.data
+        current_user.birth_date = form.birth_date.data
         db.session.commit()
         flash('Your changes have been saved', 'success')
         return redirect(url_for('edit_profile'))
@@ -99,6 +101,7 @@ def edit_profile():
         form.address.data = current_user.address
         form.medical_history.data = current_user.medical_history
         form.current_medications.data = current_user.current_medications
+        form.birth_date.data = current_user.birth_date
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
 

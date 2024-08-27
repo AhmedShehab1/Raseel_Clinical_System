@@ -94,3 +94,7 @@ a[href="#services"]:hover.btn {
 .table th:nth-child(3) {
     text-align: center;
 }
+
+link[rel="icon"] {
+    cursor: pointer;
+}

@@ -50,6 +50,9 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
     contact_number: so.Mapped[str] = so.mapped_column(
         sa.String(10), index=True, unique=True, nullable=False
     )
+
+    birth_date: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(sa.DateTime, nullable=True)
+
     password_hash: so.Mapped[str] = so.mapped_column(sa.String(256),
                                                      nullable=False)
     address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))

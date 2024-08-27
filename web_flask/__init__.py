@@ -14,7 +14,11 @@ from .doctor_bp import doctor_bp
 pretty_errors.activate()
 
 app = Flask(__name__)
-app.config.from_object(Config)
+if os.getenv('FLASK_ENV') == 'development':
+    app.config.from_object('config.TestConfig')
+else:
+    app.config.from_object(Config)
+
 mail = Mail(app)
 
 db = SQLAlchemy(app)  # This is the database engine
