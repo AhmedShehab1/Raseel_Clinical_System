@@ -4,8 +4,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from urllib.parse import urlsplit
 from web_flask import app, db
 from web_flask.email import send_password_reset_email
-from web_flask.forms import LoginForm, RegistrationForm, EditProfileInfo, ResetPasswordForm, \
-    ResetPasswordRequestForm
+from web_flask.forms import LoginForm, RegistrationForm, EditProfileInfo, \
+    ResetPasswordForm, ResetPasswordRequestForm
 import sqlalchemy as sa
 
 
@@ -102,6 +102,7 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
 
+
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
@@ -113,10 +114,13 @@ def reset_password_request():
         )
         if patient:
             send_password_reset_email(patient)
-        flash('An email has been sent with instructions to reset your password',
+        flash(('An email has been sent with instructions to'
+               'reset your password'),
               'info')
         return redirect(url_for('login'))
-    return render_template('reset_password.html', title='Reset Password', form=form)
+    return render_template('reset_password.html', title='Reset Password',
+                           form=form)
+
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):

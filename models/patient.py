@@ -9,6 +9,7 @@ from flask_login import UserMixin
 import jwt
 from web_flask import app, db
 
+
 class Patient(BaseModel, PasswordMixin, UserMixin):
     """
     Patient model class
@@ -25,7 +26,6 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
         PasswordMixin.__init__(self, password)
         super().__init__(**kwargs)
 
-
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
@@ -37,7 +37,7 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
         try:
             id = jwt.decode(token, app.config['SECRET_KEY'],
                             algorithms=['HS256'])['reset_password']
-        except:
+        except Exception:
             return
         return db.session.get(Patient, id)
 

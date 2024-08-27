@@ -97,6 +97,7 @@ class EditProfileInfo(FlaskForm):
             if user is not None:
                 raise ValidationError("Please use a different contact number.")
 
+
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Reset Password')
@@ -107,4 +108,3 @@ class ResetPasswordForm(FlaskForm):
     confirm_password = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Request Password Reset')
-    
