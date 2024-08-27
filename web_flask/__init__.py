@@ -8,6 +8,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
+from flask_moment import Moment
 import os
 
 pretty_errors.activate()
@@ -19,7 +20,7 @@ else:
     app.config.from_object(Config)
 
 mail = Mail(app)
-
+moment = Moment(app)
 db = SQLAlchemy(app)  # This is the database engine
 migrate = Migrate(app, db)  # This is the migration engine
 

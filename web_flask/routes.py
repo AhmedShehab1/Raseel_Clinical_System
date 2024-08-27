@@ -117,11 +117,12 @@ def reset_password_request():
         if patient:
             send_password_reset_email(patient)
         flash(
-            ("An email has been sent with instructions to" " reset your password"),
+            ("An email has been sent with instructions to"
+             " reset your password"),
             "info",
         )
         return redirect(url_for("login"))
-    return render_template("reset_password.html", title="Reset Password", form=form)
+    return render_template("reset_password.html", title="Reset Password", heading="Reset Password", form=form)
 
 
 @app.route("/reset_password/<token>", methods=["GET", "POST"])
@@ -137,4 +138,4 @@ def reset_password(token):
         db.session.commit()
         flash("Your password has been reset.", "success")
         return redirect(url_for("login"))
-    return render_template("reset_password.html", form=form)
+    return render_template("reset_password.html", title="Reset Password", heading="Reset Password", form=form)
