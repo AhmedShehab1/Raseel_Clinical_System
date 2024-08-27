@@ -1,9 +1,21 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, \
-    BooleanField, TextAreaField, DateField
+from wtforms import (
+    StringField,
+    SubmitField,
+    PasswordField,
+    BooleanField,
+    TextAreaField,
+    DateField,
+)
 
-from wtforms.validators import DataRequired, Email, Length, Regexp, \
-    EqualTo, ValidationError
+from wtforms.validators import (
+    DataRequired,
+    Email,
+    Length,
+    Regexp,
+    EqualTo,
+    ValidationError,
+)
 from web_flask import db
 import sqlalchemy as sa
 import models as m
@@ -19,25 +31,31 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
-    contact_number = StringField("Contact Number", validators=[
-        DataRequired(),
-        Length(10, message="Contact number must be 10 digits"),
-        Regexp(r'^05[0-9]{8}$',
-               message=(
-                   "Ensure contact"
-                   " number in the following format: 05XXXXXXXX"
-                )
-               )
-        ])
+    contact_number = StringField(
+        "Contact Number",
+        validators=[
+            DataRequired(),
+            Length(10, message="Contact number must be 10 digits"),
+            Regexp(
+                r"^05[0-9]{8}$",
+                message=(
+                    "Ensure contact" " number in the following format: 05XXXXXXXX"
+                ),
+            ),
+        ],
+    )
 
     birth_date = DateField("Birth Date", validators=[DataRequired()])
 
     password = PasswordField("Password", validators=[DataRequired()])
 
-    confirm_password = PasswordField("Repeat Password", validators=[
-        DataRequired(),
-        EqualTo('password', message="Passwords must match")
-        ])
+    confirm_password = PasswordField(
+        "Repeat Password",
+        validators=[
+            DataRequired(),
+            EqualTo("password", message="Passwords must match"),
+        ],
+    )
     submit = SubmitField("Register")
 
     # Will be called by WTForms
@@ -51,8 +69,7 @@ class RegistrationForm(FlaskForm):
 
     def validate_contact_number(self, contact_number):
         user = db.session.scalar(
-            sa.select(m.Patient).where(
-                m.Patient.contact_number == contact_number.data)
+            sa.select(m.Patient).where(m.Patient.contact_number == contact_number.data)
         )
         if user is not None:
             raise ValidationError("Please use a different contact number.")
@@ -61,26 +78,30 @@ class RegistrationForm(FlaskForm):
 class EditProfileInfo(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
-    contact_number = StringField("Contact Number", validators=[
-        DataRequired(),
-        Length(10, message="Contact number must be 10 digits"),
-        Regexp(r'^05[0-9]{8}$',
-               message=(
-                    "Ensure contact number in "
-                    "the following format: 05XXXXXXXX"
-                   )
-               )
-        ])
+    contact_number = StringField(
+        "Contact Number",
+        validators=[
+            DataRequired(),
+            Length(10, message="Contact number must be 10 digits"),
+            Regexp(
+                r"^05[0-9]{8}$",
+                message=(
+                    "Ensure contact number in " "the following format: 05XXXXXXXX"
+                ),
+            ),
+        ],
+    )
     birth_date = DateField("Birth Date", validators=[DataRequired()])
-    address = TextAreaField('Address', validators=[Length(min=0, max=256)])
-    medical_history = TextAreaField('Medical History',
-                                    validators=[Length(min=0, max=400)])
-    current_medications = TextAreaField('Current Medication',
-                                        validators=[Length(min=0, max=256)])
+    address = TextAreaField("Address", validators=[Length(min=0, max=256)])
+    medical_history = TextAreaField(
+        "Medical History", validators=[Length(min=0, max=400)]
+    )
+    current_medications = TextAreaField(
+        "Current Medication", validators=[Length(min=0, max=256)]
+    )
     submit = SubmitField("Update")
 
-    def __init__(self, original_email, original_contact_number,
-                 *args, **kwargs):
+    def __init__(self, original_email, original_contact_number, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.original_email = original_email
         self.original_contact_number = original_contact_number
@@ -97,19 +118,21 @@ class EditProfileInfo(FlaskForm):
         if self.original_contact_number != contact_number.data:
             user = db.session.scalar(
                 sa.select(m.Patient).where(
-                    m.Patient.contact_number == contact_number.data)
+                    m.Patient.contact_number == contact_number.data
+                )
             )
             if user is not None:
                 raise ValidationError("Please use a different contact number.")
 
 
 class ResetPasswordRequestForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Send Request')
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    submit = SubmitField("Send Request")
 
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
     confirm_password = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Reset Password')
+        "Repeat Password", validators=[DataRequired(), EqualTo("password")]
+    )
+    submit = SubmitField("Reset Password")

@@ -25,25 +25,21 @@ class Doctor(BaseModel, PasswordMixin):
         super().__init__(**kwargs)
 
     __tablename__ = "doctors"
-    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
-                                            nullable=False)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, nullable=False)
     email: so.Mapped[str] = so.mapped_column(
         sa.String(120), index=True, unique=True, nullable=False
     )
-    certificates: so.Mapped[str] = so.mapped_column(sa.String(256),
-                                                    nullable=False)
+    certificates: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=False)
 
     phone: so.Mapped[Optional[str]] = so.mapped_column(
         sa.String(10), index=True, unique=True
     )
 
     department_id: so.Mapped[str] = so.mapped_column(
-        sa.ForeignKey("departments.id"), index=True,
-        nullable=False
+        sa.ForeignKey("departments.id"), index=True, nullable=False
     )
 
-    password_hash: so.Mapped[str] = so.mapped_column(sa.String(256),
-                                                     nullable=False)
+    password_hash: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=False)
 
     department: so.Mapped["m.Department"] = so.relationship(
         "Department", back_populates="doctors"
@@ -57,3 +53,9 @@ class Doctor(BaseModel, PasswordMixin):
     last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
         sa.DateTime, default=gen_datetime
     )
+
+    working_hours: so.Mapped[List["m.WorkingHours"]] = so.relationship(
+        "WorkingHours", back_populates="doctor"
+    )
+
+    is_active: so.Mapped[sa.Boolean] = so.mapped_column(sa.Boolean, default=True)

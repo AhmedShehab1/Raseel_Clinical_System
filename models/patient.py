@@ -8,6 +8,8 @@ from utils import PasswordMixin
 from flask_login import UserMixin
 import jwt
 from web_flask import app, db
+from sqlalchemy.ext.hybrid import hybrid_property
+from datetime import date
 
 
 class Patient(BaseModel, PasswordMixin, UserMixin):
@@ -16,6 +18,7 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
     Args:
         BaseModel (): Base model class
     """
+
     def __init__(self, password: str, **kwargs):
         """
         Constructor for the Patient class
@@ -28,22 +31,23 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
-            {'reset_password': self.id, 'exp': time() + expires_in},
-            app.config['SECRET_KEY'], algorithm='HS256'
+            {"reset_password": self.id, "exp": time() + expires_in},
+            app.config["SECRET_KEY"],
+            algorithm="HS256",
         )
 
     @staticmethod
     def verify_reset_password_token(token):
         try:
-            id = jwt.decode(token, app.config['SECRET_KEY'],
-                            algorithms=['HS256'])['reset_password']
+            id = jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])[
+                "reset_password"
+            ]
         except Exception:
             return
         return db.session.get(Patient, id)
 
     __tablename__ = "patients"
-    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
-                                            nullable=False)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, nullable=False)
     email: so.Mapped[str] = so.mapped_column(
         sa.String(120), index=True, unique=True, nullable=False
     )
@@ -51,17 +55,14 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
         sa.String(10), index=True, unique=True, nullable=False
     )
 
-    birth_date: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(sa.DateTime, nullable=True)
+    birth_date: so.Mapped[sa.Date] = so.mapped_column(sa.Date)
 
-    password_hash: so.Mapped[str] = so.mapped_column(sa.String(256),
-                                                     nullable=False)
+    password_hash: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=False)
     address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
-    medical_history: so.Mapped[Optional[str]] =\
-        so.mapped_column(sa.String(400))
+    medical_history: so.Mapped[Optional[str]] = so.mapped_column(sa.String(400))
 
-    current_medications: so.Mapped[Optional[str]] = \
-        so.mapped_column(sa.String(256))
+    current_medications: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
     department_id: so.Mapped[Optional[str]] = so.mapped_column(
         sa.ForeignKey("departments.id")
@@ -76,3 +77,12 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
     last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
         sa.DateTime, default=gen_datetime
     )
+
+    @hybrid_property
+    def age(self):
+        today = date.today()
+        return (
+            today.year
+            - self.birth_date.year
+            - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
+        )

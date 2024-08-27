@@ -5,6 +5,7 @@ class PasswordMixin:
     """
     Password mixin class
     """
+
     password_hash = None
 
     def __init__(self, passwd: str):

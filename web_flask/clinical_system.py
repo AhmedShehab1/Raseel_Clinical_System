@@ -5,6 +5,7 @@ import models as m
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
+
 @app.shell_context_processor
 def make_shell_context():
     return {
@@ -16,6 +17,8 @@ def make_shell_context():
         "Appointment": m.Appointment,
         "Department": m.Department,
         "TimeSlot": m.TimeSlot,
-        'sa': sa,
-        'so': so
+        "WorkingHours": m.WorkingHours,
+        "AppointmentStatus": m.AppointmentStatus,
+        "sa": sa,
+        "so": so,
     }
