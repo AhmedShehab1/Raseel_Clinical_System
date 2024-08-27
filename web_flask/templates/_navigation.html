@@ -2,8 +2,8 @@
 
 <ul class="nav col-12 col-md-auto mb-2 justify-content-center ms-md-5 mb-md-0">
   <li><a href="{{ url_for('index') }}" class="nav-link px-2 {% if request.endpoint == 'index' %}link-secondary{% else %}{% endif %}">Home</a></li>
-  <li><a href="#services" class="nav-link px-2">Services</a></li>
-  <li><a href="#contact" class="nav-link px-2">Contact</a></li>
+  <li><a href="{% if request.endpoint == 'index' %}#services{% else %}{{ url_for('index') }}#services{% endif %}" class="nav-link px-2">Services</a></li>
+  <li><a href="{% if request.endpoint == 'index' %}#contact{% else %}{{ url_for('index') }}#contact{% endif %}" class="nav-link px-2">Contact</a></li>
   <li><a href="{{ url_for('about') }}" class="nav-link px-2 {% if request.endpoint == 'about' %}link-secondary{% else %}{% endif %}">About</a></li>
 </ul>
 <div class="col-md-3 text-end">
