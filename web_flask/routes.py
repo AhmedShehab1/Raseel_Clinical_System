@@ -3,7 +3,9 @@ from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_user, current_user, logout_user, login_required
 from urllib.parse import urlsplit
 from web_flask import app, db
-from web_flask.forms import LoginForm, RegistrationForm, EditProfileInfo
+from web_flask.email import send_password_reset_email
+from web_flask.forms import LoginForm, RegistrationForm, EditProfileInfo, \
+    ResetPasswordForm, ResetPasswordRequestForm
 import sqlalchemy as sa
 
 
@@ -99,3 +101,38 @@ def edit_profile():
         form.current_medications.data = current_user.current_medications
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('edit_profile'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        patient = db.session.scalar(
+            sa.select(m.Patient).where(m.Patient.email == form.email.data)
+        )
+        if patient:
+            send_password_reset_email(patient)
+        flash(('An email has been sent with instructions to'
+               'reset your password'),
+              'info')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', title='Reset Password',
+                           form=form)
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('edit_profile'))
+    patient = m.Patient.verify_reset_password_token(token)
+    if not patient:
+        return redirect(url_for('index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        patient.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been reset.', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form)

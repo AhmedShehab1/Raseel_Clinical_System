@@ -1,5 +1,6 @@
 # flake8: noqa
 from flask import Flask
+from flask_mail import Mail
 from config import Config
 import pretty_errors
 from flask_sqlalchemy import SQLAlchemy
@@ -14,6 +15,8 @@ pretty_errors.activate()
 
 app = Flask(__name__)
 app.config.from_object(Config)
+mail = Mail(app)
+
 db = SQLAlchemy(app)  # This is the database engine
 migrate = Migrate(app, db)  # This is the migration engine
 app.register_blueprint(doctor_bp)

@@ -15,6 +15,10 @@ urllib3>=1.25.8
 coverage>=7.0
 flask-login~=0.5.0
 pretty-errors~=1.2.15
+
+flask-mail~=0.9.1
+pyjwt~=2.3.0
+
 # Development and Testing
 flake8>=5.0  # Consider moving to requirements-dev.txt
 python-dotenv>=1.0

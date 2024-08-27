@@ -4,4 +4,5 @@
     <h1>Login</h1>
     {{ macro.create_form(form) }}
     <p>New User? <a href="{{ url_for('register') }}">Click To Register!</a></p>
+    <p>Forgot Password? <a href="{{ url_for('reset_password_request') }}">Click To Reset!</a></p>
 {% endblock content %}

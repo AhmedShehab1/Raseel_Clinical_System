@@ -1,3 +1,4 @@
+from time import time
 from typing import List, Optional
 import models as m
 from .base_model import BaseModel, gen_datetime
@@ -5,6 +6,8 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from utils import PasswordMixin
 from flask_login import UserMixin
+import jwt
+from web_flask import app, db
 
 
 class Patient(BaseModel, PasswordMixin, UserMixin):
@@ -22,6 +25,21 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
         """
         PasswordMixin.__init__(self, password)
         super().__init__(**kwargs)
+
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            app.config['SECRET_KEY'], algorithm='HS256'
+        )
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except Exception:
+            return
+        return db.session.get(Patient, id)
 
     __tablename__ = "patients"
     name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
