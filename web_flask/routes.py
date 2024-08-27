@@ -115,7 +115,7 @@ def reset_password_request():
         if patient:
             send_password_reset_email(patient)
         flash(('An email has been sent with instructions to'
-               'reset your password'),
+               ' reset your password'),
               'info')
         return redirect(url_for('login'))
     return render_template('reset_password.html', title='Reset Password',
