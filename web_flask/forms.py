@@ -136,3 +136,22 @@ class ResetPasswordForm(FlaskForm):
         "Repeat Password", validators=[DataRequired(), EqualTo("password")]
     )
     submit = SubmitField("Reset Password")
+
+class VisitorForm(FlaskForm):
+    name  = StringField("Name", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    contact_number = StringField(
+                                 "Contact Number",
+                                 validators=[DataRequired(),
+                                             Length(10, message="Contact number must be 10 digits"),
+                                             Regexp(r"^05[0-9]{8}$",
+                                             message=("Ensure contact number in the"
+                                                      " following format: 05XXXXXXXX")
+                                             )]
+                                 )
+    message = TextAreaField("Message", validators=[DataRequired(), Length(min=30, max=100,
+                                                                          message=("Message must be between"
+                                                                                   " 30 and 100 characters"))])
+    statement = BooleanField("I allow this website to store my submission so they can respond to my inquiry.",
+                             validators=[DataRequired()])
+    submit = SubmitField("Submit")

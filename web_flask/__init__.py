@@ -9,6 +9,8 @@ from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from flask_moment import Moment
+from flask import request
+from flask_babel import Babel, lazy_gettext as _l
 import os
 
 pretty_errors.activate()
@@ -28,6 +30,11 @@ from .doctor_bp import doctor_bp
 
 app.register_blueprint(doctor_bp)
 
+def get_locale():
+    # return request.accept_languages.best_match(app.config['LANGUAGES'])
+    return 'ar'
+
+babel = Babel(app, locale_selector=get_locale)
 
 if not app.debug:
     if app.config["MAIL_SERVER"]:
@@ -66,6 +73,7 @@ if not app.debug:
 login_manager = LoginManager()  # This is the login manager
 login_manager.init_app(app)
 login_manager.login_view = "login"
+login_manager.login_message = _l("Please log in to access this page.")
 
 from web_flask import routes, errors
 from models.base_model import BaseModel
