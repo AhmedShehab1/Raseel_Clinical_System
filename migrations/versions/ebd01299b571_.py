@@ -1,3 +1,5 @@
+# flake8: noqa
+
 """empty message
 
 Revision ID: ebd01299b571

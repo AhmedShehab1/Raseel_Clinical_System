@@ -32,9 +32,9 @@
             <tbody>
                 {% for appointment in appointments %}
                     <tr>
-                        <td>{{ appointment.patient.name }}</td>
-                        <td>{{ moment(appointment.appointment_time).format('LLLL') }}</td>
-                        <td>{{ moment(appointment.appointment_time).fromNow() }}</td>
+                        <td>{{ _('%(patient_name)s', patient_name=appointment.patient.name) }}</td>
+                        <td>{{ _('%(datetime)s', datetime=moment(appointment.appointment_time).format('LLLL')) }}</td>
+                        <td>{{ _('%(time_from_now)s', time_from_now=moment(appointment.appointment_time).fromNow()) }}</td>
                         <td>
                             <a href="{{ url_for('doctor_bp.update_appointment', appointment_id=appointment.id) }}" class="btn btn-primary">Update</a>
                             <a href="{{ url_for('doctor_bp.delete_appointment', appointment_id=appointment.id) }}" class="btn btn-danger">Delete</a>
@@ -46,5 +46,6 @@
             </tbody>
         </table>
         {{ moment.include_moment() }}
+        {{ moment.lang(g.locale) }}
     </body>
 </html>

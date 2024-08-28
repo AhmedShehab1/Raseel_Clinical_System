@@ -6,6 +6,7 @@ import uuid
 from datetime import datetime, timezone
 from sqlalchemy.ext.declarative import declared_attr
 
+
 def gen_datetime():
     """
     Generate the current datetime in UTC timezone
@@ -23,6 +24,7 @@ class BaseModel(db.Model):
     """
 
     __abstract__ = True
+
     @declared_attr
     def id(cls) -> so.Mapped[str]:
         return so.mapped_column(
@@ -53,6 +55,3 @@ class BaseModel(db.Model):
         return "[{:s}] ({:s}) {}".format(
             self.__class__.__name__, self.id or "", self.__dict__
         )
-
-
-

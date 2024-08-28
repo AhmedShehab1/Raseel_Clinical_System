@@ -1,6 +1,7 @@
 # flake8: noqa
 from web_flask import app, db
 from models.base_model import BaseModel
+from web_flask import cli
 import models as m
 import sqlalchemy as sa
 import sqlalchemy.orm as so

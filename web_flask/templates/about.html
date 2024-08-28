@@ -1,29 +1,29 @@
 {% extends "base_visitors.html" %}
 {% block content %}
-        <section class="container mission mt-3 border border-primary">
+        <section class="container mission mt-5 border border-primary">
                 <div class="row flex-lg-row-reverse align-items-center g-5 py-1">
                 <div class="col-10 col-sm-8 col-lg-6">
-                    <img src="../static/images/image.png" class="d-block mx-lg-auto img-fluid" alt="Raseel Medical Center" width="700" height="500" loading="lazy">
+                    <img src="../static/images/image.png" class="d-block mx-lg-auto img-fluid rounded-3" alt="Raseel Medical Center" width="700" height="500" loading="lazy">
                 </div>
                 <div class="col-lg-6">
-                    <h1 class="display-5 mb-2 font-monospace text-primary">Mission</h1>
-                    <p class="lead">We are committed to providing distinguished healthcare services through our distinguished health and administrative staff and advanced medical facilities. In addition to achieving the desire of our customers with full commitment to the ethics of practice in dealing with our patients and continuous improvement and development.</p>
-                    <h1 class="display-5 mb-2 font-monospace text-primary">Vision</h1>
-                    <p class="lead">To be the leading healthcare provider in the region by providing distinguished healthcare services and achieving the highest levels of patient satisfaction.</p>
+                    <h1 class="display-5 mb-2 font-monospace text-primary">{{ _('Mission') }}</h1>
+                    <p class="lead">{{ _('We are committed to providing distinguished healthcare services through our distinguished health and administrative staff and advanced medical facilities. In addition to achieving the desire of our customers with full commitment to the ethics of practice in dealing with our patients and continuous improvement and development.') }}</p>
+                    <h1 class="display-5 mb-2 font-monospace text-primary">{{ _('Vision') }}</h1>
+                    <p class="lead">{{ _('To be the leading healthcare provider in the region by providing distinguished healthcare services and achieving the highest levels of patient satisfaction.') }}</p>
                 </div>
                 </div>
         </section>
         <section class="container team mt-3 border border-primary">
-            <h1 class="text-center font-monospace text-primary">Our Team</h1>
-            <p class="text-center"> (التخصصات المتوفرة وأسماء الأطباء وشهاداتهم العلمية)
+            <h1 class="text-center font-monospace text-primary">{{ _('Our Team') }}</h1>
+            <p class="text-center"> ( {{ _('Available specialties, names of doctors and their academic degrees') }} )
             </p>
             <div class="container my-5">
                 <table class="table table-bordered table-hover text-end">
                     <thead class="table-primary">
                         <tr>
                             <th scope="col">م</th>
-                            <th scope="col">Clinic</th>
-                            <th scope="col">Name and academic certificates</th>
+                            <th scope="col">{{ _('Clinic') }}</th>
+                            <th scope="col">{{ _('Name and academic certificates') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -266,3 +266,4 @@
             </div>
         </section>
 {% endblock content %}
+ 

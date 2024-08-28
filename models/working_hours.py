@@ -3,7 +3,6 @@ from .base_model import BaseModel
 import models as m
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from .doctor import Doctor
 
 class DayOfWeek(str, Enum):
     SUNDAY = "Sunday"
@@ -19,7 +18,8 @@ class WorkingHours(BaseModel):
     __tablename__ = "working_hours"
     __table_args__ = (
         sa.PrimaryKeyConstraint("doctor_id", "day"),
-        sa.CheckConstraint("end_time > start_time", name="check_time_validity"),
+        sa.CheckConstraint("end_time > start_time",
+                           name="check_time_validity")
     )
     id = None
 
