@@ -23,6 +23,7 @@ flask-migrate~=3.1.0
 
 flask-moment~=1.0.0
 
+flask-babel~=3.0.0
 # Development and Testing
 flake8>=5.0  # Consider moving to requirements-dev.txt
 python-dotenv>=1.0

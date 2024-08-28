@@ -10,6 +10,7 @@ from web_flask.forms import (
     EditProfileInfo,
     ResetPasswordForm,
     ResetPasswordRequestForm,
+    VisitorForm
 )
 import sqlalchemy as sa
 
@@ -40,9 +41,13 @@ def login():
     return render_template("login.html", title="Login - Raseel", form=form)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html", title="Home - Raseel")
+    form = VisitorForm()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            flash("Your message has been sent!", "success")
+    return render_template("index.html", title="Home - Raseel", form=form)
 
 
 @app.route("/register", methods=["GET", "POST"])

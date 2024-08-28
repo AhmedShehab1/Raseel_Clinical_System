@@ -19,7 +19,7 @@ class Config:
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
     ADMINS = ["ahmedshehab2006a@gmail.com", "mazenatef5510@gmail.com"]
-
+    LANGUAGES = ["en", "ar"]
 
 class TestConfig(Config):
     TESTING = True

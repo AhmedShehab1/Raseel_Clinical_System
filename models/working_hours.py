@@ -3,7 +3,7 @@ from .base_model import BaseModel
 import models as m
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-
+from .doctor import Doctor
 
 class DayOfWeek(str, Enum):
     SUNDAY = "Sunday"
@@ -26,13 +26,18 @@ class WorkingHours(BaseModel):
     doctor_id: so.Mapped[str] = so.mapped_column(
         sa.ForeignKey("doctors.id"), index=True, nullable=False
     )
-    start_time: so.Mapped[sa.Time] = so.mapped_column(
-        sa.Time, index=True, nullable=False
-    )
-    end_time: so.Mapped[sa.Time] = so.mapped_column(sa.Time, index=True, nullable=False)
+
     doctor: so.Mapped["m.Doctor"] = so.relationship(
         "Doctor", back_populates="working_hours"
     )
+
+    start_time: so.Mapped[sa.Time] = so.mapped_column(
+        sa.Time, index=True, nullable=False
+    )
+
+    end_time: so.Mapped[sa.Time] = so.mapped_column(sa.Time, index=True, nullable=False)
+
+
     day: so.Mapped[DayOfWeek] = so.mapped_column(
         sa.Enum(DayOfWeek), index=True, nullable=False
     )

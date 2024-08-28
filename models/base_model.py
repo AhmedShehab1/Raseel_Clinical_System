@@ -4,7 +4,7 @@ import sqlalchemy.orm as so
 from web_flask import db
 import uuid
 from datetime import datetime, timezone
-
+from sqlalchemy.ext.declarative import declared_attr
 
 def gen_datetime():
     """
@@ -23,23 +23,36 @@ class BaseModel(db.Model):
     """
 
     __abstract__ = True
-    id: so.Mapped[str] = so.mapped_column(
-        sa.String(128), primary_key=True,
-        default=lambda: str(uuid.uuid4()),
-        index=True
-    )
-    created_at: so.Mapped[sa.DateTime] = so.mapped_column(
-        sa.DateTime, default=gen_datetime
-    )
-    updated_at: so.Mapped[sa.DateTime] = so.mapped_column(
-        sa.DateTime, default=gen_datetime, onupdate=gen_datetime
-    )
-    deleted_at: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
-        sa.DateTime, nullable=True
-    )
+    @declared_attr
+    def id(cls) -> so.Mapped[str]:
+        return so.mapped_column(
+            sa.String(128), primary_key=True,
+            default=lambda: str(uuid.uuid4()),
+            index=True
+        )
+
+    @declared_attr
+    def created_at(cls) -> so.Mapped[sa.DateTime]:
+        return so.mapped_column(
+            sa.DateTime, default=gen_datetime
+        )
+    @declared_attr
+    def updated_at(cls) -> so.Mapped[sa.DateTime]:
+        return so.mapped_column(
+            sa.DateTime, default=gen_datetime, onupdate=gen_datetime
+        )
+
+    @declared_attr
+    def deleted_at(cls) -> so.Mapped[Optional[sa.DateTime]]:
+        return so.mapped_column(
+            sa.DateTime, nullable=True
+        )
 
     def __str__(self):
         """String representation of the BaseModel class"""
         return "[{:s}] ({:s}) {}".format(
             self.__class__.__name__, self.id or "", self.__dict__
         )
+
+
+
