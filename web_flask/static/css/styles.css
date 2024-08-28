@@ -65,8 +65,8 @@ a[href="#services"]:hover.btn {
 .mission {
     background-color: #f8f9fa;
     padding: 2rem;
-    height: 500px;
-    width: 70%;
+    min-height: 50vh;
+    width: 100%;
     border-radius: 0.5rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -97,4 +97,8 @@ a[href="#services"]:hover.btn {
 
 link[rel="icon"] {
     cursor: pointer;
+}
+
+ul.navbar-nav {
+    margin: auto;
 }

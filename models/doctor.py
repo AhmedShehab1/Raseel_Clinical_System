@@ -1,6 +1,5 @@
-from typing import List, Optional
+from typing import List
 import models as m
-from .base_model import BaseModel, gen_datetime
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
@@ -19,7 +18,8 @@ class Doctor(m.StaffMember):
         sa.String(120), index=True, unique=True, nullable=False
     )
 
-    certificates: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=False)
+    certificates: so.Mapped[str] = so.mapped_column(sa.String(256),
+                                                    nullable=False)
 
     department_id: so.Mapped[str] = so.mapped_column(
         sa.ForeignKey("departments.id"), index=True, nullable=False
@@ -35,5 +35,7 @@ class Doctor(m.StaffMember):
         "TimeSlot", back_populates="doctor"
     )
 
-    working_hours: so.Mapped[List["m.WorkingHours"]] = so.relationship("WorkingHours",
-                                                                       back_populates="doctor")
+    working_hours: so.Mapped[List["m.WorkingHours"]] = so.relationship(
+                                                                       "WorkingHours",
+                                                                       back_populates="doctor"
+                                                                       )

@@ -39,7 +39,8 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
     @staticmethod
     def verify_reset_password_token(token):
         try:
-            id = jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])[
+            id = jwt.decode(token, app.config["SECRET_KEY"],
+                            algorithms=["HS256"])[
                 "reset_password"
             ]
         except Exception:
@@ -47,7 +48,9 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
         return db.session.get(Patient, id)
 
     __tablename__ = "patients"
-    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, nullable=False)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64),
+                                            index=True,
+                                            nullable=False)
     email: so.Mapped[str] = so.mapped_column(
         sa.String(120), index=True, unique=True, nullable=False
     )
@@ -57,7 +60,8 @@ class Patient(BaseModel, PasswordMixin, UserMixin):
 
     birth_date: so.Mapped[sa.Date] = so.mapped_column(sa.Date)
 
-    password_hash: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=False)
+    password_hash: so.Mapped[str] = so.mapped_column(sa.String(256),
+                                                     nullable=False)
     address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
     medical_history: so.Mapped[Optional[str]] = so.mapped_column(sa.String(400))

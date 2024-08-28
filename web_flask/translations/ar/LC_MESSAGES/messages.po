@@ -7,18 +7,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-28 18:12+0300\n"
-"PO-Revision-Date: 2024-08-28 18:15+0300\n"
+"POT-Creation-Date: 2024-08-28 22:24+0300\n"
+"PO-Revision-Date: 2024-08-28 22:15+0300\n"
 "Last-Translator: \n"
-"Language-Team: ar <LL@li.org>\n"
 "Language: ar\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
-"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
 "Generated-By: Babel 2.16.0\n"
-"X-Generator: Poedit 3.4.4\n"
+
+#: web_flask/__init__.py:76
+msgid "Please log in to access this page."
+msgstr "للوصول الى هذه الصفحة يرجى تسجيل الدخول."
 
 #: web_flask/errors.py:7
 msgid "Page not found"
@@ -27,3 +30,141 @@ msgstr "لم يتم العثور على الصفحة"
 #: web_flask/errors.py:13
 msgid "An unexpected error has occured"
 msgstr "حدث خطأ غير متوقع"
+
+#: web_flask/templates/about.html:9
+msgid "Mission"
+msgstr "هدفنا"
+
+#: web_flask/templates/about.html:10
+msgid ""
+"We are committed to providing distinguished healthcare services through "
+"our distinguished health and administrative staff and advanced medical "
+"facilities. In addition to achieving the desire of our customers with "
+"full commitment to the ethics of practice in dealing with our patients "
+"and continuous improvement and development."
+msgstr ""
+"نحن ملتزمون بتقديم خدمات رعاية صحية متميزة من خلال طاقمنا الصحي والإداري "
+"المتميز ومرافقنا الطبية المتطورة. بالإضافة إلى تحقيق رغبة عملائنا مع "
+"الالتزام التام بأخلاقيات الممارسة في التعامل مع مرضانا والتحسين والتطوير "
+"المستمر."
+
+#: web_flask/templates/about.html:11
+msgid "Vision"
+msgstr "رؤيتنا"
+
+#: web_flask/templates/about.html:12
+msgid ""
+"To be the leading healthcare provider in the region by providing "
+"distinguished healthcare services and achieving the highest levels of "
+"patient satisfaction."
+msgstr ""
+"أن نكون في مقدم الرعاية الصحية الرائد في المنطقة من خلال تقديم خدمات "
+"الرعاية الصحية المتميزة وتحقيق أعلى مستويات رضا المرضى."
+
+#: web_flask/templates/about.html:17
+msgid "Our Team"
+msgstr "فريق العمل"
+
+#: web_flask/templates/about.html:18
+msgid "Available specialties, names of doctors and their academic degrees"
+msgstr "التخصصات المتوفرة وأسماء الأطباء ودرجاتهم العلمية"
+
+#: web_flask/templates/about.html:25
+msgid "Clinic"
+msgstr "العيادة"
+
+#: web_flask/templates/about.html:26
+msgid "Name and academic certificates"
+msgstr "الاسم والشهادات الأكاديمية"
+
+#: web_flask/templates/base_visitors.html:25
+msgid "&copy; 2024 Raseel Medical Care Center"
+msgstr "© مركز رسيل للرعاية الطبية 2024"
+
+#: web_flask/templates/base_visitors.html:34
+msgid "Schedule appointment"
+msgstr "احجز الآن"
+
+#: web_flask/templates/base_visitors.html:35
+msgid "Complete Intake"
+msgstr "استكمال بيانات الإدخال"
+
+#: web_flask/templates/base_visitors.html:36
+msgid "Services"
+msgstr "الخدمات"
+
+#: web_flask/templates/index.html:6
+msgid "Raseel Medical Care Center"
+msgstr "مركز رسيل للرعاية الطبية"
+
+#: web_flask/templates/index.html:7
+msgid ""
+"Welcome to Raseel Medical Care Center At Raseel Medical Care Center, we "
+"are dedicated to providing exceptional healthcare services tailored to "
+"your needs. Our team of experienced medical professionals is committed to"
+" ensuring the highest standards of care in a compassionate and welcoming "
+"environment. Whether you are visiting for a routine check-up or "
+"specialized treatment we are here to support your health journey every "
+"step of the way."
+msgstr ""
+"مرحباً بك في مركز رسيل للرعاية الطبية في مركز رسيل للرعاية الطبية، نحن "
+"ملتزمون بتقديم خدمات رعاية صحية استثنائية مصممة خصيصاً لتلبية احتياجاتك. "
+"يلتزم فريقنا من المهنيين الطبيين ذوي الخبرة بضمان توفير أعلى معايير "
+"الرعاية في بيئة تتسم بالرحمة والترحاب. سواءً كنت تزورنا لإجراء فحص روتيني"
+" أو علاج متخصص، فنحن هنا لدعم رحلتك الصحية في كل خطوة من خطواتها."
+
+#: web_flask/templates/index.html:9
+msgid "View Services"
+msgstr "عرض الخدمات"
+
+#: web_flask/templates/index.html:20
+msgid "Quality healthcare"
+msgstr "رعاية صحية عالية الجودة"
+
+#: web_flask/templates/index.html:21
+msgid "Accessible for everyone"
+msgstr "متاح للجميع"
+
+#: web_flask/templates/index.html:22
+msgid ""
+"Raseel Medical Care Center in Riyadh delivers comprehensive medical "
+"services through a clinical web-based system. We prioritize accessible "
+"and quality healthcare, ensuring that every patient receives the care "
+"they need. Our dedicated team of professionals is committed to improving "
+"health outcomes and enhancing patient satisfaction. Experience healthcare"
+" like never before with Raseel Medical Care Center, where your health is "
+"our mission."
+msgstr ""
+"يقدم مركز رسيل للرعاية الطبية في الرياض خدمات طبية شاملة من خلال نظام طبي"
+" قائم على شبكة الإنترنت. نحن نعطي الأولوية للرعاية الصحية التي يسهل "
+"الوصول إليها وذات الجودة العالية، مما يضمن حصول كل مريض على الرعاية التي "
+"يحتاجها. يلتزم فريقنا المتفاني من المتخصصين بتحسين النتائج الصحية وتعزيز "
+"رضا المرضى. اختبر الرعاية الصحية بشكل لم يسبق له مثيل مع مركز رسيل "
+"للرعاية الطبية، حيث صحتك هي مهمتنا."
+
+#: web_flask/templates/index.html:24
+msgid "Get in touch"
+msgstr "راسلنا الآن"
+
+#: web_flask/templates/index.html:36
+msgid "Our Services"
+msgstr "الخدمات"
+
+#: web_flask/templates/index.html:39
+msgid "Comprehensive medical solutions"
+msgstr "حلول طبية شاملة"
+
+#: web_flask/templates/doctor/doctor_base.html:35
+#, python-format
+msgid "%(patient_name)s"
+msgstr ""
+
+#: web_flask/templates/doctor/doctor_base.html:36
+#, python-format
+msgid "%(datetime)s"
+msgstr ""
+
+#: web_flask/templates/doctor/doctor_base.html:37
+#, python-format
+msgid "%(time_from_now)s"
+msgstr ""

@@ -3,12 +3,10 @@
 {% block content %}
         <section class="hero-section d-flex h-100 text-center text-bg-dark">
           <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-              <h1 class="text-dark">Raseel Medical Care Center</h1>
-              <p class="lead text-dark">Welcome to Raseel Medical Care Center
-                At Raseel Medical Care Center, we are dedicated to providing exceptional healthcare services tailored to your needs. Our team of experienced medical professionals is committed to ensuring the highest standards of care in a compassionate and welcoming environment. Whether you're visiting for a routine check-up or specialized treatment, we're here to support your health journey every step of the way.
-             </p>
+              <h1 class="text-dark">{{ _('Raseel Medical Care Center') }}</h1>
+              <p class="lead text-dark">{{ _('Welcome to Raseel Medical Care Center At Raseel Medical Care Center, we are dedicated to providing exceptional healthcare services tailored to your needs. Our team of experienced medical professionals is committed to ensuring the highest standards of care in a compassionate and welcoming environment. Whether you are visiting for a routine check-up or specialized treatment we are here to support your health journey every step of the way.') }}</p>
               <p class="lead">
-                <a href="#services" class="btn btn-lg fw-bold border-white text-dark">View Services</a>
+                <a href="#services" class="btn btn-lg fw-bold border-white text-dark">{{ _('View Services') }}</a>
               </p>
           </div>
         </section>
@@ -19,11 +17,11 @@
                     <img src="../static/images/raseel1.jpg" class="d-block mx-lg-auto img-fluid rounded float-end" alt="Room Image" width="700" height="500" loading="lazy">
                   </div>
                   <div class="col-lg-6">
-                    <p class="text-primary fw-bold font-monospace">Quality healthcare</p>
-                    <h1 class="display-5 fw-bold lh-1 mb-3">Accessible for everyone</h1>
-                    <p class="lead">Raseel Medical Care Center in Riyadh delivers comprehensive medical services through a clinical web-based system. We prioritize accessible and quality healthcare, ensuring that every patient receives the care they need. Our dedicated team of professionals is committed to improving health outcomes and enhancing patient satisfaction. Experience healthcare like never before with Raseel Medical Care Center, where your health is our mission.</p>
+                    <p class="text-primary fw-bold font-monospace">{{ _('Quality healthcare') }}</p>
+                    <h1 class="display-5 fw-bold lh-1 mb-3">{{ _('Accessible for everyone') }}</h1>
+                    <p class="lead">{{ _('Raseel Medical Care Center in Riyadh delivers comprehensive medical services through a clinical web-based system. We prioritize accessible and quality healthcare, ensuring that every patient receives the care they need. Our dedicated team of professionals is committed to improving health outcomes and enhancing patient satisfaction. Experience healthcare like never before with Raseel Medical Care Center, where your health is our mission.') }}</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                        <a href="#contact" class="text-dark">Get in touch</a>
+                        <a href="#contact" class="text-dark">{{ _('Get in touch') }}</a>
                     </div>
                   </div>
                 </div>
@@ -35,10 +33,10 @@
             <!-- Services -->
              <div class="container">
                  <p class="text-primary fw-bold font-monospace">
-                     Our Services
+                     {{ _('Our Services') }}
                  </p>
                  <h3 class="fw-bold">
-                     Comprehensive medical solutions
+                     {{ _('Comprehensive medical solutions') }}
                  </h3>
                  <div class="row row-cols-1 row-cols-md-3 g-4">
                     <div class="col">

@@ -21,6 +21,7 @@ class Config:
     ADMINS = ["ahmedshehab2006a@gmail.com", "mazenatef5510@gmail.com"]
     LANGUAGES = ["en", "ar"]
 
+
 class TestConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"

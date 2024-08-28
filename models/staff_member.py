@@ -1,11 +1,9 @@
-from typing import List, Optional
+from typing import Optional
 from utils import PasswordMixin
 from sqlalchemy.ext.declarative import declared_attr
-from web_flask import db
 import sqlalchemy.orm as so
 import sqlalchemy as sa
 import models as m
-from flask_login import current_user
 from .base_model import BaseModel, gen_datetime
 
 
@@ -34,12 +32,9 @@ class StaffMember(BaseModel, PasswordMixin):
     def is_active(cls) -> so.Mapped[sa.Boolean]:
         return so.mapped_column(sa.Boolean, default=True)
 
-
     @declared_attr
     def phone(cls) -> so.Mapped[Optional[str]]:
         return so.mapped_column(sa.String(10), index=True, unique=True)
-
-
 
     @declared_attr
     def last_seen(cls) -> so.Mapped[Optional[sa.DateTime]]:

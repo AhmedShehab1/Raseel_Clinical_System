@@ -1,5 +1,6 @@
 import models as m
 
+
 class Admin(m.StaffMember):
     """
     Admin model class

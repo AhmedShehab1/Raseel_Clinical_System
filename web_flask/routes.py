@@ -1,8 +1,8 @@
 import models as m
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, g
 from flask_login import login_user, current_user, logout_user, login_required
 from urllib.parse import urlsplit
-from web_flask import app, db
+from web_flask import app, db, get_locale
 from web_flask.email import send_password_reset_email
 from web_flask.forms import (
     LoginForm,
@@ -31,7 +31,8 @@ def login():
             sa.select(m.Patient).where(m.Patient.email == form.email.data)
         )
         if patient is None or not patient.check_password(form.password.data):
-            flash("Login Unsuccessful. Please check email and password", "danger")
+            flash("Login Unsuccessful. Please check email and password",
+                  "danger")
             return redirect(url_for("login"))
         login_user(patient, remember=form.remember.data)
         next_page = request.args.get("next")
@@ -82,6 +83,7 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = m.base_model.gen_datetime()
         db.session.commit()
+    g.locale = str(get_locale())
 
 
 @app.route("/edit_profile", methods=["GET", "POST"])
