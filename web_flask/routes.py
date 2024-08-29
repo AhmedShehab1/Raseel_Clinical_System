@@ -20,6 +20,10 @@ def logout():
     logout_user()
     return redirect(url_for("index"))
 
+@app.route("/medical_departments")
+def medical_department():
+    return render_template("medical_departments.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
