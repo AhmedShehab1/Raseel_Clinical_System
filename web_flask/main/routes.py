@@ -1,9 +1,9 @@
 import models as m
 from flask import render_template, redirect, url_for, request, flash, g
 from flask_login import current_user, login_required
-from urllib.parse import urlsplit
-from web_flask import app, db, get_locale
-from web_flask.forms import (
+from web_flask.main import bp
+from web_flask import db, get_locale
+from web_flask.main.forms import (
     EditProfileInfo,
     VisitorForm
 )
@@ -11,7 +11,7 @@ from web_flask.forms import (
 import sqlalchemy as sa
 
 
-@app.route("/", methods=["GET", "POST"])
+@bp.route("/", methods=["GET", "POST"])
 def index():
     form = VisitorForm()
     if request.method == "POST":
@@ -22,13 +22,13 @@ def index():
 
 
 
-@app.route("/about")
+@bp.route("/about")
 def about():
     doctors = db.session.scalars(sa.select(m.Doctor))
     return render_template("about.html", title="About - Raseel", doctors=doctors)
 
 
-@app.before_request
+@bp.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = m.base_model.gen_datetime()
@@ -36,7 +36,7 @@ def before_request():
     g.locale = str(get_locale())
 
 
-@app.route("/edit_profile", methods=["GET", "POST"])
+@bp.route("/edit_profile", methods=["GET", "POST"])
 @login_required
 def edit_profile():
     form = EditProfileInfo(current_user.email, current_user.contact_number)
@@ -50,7 +50,7 @@ def edit_profile():
         current_user.birth_date = form.birth_date.data
         db.session.commit()
         flash("Your changes have been saved", "success")
-        return redirect(url_for("edit_profile"))
+        return redirect(url_for("main.edit_profile"))
     elif request.method == "GET":
         form.name.data = current_user.name
         form.email.data = current_user.email
@@ -60,4 +60,3 @@ def edit_profile():
         form.current_medications.data = current_user.current_medications
         form.birth_date.data = current_user.birth_date
     return render_template("edit_profile.html", title="Edit Profile", form=form)
-

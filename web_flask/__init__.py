@@ -27,16 +27,19 @@ moment = Moment(app)
 db = SQLAlchemy(app)  # This is the database engine
 migrate = Migrate(app, db)  # This is the migration engine
 
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+from web_flask.main import bp as main_bp
 from web_flask.errors import bp as errors_bp
 from web_flask.doctor_bp import doctor_bp
 from web_flask.auth import bp as auth_bp
 app.register_blueprint(errors_bp)
 app.register_blueprint(doctor_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(main_bp)
 
 
-def get_locale():
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 babel = Babel(app, locale_selector=get_locale)
@@ -80,7 +83,6 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.login_message = _l("Please log in to access this page.")
 
-from web_flask import routes
 from models.base_model import BaseModel
 import models as m
 

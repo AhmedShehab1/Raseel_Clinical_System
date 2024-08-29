@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
+
 from wtforms import (
     StringField,
     SubmitField,
-    PasswordField,
     BooleanField,
     TextAreaField,
     DateField,
@@ -13,7 +13,6 @@ from wtforms.validators import (
     Email,
     Length,
     Regexp,
-    EqualTo,
     ValidationError,
 )
 from web_flask import db
