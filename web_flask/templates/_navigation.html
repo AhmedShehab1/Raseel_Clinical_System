@@ -6,10 +6,10 @@
 </button>
 <div class="collapse navbar-collapse align-items-center" id="main-nav">
     <ul class="navbar-nav">
-        <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link px-2 {% if request.endpoint == 'index' %}text-secondary{% else %}text-primary{% endif %}">Home</a></li>
-        <li class="nav-item"><a href="{% if request.endpoint == 'index' %}#services{% else %}{{ url_for('index') }}#services{% endif %}" class="nav-link px-2 text-primary">Services</a></li>
-        <li class="nav-item"><a href="{% if request.endpoint == 'index' %}#contact{% else %}{{ url_for('index') }}#contact{% endif %}" class="nav-link px-2 text-primary">Contact</a></li>
-        <li class="nav-item"><a href="{{ url_for('about') }}" class="nav-link px-2 {% if request.endpoint == 'about' %}text-secondary{% else %}text-primary{% endif %}">About</a></li>
+        <li class="nav-item"><a href="{{ url_for('main.index') }}" class="nav-link px-2 {% if request.endpoint == 'main.index' %}text-secondary{% else %}text-primary{% endif %}">Home</a></li>
+        <li class="nav-item"><a href="{% if request.endpoint == 'main.index' %}#services{% else %}{{ url_for('main.index') }}#services{% endif %}" class="nav-link px-2 text-primary">Services</a></li>
+        <li class="nav-item"><a href="{% if request.endpoint == 'main.index' %}#contact{% else %}{{ url_for('main.index') }}#contact{% endif %}" class="nav-link px-2 text-primary">Contact</a></li>
+        <li class="nav-item"><a href="{{ url_for('main.about') }}" class="nav-link px-2 {% if request.endpoint == 'main.about' %}text-secondary{% else %}text-primary{% endif %}">About</a></li>
     </ul>
     <div class="d-flex me-3">
         <button type="button" onclick="location.href='{{ url_for('auth.login') }}'"  class="btn btn-outline-primary me-2 d-none d-md-inline-block">Login</button>
