@@ -12,11 +12,11 @@
         <li class="nav-item"><a href="{{ url_for('about') }}" class="nav-link px-2 {% if request.endpoint == 'about' %}text-secondary{% else %}text-primary{% endif %}">About</a></li>
     </ul>
     <div class="d-flex me-3">
-        <button type="button" onclick="location.href='{{ url_for('login') }}'"  class="btn btn-outline-primary me-2 d-none d-md-inline-block">Login</button>
-        <button type="button" onclick="location.href='{{ url_for('register') }}'" class="btn btn-primary d-none d-md-inline-block">Sign-up</button>
+        <button type="button" onclick="location.href='{{ url_for('auth.login') }}'"  class="btn btn-outline-primary me-2 d-none d-md-inline-block">Login</button>
+        <button type="button" onclick="location.href='{{ url_for('auth.register') }}'" class="btn btn-primary d-none d-md-inline-block">Sign-up</button>
     </div>
     <div class="d-md-none mt-3">
-        <button type="button" onclick="location.href='{{ url_for('login') }}'" class="btn btn-outline-primary w-100 btn-block mb-2">Login</button>
-        <button type="button" onclick="location.href='{{ url_for('register') }}'" class="btn btn-primary w-100 btn-block">Sign-up</button>
+        <button type="button" onclick="location.href='{{ url_for('auth.login') }}'" class="btn btn-outline-primary w-100 btn-block mb-2">Login</button>
+        <button type="button" onclick="location.href='{{ url_for('auth.register') }}'" class="btn btn-primary w-100 btn-block">Sign-up</button>
     </div>
 </div>

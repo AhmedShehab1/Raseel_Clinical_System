@@ -19,7 +19,7 @@ def update():
 @translate.command()
 def compile():
     """Compile all languages"""
-    if os.system('pybabel compile -d app/translations'):
+    if os.system('pybabel compile -d web_flask/translations'):
         raise RuntimeError("compile command failed")
 
 @translate.command()

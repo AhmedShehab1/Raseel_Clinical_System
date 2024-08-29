@@ -1,29 +1,28 @@
 # Core Dependencies
-flask~=3.0.3
-Flask-Cors~=4.0.1
-flask-sqlalchemy~=3.1.1
-flask-wtf~=1.2.1
-SQLAlchemy~=2.0.31
-werkzeug~=3.0.3
-WTForms~=3.1.2
+flask~=2.3.3
+Flask-Cors~=3.1.0
+flask-sqlalchemy~=3.0.5
+flask-wtf~=1.1.1
+SQLAlchemy~=2.0.21
+werkzeug~=2.3.7
+WTForms~=3.0.1
 cryptography>=3.3
 Jinja2~=3.1.4
-MarkupSafe~=2.1.5
-PyYAML~=5.3.1
+MarkupSafe~=2.1.2
+PyYAML~=5.4.1
 requests>=2.25
-urllib3>=1.25.8
+urllib3>=1.26.16
 coverage>=7.0
-flask-login~=0.5.0
-pretty-errors~=1.2.15
+flask-login~=0.6.2
+pretty-errors~=1.2.25
 
 flask-mail~=0.9.1
-pyjwt~=2.3.0
+pyjwt~=2.6.0
 
-flask-migrate~=3.1.0
+flask-migrate~=4.0.0
+flask-moment~=1.0.3
 
-flask-moment~=1.0.0
-
-flask-babel~=3.0.0
+flask-babel~=3.0.1
 # Development and Testing
-flake8>=5.0  # Consider moving to requirements-dev.txt
+flake8>=6.0
 python-dotenv>=1.0
