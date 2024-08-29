@@ -7,27 +7,44 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-29 14:32+0300\n"
-"PO-Revision-Date: 2024-08-29 14:29+0300\n"
+"POT-Creation-Date: 2024-08-29 22:31+0300\n"
+"PO-Revision-Date: 2024-08-29 22:32+0300\n"
 "Last-Translator: \n"
-"Language: ar\n"
 "Language-Team: ar <LL@li.org>\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
-"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
 "Generated-By: Babel 2.16.0\n"
+"X-Generator: Poedit 3.4.4\n"
 
-#: web_flask/__init__.py:76
+#: web_flask/__init__.py:24
 msgid "Please log in to access this page."
 msgstr "للوصول الى هذه الصفحة يرجى تسجيل الدخول."
 
-#: web_flask/errors.py:7
+#: web_flask/auth/templates/login.html:5
+msgid "New User?"
+msgstr "عضو جديد ؟"
+
+#: web_flask/auth/templates/login.html:5
+msgid "Register Here!"
+msgstr "سجل هنا!"
+
+#: web_flask/auth/templates/login.html:8
+msgid "Forgot Password?"
+msgstr "هل نسيت كلمة السر؟"
+
+#: web_flask/auth/templates/login.html:8
+msgid "Reset Password"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: web_flask/errors/handlers.py:8
 msgid "Page not found"
 msgstr "لم يتم العثور على الصفحة"
 
-#: web_flask/errors.py:13
+#: web_flask/errors/handlers.py:14
 msgid "An unexpected error has occured"
 msgstr "حدث خطأ غير متوقع"
 
@@ -101,17 +118,17 @@ msgstr "مركز رسيل للرعاية الطبية"
 msgid ""
 "Welcome to Raseel Medical Care Center At Raseel Medical Care Center, we "
 "are dedicated to providing exceptional healthcare services tailored to "
-"your needs. Our team of experienced medical professionals is committed to"
-" ensuring the highest standards of care in a compassionate and welcoming "
-"environment. Whether you are visiting for a routine check-up or "
-"specialized treatment we are here to support your health journey every "
-"step of the way."
+"your needs. Our team of experienced medical professionals is committed "
+"to ensuring the highest standards of care in a compassionate and "
+"welcoming environment. Whether you are visiting for a routine check-up "
+"or specialized treatment we are here to support your health journey "
+"every step of the way."
 msgstr ""
 "مرحباً بك في مركز رسيل للرعاية الطبية في مركز رسيل للرعاية الطبية، نحن "
 "ملتزمون بتقديم خدمات رعاية صحية استثنائية مصممة خصيصاً لتلبية احتياجاتك. "
 "يلتزم فريقنا من المهنيين الطبيين ذوي الخبرة بضمان توفير أعلى معايير "
-"الرعاية في بيئة تتسم بالرحمة والترحاب. سواءً كنت تزورنا لإجراء فحص روتيني"
-" أو علاج متخصص، فنحن هنا لدعم رحلتك الصحية في كل خطوة من خطواتها."
+"الرعاية في بيئة تتسم بالرحمة والترحاب. سواءً كنت تزورنا لإجراء فحص روتيني "
+"أو علاج متخصص، فنحن هنا لدعم رحلتك الصحية في كل خطوة من خطواتها."
 
 #: web_flask/templates/index.html:9
 msgid "View Services"
@@ -131,12 +148,12 @@ msgid ""
 "services through a clinical web-based system. We prioritize accessible "
 "and quality healthcare, ensuring that every patient receives the care "
 "they need. Our dedicated team of professionals is committed to improving "
-"health outcomes and enhancing patient satisfaction. Experience healthcare"
-" like never before with Raseel Medical Care Center, where your health is "
-"our mission."
+"health outcomes and enhancing patient satisfaction. Experience "
+"healthcare like never before with Raseel Medical Care Center, where your "
+"health is our mission."
 msgstr ""
-"يقدم مركز رسيل للرعاية الطبية في الرياض خدمات طبية شاملة من خلال نظام طبي"
-" قائم على شبكة الإنترنت. نحن نعطي الأولوية للرعاية الصحية التي يسهل "
+"يقدم مركز رسيل للرعاية الطبية في الرياض خدمات طبية شاملة من خلال نظام "
+"طبي قائم على شبكة الإنترنت. نحن نعطي الأولوية للرعاية الصحية التي يسهل "
 "الوصول إليها وذات الجودة العالية، مما يضمن حصول كل مريض على الرعاية التي "
 "يحتاجها. يلتزم فريقنا المتفاني من المتخصصين بتحسين النتائج الصحية وتعزيز "
 "رضا المرضى. اختبر الرعاية الصحية بشكل لم يسبق له مثيل مع مركز رسيل "
@@ -168,4 +185,3 @@ msgstr ""
 #, python-format
 msgid "%(time_from_now)s"
 msgstr ""
-

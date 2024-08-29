@@ -1,15 +1,15 @@
 # flake8: noqa
-from web_flask import app, db
+from web_flask import db, create_app
 from models.base_model import BaseModel
-from web_flask import cli
 import models as m
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
+app = create_app()
+
 @app.shell_context_processor
 def make_shell_context():
     return {
-        "app": app,
         "db": db,
         "BaseModel": BaseModel,
         "Patient": m.Patient,

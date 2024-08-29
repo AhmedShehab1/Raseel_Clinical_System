@@ -2,10 +2,10 @@
 {% block options %}
     <div class="mt-3">
     <p class="mb-1">
-        New User? <a href="{{ url_for('auth.register') }}" class="text-decoration-none">Register Here!</a>
+        {{ _('New User?') }}<a href="{{ url_for('auth.register') }}" class="text-decoration-none">{{ _('Register Here!') }}</a>
     </p>
     <p class="mb-0">
-        Forgot Password? <a href="{{ url_for('auth.reset_password_request') }}" class="text-decoration-none">Reset Password</a>
+        {{ _('Forgot Password?') }} <a href="{{ url_for('auth.reset_password_request') }}" class="text-decoration-none">{{ _('Reset Password') }}</a>
     </p>
     </div>
 {% endblock options %}
