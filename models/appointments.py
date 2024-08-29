@@ -23,7 +23,7 @@ class Appointment(BaseModel):
     doctor_id: so.Mapped[str] = so.mapped_column(
         sa.ForeignKey("doctors.id"), index=True
     )
-    appointment_time: so.Mapped[sa.DateTime] = so.mapped_column(
+    current_appointment_time: so.Mapped[sa.DateTime] = so.mapped_column(
         sa.DateTime, index=True, nullable=False
     )
     status: so.Mapped[AppointmentStatus] = so.mapped_column(

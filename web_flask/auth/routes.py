@@ -12,7 +12,7 @@ import models as m
 @bp.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("main.index"))
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -84,7 +84,7 @@ def reset_password(token):
         return redirect(url_for("main.edit_profile"))
     patient = m.Patient.verify_reset_password_token(token)
     if not patient:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         patient.set_password(form.password.data)
