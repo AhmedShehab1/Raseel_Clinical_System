@@ -102,3 +102,90 @@ link[rel="icon"] {
 ul.navbar-nav {
     margin: auto;
 }
+
+
+/* for medical departments page */
+.departments-title-section {
+    display: grid;
+    place-content: center;
+    margin-top: 100px;
+    margin-bottom: 80px;
+    margin-left: 50px;
+    margin-right: 0px;
+}
+
+.departments-title {
+    font-size: 38px;
+    color: rgb(29, 165, 224);
+    margin-bottom: 30px;
+}
+
+.departments-subtitle {
+    font-size: 18px;
+    width: 700px;
+}
+
+.departments-pictures {
+    padding-right: 0px;
+    padding-left: 0px;
+    box-shadow: 10px 10px 20px #888888;
+}
+
+.departments-section {
+    width: 500px;
+    border-color: rgb(85, 85, 85);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+    margin-top: 100px;
+    margin-bottom: 80px;
+    margin-left: 50px;
+    margin-right: 0px;
+}
+
+.department-card {
+    display: grid;
+    place-content: left;
+    border-width: 1px;
+}
+
+.department-card:hover {
+    color: #0d6efd;
+}
+
+.department-card-body {
+    font-size: 18px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.department-collapse-button {
+    background-color: rgb(0, 137, 207);
+    color: white;
+    cursor: pointer;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-right: 18px;
+    padding-left: 18px;
+    text-align: left;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    transition: background-color 0.15s;
+}
+
+.department-collapse-button:hover {
+    background-color: rgba(0, 138, 207, 0.7);
+}
+
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+}
+
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+}
+
+/* for medical departments page */

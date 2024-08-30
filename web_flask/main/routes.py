@@ -11,6 +11,12 @@ from web_flask.main.forms import (
 import sqlalchemy as sa
 
 
+@bp.route("/medical-departments")
+def medical_departments():
+    return render_template("medical_departments.html",
+                           title="Medical Departments - Raseel")
+
+
 @bp.route("/", methods=["GET", "POST"])
 def index():
     form = VisitorForm()

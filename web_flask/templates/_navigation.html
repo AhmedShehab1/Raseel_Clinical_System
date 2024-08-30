@@ -9,6 +9,7 @@
         <li class="nav-item"><a href="{{ url_for('main.index') }}" class="nav-link px-2 {% if request.endpoint == 'main.index' %}text-secondary{% else %}text-primary{% endif %}">Home</a></li>
         <li class="nav-item"><a href="{% if request.endpoint == 'main.index' %}#services{% else %}{{ url_for('main.index') }}#services{% endif %}" class="nav-link px-2 text-primary">Services</a></li>
         <li class="nav-item"><a href="{% if request.endpoint == 'main.index' %}#contact{% else %}{{ url_for('main.index') }}#contact{% endif %}" class="nav-link px-2 text-primary">Contact</a></li>
+        <li class="nav-item"><a href="{{ url_for('main.medical_departments') }}" class="nav-link px-2 {% if request.endpoint == 'main.medical_departments' %}text-secondary{% else %}text-primary{% endif %}">Medical Departments</a></li>
         <li class="nav-item"><a href="{{ url_for('main.about') }}" class="nav-link px-2 {% if request.endpoint == 'main.about' %}text-secondary{% else %}text-primary{% endif %}">About</a></li>
     </ul>
     <div class="d-flex me-3">
