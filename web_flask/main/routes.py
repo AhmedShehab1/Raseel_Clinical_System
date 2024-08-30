@@ -16,6 +16,11 @@ def medical_departments():
     return render_template("medical_departments.html",
                            title="Medical Departments - Raseel")
 
+@bp.route("/book-appointment")
+def book_appointment():
+    return render_template("book_appointment.html",
+                           title="Book an Appointments - Raseel")
+
 
 @bp.route("/", methods=["GET", "POST"])
 def index():
