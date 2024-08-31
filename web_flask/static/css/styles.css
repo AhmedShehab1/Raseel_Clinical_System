@@ -188,6 +188,11 @@ ul.navbar-nav {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
 }
 
+.department-caption {
+    color: white;
+    text-shadow: 0 0 5px black;
+}
+
 /* for book appointment page */
 .form-label {
     padding-left: 5px;
@@ -203,20 +208,22 @@ ul.navbar-nav {
     margin-bottom: 5px;
 }
 
-p {
+.personal-info {
     color: rgb(13, 110, 253);
     margin-top: 0px;
     margin-bottom: 0px;
     margin-right: 0px;
     margin-left: 0px;
-}
-
-.personal-info {
     font-weight: bold;
     font-size: 25px;
 }
 
 .appointment-info {
+    color: rgb(13, 110, 253);
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
     font-weight: bold;
     font-size: 25px;
 }
