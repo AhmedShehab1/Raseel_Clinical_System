@@ -1,0 +1,194 @@
+{% extends "base_visitors.html" %}
+
+
+{% block head_link %}
+
+  <link rel="stylesheet" href="../static/css/book_appointment/calendar/fonts/icomoon/style.css">
+  
+  <link href='../static/css/book_appointment/calendar/core/main.css' rel='stylesheet'>
+  <link href='../static/css/book_appointment/calendar/daygrid/main.css' rel='stylesheet'>
+
+  <!-- Style -->
+  <link rel="stylesheet" href="../static/css/book_appointment/calendar/style.css">
+
+{% endblock head_link %}
+
+
+{% block content %}
+
+  <form style="margin:0px">
+    <div class="row g-3 align-items-top justify-content-between">
+      <div class="row g-3 col-12 col-lg-6" style="margin: 30px 20px">
+        <p class='personal-info text-center'>{{_('Personal Information')}}</p>
+        <div class="col-md-7">
+          <label for="inputFullName" class="form-label">
+            {{_('Full Name')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <input type="text" class="form-control" id="inputFullName" style="border: 1px solid gray" required>
+        </div>
+        <div class="col-md-5">
+          <label for="inputBirthDate" class="form-label">{{_('Birth Date')}}</label>
+          <input type="date" class="form-control" id="inputBirthDate" style="border: 1px solid gray">
+        </div>
+        <div class="col-md-8">
+          <label for="inputNaionalID" class="form-label">
+            {{_('Naional ID')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <input type="tel" class="form-control" id="inputNaionalID" maxlength="14" pattern="^[0-9]{14}$" style="border: 1px solid gray" required>
+        </div>
+        <div class="col-md-4">
+          <label for="inputAge" class="form-label">
+            {{_('Age')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <input type="number" class="form-control" id="inputAge" min="0" style="border: 1px solid gray" required>
+        </div>
+        <div class="col-md-6">
+          <label for="inputEmail" class="form-label">{{_('Email')}}</label>
+          <input type="email" class="form-control" id="inputEmail" style="border: 1px solid gray">
+        </div>
+        <div class="col-md-6">
+          <label for="inputPhone" class="form-label">
+            {{_('Phone')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <input type="tel" class="form-control" id="inputPhone" maxlength="10" pattern="^05[0-9]{8}$" style="border: 1px solid gray" required>
+        </div>
+        <div class="col-md-6">
+          <label for="inputCity" class="form-label">
+            {{_('City')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <select id="inputCity" class="form-select" style="border: 1px solid gray" required>
+            <option value="">{{_('Choose your city')}}</option>
+            <option value="riyadh">{{_('Riyadh')}}</option>
+            <option value="jeddah">{{_('Jeddah')}}</option>
+            <option value="mecca">{{_('Mecca')}}</option>
+            <option value="medina">{{_('Medina')}}</option>
+            <option value="ad_dammām">{{_('Ad Dammām')}}</option>
+            <option value="tabuk">{{_('Tabūk')}}</option>
+            <option value="al_hufuf">{{_('Al Hufūf')}}</option>
+            <option value="al_qaţīf">{{_('Al Qaţīf')}}</option>
+            <option value="al_hillah">{{_('Al Ḩillah')}}</option>
+            <option value="at_taif">{{_('Aţ Ţā’if')}}</option>
+            <option value="al_jubayl">{{_('Al Jubayl')}}</option>
+            <option value="buraydah">{{_('Buraydah')}}</option>
+            <option value="hafr_al_Batin">{{_('Ḩafr al Bāţin')}}</option>
+            <option value="Yanbu">{{_('Yanbu')}}</option>
+            <option value="hail">{{_('Ḩā’il')}}</option>
+            <option value="abha">{{_('Abhā')}}</option>
+            <option value="sakaka">{{_('Sakākā')}}</option>
+            <option value="al_qurayyat">{{_('Al Qurayyāt')}}</option>
+            <option value="jazan">{{_('Jāzān')}}</option>
+            <option value="najran">{{_('Najrān')}}</option>
+            <option value="al_wajh">{{_('Al Wajh')}}</option>
+            <option value="arar">{{_('Arar')}}</option>
+            <option value="al_Baḩah">{{_('Al Bāḩah')}}</option>
+            <option value="tathlith">{{_('Tathlīth')}}</option>
+            <option value="other">{{_('Other')}}</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="inputGender" class="form-label">
+            {{_('Gender')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <Select class="form-select" id="inputGender" style="border: 1px solid gray" required>
+            <option value="">{{_('Choose your gender')}}</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </Select>
+        </div>
+        <div class="col-12">
+          <label for="inputAddress" class="form-label">{{_('Address')}}</label>
+          <input type="text" class="form-control" id="inputAddress" placeholder="{{_('12 Main St')}}" style="border: 1px solid gray">
+        </div>
+        <div class="col-12">
+          <label for="inputAddress2" class="form-label">
+            {{_('Address 2')}}
+          </label>
+          <input type="text" class="form-control" id="inputAddress2" placeholder="{{_('Apartment, studio, or floor')}}" style="border: 1px solid gray">
+        </div>
+      </div>
+      <div class="row g-3 col-12 col-lg-5" style="margin: 30px 20px">
+        <p class='appointment-info text-center'>{{_('Appointment Information')}}</p>
+
+        <div class="content">
+          <div id='calendar'></div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="inputDepartment" class="form-label">
+            {{_('Department')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <select id="inputDepartment" class="form-select" style="border: 1px solid gray" required>
+            <option value="">{{_('Choose the department')}}</option>
+            <option value="department_of_obstetrics_and_gynecology">{{_('Department of Obstetrics and Gynecology')}}</option>
+            <option value="department_of_surgery">{{_('The Department of Surgery')}}</option>
+            <option value="diagnostic_radiology_department">{{_('Diagnostic Radiology Department')}}</option>
+            <option value="emergency_and_general_medicine_department">{{_('The Emergency and General Medicine Department')}}</option>
+            <option value="department_of_internal_medicine">{{_('Department of Internal Medicine')}}</option>
+            <option value="dental_department">{{_('The Dental Department')}}</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="inputDoctor" class="form-label">
+            {{_('Doctor')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <select id="inputDoctor" class="form-select" style="border: 1px solid gray" required>
+            <option value="">{{_('Choose a doctor')}}</option>
+            <option>...</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label for="inputAttach" class="form-label">
+            {{_('Attach photos')}}
+          </label>
+          <input type="file" class="form-control" id="inputAttach" style="border: 1px solid gray">
+        </div>
+        <div class="form-floating col-6">
+          <textarea class="form-control" id="floatingTextarea" style="height:100px; border: 1px solid gray;"></textarea>
+          <label for="floatingTextarea" style="margin-left:5px; ">
+            {{_('Comments')}}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" style="text-align:center">
+      <button type="submit" class="btn btn-primary book-button" style="padding: 15px 40px">{{_('Complete Booking')}}</button>
+    </div>
+  </form>
+
+  <script src="../static/js/book_appointment/calendar/jquery-3.3.1.min.js"></script>
+  <script src="../static/js/book_appointment/calendar/popper.min.js"></script>
+  <script src="../static/js/book_appointment/calendar/bootstrap.min.js"></script>
+
+  <script src='../static/js/book_appointment/calendar/core/main.js'></script>
+  <script src='../static/js/book_appointment/calendar/interaction/main.js'></script>
+  <script src='../static/js/book_appointment/calendar/daygrid/main.js'></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: [ 'interaction', 'dayGrid' ],
+        defaultDate: new Date().toISOString().split('T')[0],
+        editable: true,
+        eventLimit: true, // allow "more" link when too many events
+        events: [
+          // append events here example { title: 'event1', start: '2020-02-01' }
+        ]
+      });
+
+      calendar.render();
+    });
+
+  </script>
+
+  <script src="../static/js/book_appointment/calendar/main.js"></script>
+{% endblock content%}
