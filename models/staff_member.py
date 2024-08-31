@@ -1,6 +1,5 @@
 from typing import Optional
 from utils import PasswordMixin
-from sqlalchemy.ext.declarative import declared_attr
 import sqlalchemy.orm as so
 import sqlalchemy as sa
 import models as m
@@ -20,22 +19,23 @@ class StaffMember(BaseModel, PasswordMixin):
         PasswordMixin.__init__(self, password)
         super().__init__(**kwargs)
 
-    @declared_attr
-    def name(cls) -> so.Mapped[str]:
-        return so.mapped_column(sa.String(64), index=True, nullable=False)
 
-    @declared_attr
-    def password_hash(cls) -> so.Mapped[str]:
-        return so.mapped_column(sa.String(256), nullable=False)
+    name: so.Mapped[str] = so.mapped_column(
+        sa.String(64), index=True, nullable=False
+    )
 
-    @declared_attr
-    def is_active(cls) -> so.Mapped[sa.Boolean]:
-        return so.mapped_column(sa.Boolean, default=True)
+    password_hash: so.Mapped[str] = so.mapped_column(
+        sa.String(256), nullable=False
+    )
 
-    @declared_attr
-    def phone(cls) -> so.Mapped[Optional[str]]:
-        return so.mapped_column(sa.String(10), index=True, unique=True)
+    is_active: so.Mapped[sa.Boolean] = so.mapped_column(
+        sa.Boolean, default=True
+    )
 
-    @declared_attr
-    def last_seen(cls) -> so.Mapped[Optional[sa.DateTime]]:
-        return so.mapped_column(sa.DateTime, default=gen_datetime)
+    phone: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.String(10), index=True, unique=True
+    )
+
+    last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
+        sa.DateTime, default=gen_datetime
+    )
