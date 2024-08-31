@@ -4,7 +4,8 @@ from wtforms import (
     SubmitField,
     PasswordField,
     BooleanField,
-    DateField
+    DateField,
+    SelectField
 )
 
 from wtforms.validators import (
@@ -43,6 +44,15 @@ class RegistrationForm(FlaskForm):
             ),
         ],
     )
+    national_id = StringField("National ID",
+                              validators=[DataRequired(), Length(10,
+                                                                 message="National ID must be 10 digits")
+                                          ])
+    gender = SelectField(
+        "Gender",
+        choices=[(gender.value, gender.name) for gender in m.GenderType],
+        validators=[DataRequired()]
+    )
 
     birth_date = DateField("Birth Date", validators=[DataRequired()])
 
@@ -72,6 +82,13 @@ class RegistrationForm(FlaskForm):
         )
         if user is not None:
             raise ValidationError("Please use a different contact number.")
+
+    def validate_national_id(self, national_id):
+        user = db.session.scalar(
+            sa.select(m.Patient).where(m.Patient.national_id == national_id.data)
+        )
+        if user is not None:
+            raise ValidationError("Please use a different national ID.")
 
 
 class ResetPasswordRequestForm(FlaskForm):

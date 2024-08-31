@@ -34,7 +34,7 @@ def about():
     return render_template("about.html", title="About - Raseel", doctors=doctors)
 
 
-@bp.before_request
+@bp.before_app_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = m.base_model.gen_datetime()

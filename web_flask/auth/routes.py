@@ -48,6 +48,8 @@ def register():
             "contact_number": form.contact_number.data,
             "password": form.password.data,
             "birth_date": form.birth_date.data,
+            "gender": m.GenderType(form.gender.data),
+            "national_id": form.national_id.data
         }
         patient = m.Patient(**patient_data)
         db.session.add(patient)
