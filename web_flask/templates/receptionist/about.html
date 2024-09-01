@@ -1,0 +1,268 @@
+{% extends "receptionist/base_receptionist.html" %}
+{% block content %}
+        <section class="container mission mt-5 border border-primary">
+                <div class="row flex-lg-row-reverse align-items-center g-5 py-1">
+                <div class="col-10 col-sm-8 col-lg-6">
+                    <img src="../static/images/image.png" class="d-block mx-lg-auto img-fluid rounded-3" alt="Raseel Medical Center" width="700" height="500" loading="lazy">
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="display-5 mb-2 font-monospace text-primary">{{ _('Mission') }}</h1>
+                    <p class="lead">{{ _('We are committed to providing distinguished healthcare services through our distinguished health and administrative staff and advanced medical facilities. In addition to achieving the desire of our customers with full commitment to the ethics of practice in dealing with our patients and continuous improvement and development.') }}</p>
+                    <h1 class="display-5 mb-2 font-monospace text-primary">{{ _('Vision') }}</h1>
+                    <p class="lead">{{ _('To be the leading healthcare provider in the region by providing distinguished healthcare services and achieving the highest levels of patient satisfaction.') }}</p>
+                </div>
+                </div>
+        </section>
+        <section class="container team mt-3 border border-primary">
+            <h1 class="text-center font-monospace text-primary">{{ _('Our Team') }}</h1>
+            <p class="text-center"> ( {{ _('Available specialties, names of doctors and their academic degrees') }} )
+            </p>
+            <div class="container my-5">
+                <table class="table table-bordered table-hover text-end">
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">م</th>
+                            <th scope="col">{{ _('Clinic') }}</th>
+                            <th scope="col">{{ _('Name and academic certificates') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Orthopedic Clinic (استشاري)</td>
+                            <td>د. خالد عبد الله باكرمان<br>أستاذ مساعد كلية الطب جامعة الملك سعود<br>استشاري جراحة العظام لدى الأطفال<br>استشاري جراحة الكسور والإصابات لدى الكبار<br>البورد السعودي<br>الزمالتين الكنديتين في جراحة العظام وفي الكسور والإصابات</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Laboratory Department</td>
+                            <td>د. محمد عمر أدام<br>ماجستير علم أمراض الدم والمناعة<br>أخصائي مختبر</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>X Ray Place</td>
+                            <td>د. صبري محارق<br>ماجستير أشعة تشخيصية<br>أخصائي الأشعة التشخيصية</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>Pediatric Clinic (1)</td>
+                            <td>د. فهمي باخلقي<br>استشاري طب الأطفال وحديثي الولادة<br>دكتوراه (البورد العربي)<br>استشاري الأطفال</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">5</th>
+                            <td>Pediatric Clinic (2)</td>
+                            <td>د. هيفاء الخالد<br>ماجستير طب الأطفال<br>أخصائية أطفال</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">6</th>
+                            <td>Pediatric Clinic (3)</td>
+                            <td>د. محمود الحسيني<br>ماجستير طب الأطفال<br>طبيب أطفال</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">7</th>
+                            <td>Internal Medicine Clinic</td>
+                            <td>د. عبدالكريم الحريري<br>شهادة الدراسات العليا التخصصية الطب الباطني<br>شهادة البورد العربي في الأمراض الباطنية الجزء الأول<br>أخصائي الأمراض الباطنية</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">8</th>
+                            <td>Internal Medicine Clinic</td>
+                            <td>د. امل حليمة<br>شهادة الدراسات العليا التخصصية الطب الباطني<br>شهادة البورد العربي في الأمراض الباطنية الجزء الأول<br>طبيبة الأمراض الباطنية</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">9</th>
+                            <td>Chest Clinic</td>
+                            <td>د. مها محمد الشاذلي<br>ماجستير الأمراض الصدرية والدرن<br>نائب الأمراض الصدرية</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">10</th>
+                            <td>General Surgery Clinic</td>
+                            <td>د. أحمد رشيد<br>الدراسات العليا في الجراحة العامة<br>محاضر سابق في جامعة حلب<br>أخصائي الجراحة العامة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">11</th>
+                            <td>Eye Clinic</td>
+                            <td>د. محمود شيخ خليل<br>ماجستير طب وجراحة العيون<br>أخصائي العيون</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">12</th>
+                            <td>Ear, Nose and Throat Clinic</td>
+                            <td>د. حسن خطاب<br>الدراسات العليا من جامعة دمشق<br>البورد العربي (الجزء الأول) في الأنف والأذن والحنجرة<br>أخصائي الأنف والأذن والحنجرة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">13</th>
+                            <td>Orthopedic Clinic</td>
+                            <td>د. زكور ابراهيم<br>الاختصاص السوري في الجراحة العظمية<br>شهادات متقدمة في الجراحة العظمية من فرنسا<br>دبلوم في جراحة اليد من فرنسا<br>أخصائي العظام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">14</th>
+                            <td>Orthopedic Clinic</td>
+                            <td>د. احمد مسعود الشناوي<br>ماجستير جراحة العظام<br>أخصائي عظام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">15</th>
+                            <td>Dental Clinic</td>
+                            <td>د. خالد الأسعد<br>بكالوريوس طب وجراحة الفم والأسنان<br>طبيب أسنان عام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">16</th>
+                            <td>Dental Clinic</td>
+                            <td>د. شيرين علي<br>بكالوريوس طب وجراحة الفم والأسنان<br>طبيبة أسنان عامة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">17</th>
+                            <td>Dental Clinic</td>
+                            <td>د. عبدالله خالد<br>بكالوريوس طب وجراحة الفم والأسنان<br>طبيب أسنان عام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">18</th>
+                            <td>Dental Clinic</td>
+                            <td>د. عبدالله سلمان<br>بكالوريوس طب وجراحة الفم والأسنان<br>طبيب أسنان عام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">19</th>
+                            <td>Dental Clinic</td>
+                            <td>د. لؤي يوسف الحميدي<br>بكالوريوس طب وجراحة الفم والأسنان<br>طبيب أسنان عام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">20</th>
+                            <td>Dental Clinic</td>
+                            <td>د. مصطفى فتحي<br>بكالوريوس طب وجراحة الفم والأسنان<br>طبيب أسنان عام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">21</th>
+                            <td>Orthodontic Clinic</td>
+                            <td>د. احمد حلمي برغال<br>أخصائي نائب تقويم الأسنان<br>ماجستير في تقويم وتجميل الأسنان والفكين</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">22</th>
+                            <td>الطب العام و الطوارئ</td>
+                            <td>د. أحمد بن حدجة<br>بكالوريوس طب وجراحة<br>طبيب عام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">24</th>
+                            <td>الطب العام و الطوارئ</td>
+                            <td>د. هاله الشيخ<br>بكالوريوس طب وجراحة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">25</th>
+                            <td>الطب العام و الطوارئ</td>
+                            <td>د. فتحية عبد الرحمن<br>بكالوريوس طب وجراحة<br>طبيبة عامة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">26</th>
+                            <td>الطب العام و الطوارئ</td>
+                            <td>د. بسام سالم علي ناصر<br>بكالوريوس طب وجراحة<br>طبيب عام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">27</th>
+                            <td>قسم العلاج الطبيعي (رجال)</td>
+                            <td>د. حازم عبدالهادي<br>بكالوريوس العلاج الطبيعي<br>أخصائي العلاج الطبيعي</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">28</th>
+                            <td>قسم العلاج الطبيعي (نساء)</td>
+                            <td>د. احسان محمد<br>بكالوريوس العلاج الطبيعي<br>أخصائية العلاج الطبيعي</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">29</th>
+                            <td>Obstetrics and Gynecology Clinic</td>
+                            <td>د. سحر جابر<br>شهادة الدبلوم العالي في أمراض النساء والولادة<br>طبيبة النساء والولادة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">30</th>
+                            <td>Obstetrics and Gynecology Clinic</td>
+                            <td>د. نهلة منصور<br>ماجستير أمراض النساء والولادة<br>أخصائية أمراض النساء والولادة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">31</th>
+                            <td>Obstetrics and Gynecology Clinic</td>
+                            <td>د. عائشة جلال<br>أخصائية أمراض النساء والولادة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">32</th>
+                            <td>Obstetrics and Gynecology Clinic</td>
+                            <td>د. آمال الباز<br>ماجستير أمراض النساء والولادة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">33</th>
+                            <td>Obstetrics and Gynecology Clinic</td>
+                            <td>د. وفاء محمد<br>أخصائية أمراض النساء والولادة</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">34</th>
+                            <td>Ophthalmology Clinic</td>
+                            <td>د. إيمان الغمري<br>ماجستير طب وجراحة العيون<br>أخصائية طب وجراحة العيون</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">35</th>
+                            <td>Dermatology Clinic</td>
+                            <td>د. إيمان علام<br>دكتوراه الأمراض الجلدية<br>أخصائية الأمراض الجلدية</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">36</th>
+                            <td>Dermatology Clinic</td>
+                            <td>د. فاتن الطيب<br>دكتوراه الأمراض الجلدية<br>أخصائية الأمراض الجلدية</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">37</th>
+                            <td>Dermatology Clinic</td>
+                            <td>د. شادية حمدي<br>ماجستير الأمراض الجلدية<br>أخصائية الأمراض الجلدية</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">38</th>
+                            <td>Plastic Surgery Clinic</td>
+                            <td>د. طارق الأشموني<br>ماجستير في الجراحة التجميلية<br>أخصائي الجراحة التجميلية</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">39</th>
+                            <td>Neurology Clinic</td>
+                            <td>د. سلوى عبد الغني<br>ماجستير طب الأعصاب<br>أخصائية طب الأعصاب</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">40</th>
+                            <td>Neurology Clinic</td>
+                            <td>د. هشام زين الدين<br>ماجستير طب الأعصاب<br>أخصائي طب الأعصاب</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">41</th>
+                            <td>Endocrinology Clinic</td>
+                            <td>د. مصطفى أبو يوسف<br>دكتوراه في الأمراض الباطنية والغدد الصماء<br>أخصائي الغدد الصماء</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">42</th>
+                            <td>Endocrinology Clinic</td>
+                            <td>د. هيثم شحاته<br>ماجستير الأمراض الباطنية والغدد الصماء<br>أخصائي الغدد الصماء</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">43</th>
+                            <td>Oncology Clinic</td>
+                            <td>د. محمد السيد<br>دكتوراه في أمراض السرطان<br>أخصائي الأورام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">44</th>
+                            <td>Oncology Clinic</td>
+                            <td>د. علي حسن<br>ماجستير في أمراض السرطان<br>أخصائي الأورام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">45</th>
+                            <td>Oncology Clinic</td>
+                            <td>د. كريم أحمد<br>أخصائي علاج الأورام</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">46</th>
+                            <td>Rheumatology Clinic</td>
+                            <td>د. أيمن عبد الفتاح<br>ماجستير الأمراض الروماتيزمية<br>أخصائي الأمراض الروماتيزمية</td>
+                        </tr>
+                        {% set counter = 1 %}
+                        {% for doctor in doctors %}
+                        <tr>
+                            <th scope="row">{{ counter }}</th>
+                            <td>{{ doctor.department.name }}</td>
+                            <td>{{ doctor.name }}<br>{{ doctor.certificates }}</td>
+                        </tr>
+                        {%set counter = counter + 1%}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+{% endblock content %}

@@ -1,0 +1,23 @@
+<a href="#" class="navbar-brand ms-3">
+<img src="../static/images/Logo.png.webp" alt='logo'>
+</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse align-items-center" id="main-nav">
+    <ul class="navbar-nav">
+        <li class="nav-item"><a href="{{ url_for('receptionist_bp.index') }}" class="nav-link px-2 {% if request.endpoint == 'receptionist_bp.index' %}text-secondary{% else %}text-primary{% endif %}">Home</a></li>
+        <li class="nav-item"><a href="{% if request.endpoint == 'receptionist_bp.index' %}#services{% else %}{{ url_for('receptionist_bp.index') }}#services{% endif %}" class="nav-link px-2 text-primary">Services</a></li>
+        <li class="nav-item"><a href="{% if request.endpoint == 'receptionist_bp.index' %}#contact{% else %}{{ url_for('receptionist_bp.index') }}#contact{% endif %}" class="nav-link px-2 text-primary">Contact</a></li>
+        <li class="nav-item"><a href="{{ url_for('receptionist_bp.medical_departments') }}" class="nav-link px-2 {% if request.endpoint == 'receptionist_bp.medical_departments' %}text-secondary{% else %}text-primary{% endif %}">Medical Departments</a></li>
+        <li class="nav-item"><a href="{{ url_for('receptionist_bp.about') }}" class="nav-link px-2 {% if request.endpoint == 'receptionist_bp.about' %}text-secondary{% else %}text-primary{% endif %}">About</a></li>
+    </ul>
+    <div class="d-flex me-3">
+        <button type="button" onclick="location.href='{{ url_for('auth.login') }}'"  class="btn btn-outline-primary me-2 d-none d-md-inline-block">Login</button>
+        <button type="button" onclick="location.href='{{ url_for('auth.register') }}'" class="btn btn-primary d-none d-md-inline-block">Sign-up</button>
+    </div>
+    <div class="d-md-none mt-3">
+        <button type="button" onclick="location.href='{{ url_for('auth.login') }}'" class="btn btn-outline-primary w-100 btn-block mb-2">Login</button>
+        <button type="button" onclick="location.href='{{ url_for('auth.register') }}'" class="btn btn-primary w-100 btn-block">Sign-up</button>
+    </div>
+</div>
