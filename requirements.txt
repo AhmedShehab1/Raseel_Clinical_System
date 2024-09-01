@@ -1,6 +1,6 @@
 # Core Dependencies
 flask~=2.3.3
-Flask-Cors~=3.1.0
+Flask-Cors>=3.0.10
 flask-sqlalchemy~=3.0.5
 flask-wtf~=1.1.1
 SQLAlchemy~=2.0.21
