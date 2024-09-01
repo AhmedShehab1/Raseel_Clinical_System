@@ -18,7 +18,7 @@ from wtforms.validators import (
 from web_flask import db
 import sqlalchemy as sa
 import models as m
-
+from flask import request
 
 
 
@@ -92,3 +92,13 @@ class VisitorForm(FlaskForm):
     statement = BooleanField("I allow this website to store my submission so they can respond to my inquiry.",
                              validators=[DataRequired()])
     submit = SubmitField("Submit")
+
+
+class SearchForm(FlaskForm):
+    q = StringField("Search", validators=[DataRequired()])
+    def __init__(self, *args, **kwargs):
+        if 'formdata' not in kwargs:
+            kwargs['formdata'] = request.args
+        if 'meta' not in kwargs:
+            kwargs['meta'] = {'csrf': False}
+        super(SearchForm, self).__init__(*args, **kwargs)

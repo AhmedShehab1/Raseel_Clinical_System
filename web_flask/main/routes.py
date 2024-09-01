@@ -1,15 +1,18 @@
 import models as m
-from flask import render_template, redirect, url_for, request, flash, g
+from flask import (
+    render_template, redirect,
+    url_for,request, flash, g
+)
 from flask_login import current_user, login_required
 from web_flask.main import bp
-from web_flask import db, get_locale
+from web_flask import db, get_locale, login_manager
 from web_flask.main.forms import (
     EditProfileInfo,
-    VisitorForm
+    VisitorForm,
+    SearchForm
 )
 
 import sqlalchemy as sa
-
 
 @bp.route("/medical-departments")
 def medical_departments():
@@ -36,9 +39,17 @@ def about():
 
 @bp.before_app_request
 def before_request():
+    if request.endpoint == "auth.staff_login": # This should be changed to ['staff.raseel.com'] in request.host
+        login_manager.login_view = "auth.staff_login"
+        login_manager.login_message = "Staff: Please log in to access this page."
+    else:
+        login_manager.login_view = "auth.login"
+        login_manager.login_message = "Please log in to access this page."
+
     if current_user.is_authenticated:
         current_user.last_seen = m.base_model.gen_datetime()
         db.session.commit()
+        g.search_form = SearchForm()
     g.locale = str(get_locale())
 
 
@@ -66,3 +77,4 @@ def edit_profile():
         form.current_medications.data = current_user.current_medications
         form.birth_date.data = current_user.birth_date
     return render_template("edit_profile.html", title="Edit Profile", form=form)
+

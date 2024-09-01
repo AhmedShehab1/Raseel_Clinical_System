@@ -12,18 +12,20 @@ from web_flask import db
 from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import date
 from flask import current_app
+from utils.search_util import SearchableMixin
 
 class GenderType(str, Enum):
     Male = "male"
     Female = "female"
 
 
-class Patient(BaseModel, PasswordMixin, UserMixin):
+class Patient(BaseModel, PasswordMixin, UserMixin, SearchableMixin):
     """
     Patient model class
     Args:
         BaseModel (): Base model class
     """
+    __searchable__ = ['name', 'email', 'contact_number', 'national_id']
 
     def __init__(self, password: str, **kwargs):
         """
@@ -116,6 +118,7 @@ class Vital(BaseModel):
     Args:
         BaseModel (): Base model class
     """
+
 
     __tablename__ = "vitals"
     patient_id: so.Mapped[str] = so.mapped_column(

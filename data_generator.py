@@ -11,7 +11,7 @@ app_context = app.app_context()
 app_context.push()
 
 # Patient ID
-patient_id = "036912d2-f790-4ae0-aae9-e989560fc7e0"
+patient_ids = ["0799bbb7-6bfa-445b-b072-76aaf9487d81", "6b73b575-7014-4788-bf6c-3c02cb0a0908", "559452cf-2736-4af6-8f47-3eda479c0bd8", "cf5bf037-b446-4f8d-b105-7adcbffae825"]
 
 # Sample data generators
 def generate_vitals(patient_id):
@@ -31,8 +31,8 @@ def generate_diagnoses(patient_id):
     return [
         Diagnose(
             patient_id=patient_id,
-            name=random.choice(diagnoses)
-        ) for _ in range(5)
+            name=random.choice(diagnoses[i])
+        ) for i in range(5)
     ]
 
 def generate_prescriptions(patient_id):
@@ -41,9 +41,9 @@ def generate_prescriptions(patient_id):
     return [
         Prescription(
             patient_id=patient_id,
-            medication=random.choice(medications),
-            dosage=random.choice(dosages)
-        ) for _ in range(5)
+            medication=random.choice(medications[i]),
+            dosage=random.choice(dosages[i])
+        ) for i in range(5)
     ]
 
 def generate_allergies(patient_id):
@@ -52,19 +52,19 @@ def generate_allergies(patient_id):
     return [
         Allergy(
             patient_id=patient_id,
-            allergen=random.choice(allergens),
-            reaction=random.choice(reactions)
-        ) for _ in range(5)
+            allergen=allergens[i],
+            reaction=random.choice(reactions[i])
+        ) for i in range(5)
     ]
 
 # Adding entries to the database
 def add_entries_to_db():
     try:
         # Create and add entries for each model
-        db.session.add_all(generate_vitals(patient_id))
-        db.session.add_all(generate_diagnoses(patient_id))
-        db.session.add_all(generate_prescriptions(patient_id))
-        db.session.add_all(generate_allergies(patient_id))
+        db.session.add_all(generate_vitals(random.choice(patient_ids)))
+        db.session.add_all(generate_diagnoses(random.choice(patient_ids)))
+        db.session.add_all(generate_prescriptions(random.choice(patient_ids)))
+        db.session.add_all(generate_allergies(random.choice(patient_ids)))
 
         # Commit the session
         db.session.commit()
