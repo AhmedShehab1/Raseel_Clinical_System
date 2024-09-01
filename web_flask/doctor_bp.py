@@ -14,14 +14,7 @@ from datetime import datetime, timedelta, timezone
 doctor_bp = Blueprint("doctor_bp", __name__, url_prefix="/doctor")
 
 
-def make_aware(dt):
-    if dt.tzinfo is None:
-        return dt.replace(tzinfo=timezone.utc)
-    return dt
-
 def get_filtered_appointments(appointments):
-    for appointment in appointments:
-        appointment.appointment_time = make_aware(appointment.appointment_time)
     session['previous_endpoint'] = request.endpoint
     if g.search_form.validate():
         page = request.args.get("page", 1, type=int)

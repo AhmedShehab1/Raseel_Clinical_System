@@ -22,9 +22,10 @@ pyjwt~=2.6.0
 flask-migrate~=4.0.0
 flask-moment~=1.0.3
 
-elasticsearch=8.15.0
+elasticsearch~=8.15.0
 
 flask-babel~=3.0.1
+
 # Development and Testing
 flake8>=6.0
 python-dotenv>=1.0
