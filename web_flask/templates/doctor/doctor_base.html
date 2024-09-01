@@ -16,12 +16,12 @@
               </ul>
             </header>
         </div>
-        <p class="ms-3 fw-bold lead text-center">{{ moment(current_time_utc).format('LLLL') }}</p>
+        <p class="ms-3 fw-bold lead text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
+        {% include "_search.html" %}
         <hr>
 
         {% block content %}
         {% endblock content %}
-
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -119,8 +119,14 @@
                                                         <h6 class="text-primary">Visits</h6>
                                                         <table class="table table-bordered table-sm">
                                                             <tbody>
-                                                                {% if appointment.patient.appointments %}
-                                                                    {% for visit in appointment.patient.appointments %}
+                                                                {% set past_visits = [] %}
+                                                                {% for visit in appointment.patient.appointments %}
+                                                                    {% if visit.appointment_time < current_time_utc %}
+                                                                        {% set past_visits = past_visits.append(visit) %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                                {% if past_visits %}
+                                                                    {% for visit in past_visits %}
                                                                         <tr>
                                                                             <td>{{ _('%(datetime)s', datetime=moment(visit.appointment_time).format('LLLL')) }}</td>
                                                                             <td><span class="badge bg-success">{{ visit.doctor.department.name }}</span></td>
@@ -150,9 +156,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            {% for appointment in appointments %}
 
-            {% endfor %}
             {{ moment.include_moment() }}
             {{ moment.lang(g.locale) }}
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
