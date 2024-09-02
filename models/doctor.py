@@ -31,9 +31,6 @@ class Doctor(m.StaffMember, UserMixin):
     appointments: so.Mapped[List["m.Appointment"]] = so.relationship(
         "Appointment", back_populates="doctor"
     )
-    timeslots: so.Mapped[List["m.TimeSlot"]] = so.relationship(
-        "TimeSlot", back_populates="doctor"
-    )
 
     working_hours: so.Mapped[List["m.WorkingHours"]] = so.relationship(
                                                                        "WorkingHours",
