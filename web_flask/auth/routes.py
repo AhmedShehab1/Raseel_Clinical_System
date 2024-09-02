@@ -18,7 +18,7 @@ def logout():
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("patient_bp.edit_profile"))
+        return redirect(url_for("main.edit_profile"))
     form = LoginForm()
     if form.validate_on_submit():
         patient = db.session.scalar(
@@ -31,7 +31,7 @@ def login():
         login_user(patient, remember=form.remember.data)
         next_page = request.args.get("next")
         if not next_page or urlsplit(next_page).netloc != "":
-            next_page = url_for("patient_bp.edit_profile")
+            next_page = url_for("main.edit_profile")
         return redirect(next_page)
     return render_template("login.html", title="Login - Raseel", form=form)
 
@@ -39,7 +39,7 @@ def login():
 @bp.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("patient_bp.edit_profile"))
+        return redirect(url_for("main.edit_profile"))
     form = RegistrationForm()
     if form.validate_on_submit():
         patient_data = {
@@ -61,7 +61,7 @@ def register():
 @bp.route("/reset_password_request", methods=["GET", "POST"])
 def reset_password_request():
     if current_user.is_authenticated:
-        return redirect(url_for("patient_bp.edit_profile"))
+        return redirect(url_for("main.edit_profile"))
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
         patient = db.session.scalar(
@@ -81,7 +81,7 @@ def reset_password_request():
 @bp.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_password(token):
     if current_user.is_authenticated:
-        return redirect(url_for("patient_bp.edit_profile"))
+        return redirect(url_for("main.edit_profile"))
     patient = m.Patient.verify_reset_password_token(token)
     if not patient:
         return redirect(url_for("main.index"))
