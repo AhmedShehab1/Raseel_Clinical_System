@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: c4529604f491
+Revision ID: f0c6347135e6
 Revises: 
-Create Date: 2024-08-31 17:27:04.682560
+Create Date: 2024-09-02 17:42:14.441015
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c4529604f491'
+revision = 'f0c6347135e6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -166,29 +166,6 @@ def upgrade():
         batch_op.create_index(batch_op.f('ix_prescriptions_id'), ['id'], unique=False)
         batch_op.create_index(batch_op.f('ix_prescriptions_patient_id'), ['patient_id'], unique=False)
 
-    op.create_table('timeslots',
-    sa.Column('doctor_id', sa.String(length=128), nullable=False),
-    sa.Column('date', sa.Date(), nullable=False),
-    sa.Column('start_time', sa.Time(), nullable=False),
-    sa.Column('end_time', sa.Time(), nullable=False),
-    sa.Column('status', sa.Enum('AVAILABLE', 'BOOKED', name='timeslotstatus'), nullable=False),
-    sa.Column('id', sa.String(length=128), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), nullable=False),
-    sa.Column('deleted_at', sa.DateTime(), nullable=True),
-    sa.CheckConstraint('end_time > start_time', name='check_time_validity'),
-    sa.ForeignKeyConstraint(['doctor_id'], ['doctors.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('doctor_id', 'date', 'start_time', name='doctor_date_startTime_uc')
-    )
-    with op.batch_alter_table('timeslots', schema=None) as batch_op:
-        batch_op.create_index(batch_op.f('ix_timeslots_date'), ['date'], unique=False)
-        batch_op.create_index(batch_op.f('ix_timeslots_doctor_id'), ['doctor_id'], unique=False)
-        batch_op.create_index(batch_op.f('ix_timeslots_end_time'), ['end_time'], unique=False)
-        batch_op.create_index(batch_op.f('ix_timeslots_id'), ['id'], unique=False)
-        batch_op.create_index(batch_op.f('ix_timeslots_start_time'), ['start_time'], unique=False)
-        batch_op.create_index(batch_op.f('ix_timeslots_status'), ['status'], unique=False)
-
     op.create_table('vitals',
     sa.Column('patient_id', sa.String(length=128), nullable=False),
     sa.Column('height', sa.Float(), nullable=False),
@@ -242,15 +219,6 @@ def downgrade():
         batch_op.drop_index(batch_op.f('ix_vitals_id'))
 
     op.drop_table('vitals')
-    with op.batch_alter_table('timeslots', schema=None) as batch_op:
-        batch_op.drop_index(batch_op.f('ix_timeslots_status'))
-        batch_op.drop_index(batch_op.f('ix_timeslots_start_time'))
-        batch_op.drop_index(batch_op.f('ix_timeslots_id'))
-        batch_op.drop_index(batch_op.f('ix_timeslots_end_time'))
-        batch_op.drop_index(batch_op.f('ix_timeslots_doctor_id'))
-        batch_op.drop_index(batch_op.f('ix_timeslots_date'))
-
-    op.drop_table('timeslots')
     with op.batch_alter_table('prescriptions', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_prescriptions_patient_id'))
         batch_op.drop_index(batch_op.f('ix_prescriptions_id'))
