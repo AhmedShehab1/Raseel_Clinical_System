@@ -1,6 +1,6 @@
 # Core Dependencies
 flask~=2.3.3
-Flask-Cors~=3.0.1
+Flask-Cors~=3.1.0
 flask-sqlalchemy~=3.0.5
 flask-wtf~=1.1.1
 SQLAlchemy~=2.0.21
@@ -26,4 +26,3 @@ flask-babel~=3.0.1
 # Development and Testing
 flake8>=6.0
 python-dotenv>=1.0
-email_validator>=1.1.3
