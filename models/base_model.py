@@ -5,6 +5,7 @@ from web_flask import db
 import uuid
 from datetime import datetime, timezone
 
+time = "%Y-%m-%dT%H:%M:%S.%f"
 
 def gen_datetime():
     """
@@ -42,3 +43,14 @@ class BaseModel(db.Model):
         return "[{:s}] ({:s}) {}".format(
             self.__class__.__name__, self.id, self.__dict__
         )
+
+    def to_dict(self):
+        new_dict = self.__dict__.copy()
+        if 'created_at' in new_dict:
+            new_dict['created_at'] = new_dict['created_at'].strftime(time)
+        if "updated_at" in new_dict:
+            new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
+        new_dict["__class__"] = self.__class__.__name__
+        if "_sa_instance_state" in new_dict:
+            del new_dict["_sa_instance_state"]
+        return new_dict

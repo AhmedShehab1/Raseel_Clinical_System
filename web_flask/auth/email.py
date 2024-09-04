@@ -20,7 +20,7 @@ def send_password_reset_email(user):
     token = user.get_reset_password_token()
     send_email(
         "[Raseel Medical Center] Reset Your Password",
-        sender=app.config["MAIL_DEFAULT_SENDER"],
+        sender=current_app.config["MAIL_DEFAULT_SENDER"],
         recipients=[user.email],
         text_body=render_template("email/reset_password.txt", user=user, token=token),
         html_body=render_template("email/reset_password.html", user=user, token=token),

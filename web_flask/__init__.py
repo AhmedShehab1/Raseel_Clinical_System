@@ -45,6 +45,7 @@ def create_app(config_class=Config):
     from web_flask.doctor_bp import doctor_bp
     from web_flask.auth import bp as auth_bp
     from web_flask.cli import bp as cli_bp
+    from api.v1.views import bp as api_bp
     from web_flask.receptionist_bp import receptionist_bp
     from web_flask.patient_bp import patient_bp
     app.register_blueprint(errors_bp)
@@ -52,6 +53,7 @@ def create_app(config_class=Config):
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(cli_bp)
+    app.register_blueprint(api_bp)
     app.register_blueprint(receptionist_bp)
     app.register_blueprint(patient_bp)
 
@@ -92,8 +94,8 @@ def create_app(config_class=Config):
     return app
 
 
-import models as m
 from models.base_model import BaseModel
+import models as m
 
 
 @login_manager.user_loader

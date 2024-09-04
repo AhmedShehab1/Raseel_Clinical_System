@@ -16,7 +16,6 @@ def make_shell_context():
         "Doctor": m.Doctor,
         "Appointment": m.Appointment,
         "Department": m.Department,
-        "TimeSlot": m.TimeSlot,
         "WorkingHours": m.WorkingHours,
         "AppointmentStatus": m.AppointmentStatus,
         "Admin": m.Admin,
@@ -24,3 +23,6 @@ def make_shell_context():
         "sa": sa,
         "so": so,
     }
+
+if __name__ == "__main__":
+    app.run()

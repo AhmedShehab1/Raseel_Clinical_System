@@ -54,3 +54,118 @@ SET GLOBAL validate_password.number_count = 0;
 SET GLOBAL validate_password.special_char_count = 0;" | sudo mysql -u root
 
 
+# make a service file for the app gunicorn
+echo '[Unit]
+Description=gunicorn daemon
+After=network.target
+
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/Raseel_Clinical_System
+Environment="PATH=/home/ubuntu/Raseel/bin"
+ExecStart=/home/ubuntu/Raseel/bin/gunicorn -w 3 -b
+unix:Raseel.sock -m 007 web_flask.clinical_system:app
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/gunicorn.service
+'
+
+sudo touch /etc/systemd/system/Raseel.service
+
+
+sudo echo "[Unit]
+Description=Gunicorn instance to serve Raseel
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/Raseel_Clinical_System
+Environment="PATH=/home/ubuntu/Raseel_Clinical_System/Raseel/bin"
+ExecStart=/home/ubuntu/Raseel_Clinical_System/Raseel/bin/gunicorn --workers 3 --bind unix:Raseel.sock -m 007 web_flask.clinical_system:app \
+    --access-logfile /tmp/raseel-access.log \
+    --error-logfile /tmp/raseel-error.log
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/Raseel.service
+
+
+sudo systemctl start Raseel
+sudo systemctl enable Raseel
+
+sudo nano /etc/nginx/sites-available/Raseel
+
+sudo echo "server {
+    listen 80;
+    server_name raseel.ahmedshehab.tech;
+        access_log  /var/log/raseel_access.log;
+        error_log /var/log/raseel_error.log;
+
+
+   location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/ubuntu/Raseel_Clinical_System/Raseel.sock;
+    }
+   location ~ ^/(doctor|admin|receptionist|staff) {
+                return 403;
+
+        }
+  location /static/ {
+        alias /home/ubuntu/Raseel_Clinical_System/web_flask/static;
+        gzip on;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+    }
+  location /auth/static/ {
+        alias /home/ubuntu/Raseel_Clinical_System/web_flask/auth/static/;
+        gzip on;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+        }
+}
+
+
+server {
+    listen 80;
+    server_name staff.ahmedshehab.tech;
+        access_log  /var/log/staff_raseel_access.log;
+        error_log /var/log/staff_raseel_error.log;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/ubuntu/Raseel_Clinical_System/Raseel.sock;
+    }
+  location /static/ {
+        alias /home/ubuntu/Raseel_Clinical_System/web_flask/static/;
+        gzip on;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+    }
+  location /auth/static/ {
+        alias /home/ubuntu/Raseel_Clinical_System/web_flask/auth/static/;
+        gzip on;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+        }
+}" > /etc/nginx/sites-available/Raseel
+
+sudo ln -s /etc/nginx/sites-available/Raseel /etc/nginx/sites-enabled
+
+sudo systemctl restart nginx
+
+sudo ufw delete allow 5000
+
+curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+
+sudo apt update
+
+sudo apt install elasticsearch
+
+sudo nano /etc/elasticsearch/elasticsearch.yml
+
+sudo systemctl start elasticsearch
+
+sudo systemctl enable elasticsearch
+
+
+sudo cat /etc/letsencrypt/live/staff.ahmedshehab.tech/fullchain.pem /etc/letsencrypt/live/staff.ahmedshehab.tech/privkey.pem > /etc/haproxy/certs/staff.ahmedshehab.tech.pem

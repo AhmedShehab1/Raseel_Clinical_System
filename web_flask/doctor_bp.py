@@ -32,7 +32,11 @@ def get_filtered_appointments(appointments):
 @login_required
 def current_appointments():
     appointments = db.session.scalars(
-        sa.select(m.Appointment).where(current_user.id == m.Appointment.doctor_id).filter(sa.func.date(m.Appointment.appointment_time) == datetime.now().date())
+        sa.select(m.Appointment).where(
+            current_user.id == m.Appointment.doctor_id,
+            sa.func.date(m.Appointment.appointment_time) == datetime.now().date(),
+            m.Appointment.deleted_at == None
+            )
     )
     filtered_appointments = get_filtered_appointments(appointments)
     current_time_utc = datetime.now(timezone.utc)
@@ -66,4 +70,3 @@ def delete_appointment(appointment_id):
 @doctor_bp.route("/appointments/view/<string:appointment_id>")
 def view_appointment(appointment_id):
     pass
-

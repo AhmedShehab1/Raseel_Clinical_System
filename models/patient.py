@@ -59,9 +59,11 @@ class Patient(BaseModel, PasswordMixin, UserMixin, SearchableMixin):
     name: so.Mapped[str] = so.mapped_column(sa.String(64),
                                             index=True,
                                             nullable=False)
+
     email: so.Mapped[str] = so.mapped_column(
         sa.String(120), index=True, unique=True, nullable=False
     )
+
     contact_number: so.Mapped[str] = so.mapped_column(
         sa.String(10), index=True, unique=True, nullable=False
     )
@@ -70,18 +72,25 @@ class Patient(BaseModel, PasswordMixin, UserMixin, SearchableMixin):
 
     password_hash: so.Mapped[str] = so.mapped_column(sa.String(256),
                                                      nullable=False)
+
     address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
     medical_history: so.Mapped[Optional[str]] = so.mapped_column(sa.String(400))
+
+    national_id: so.Mapped[str] = so.mapped_column(sa.String(10), unique=True, nullable=False)
+
+    gender: so.Mapped[GenderType] = so.mapped_column(sa.Enum(GenderType), nullable=False)
 
     current_medications: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
     department_id: so.Mapped[Optional[str]] = so.mapped_column(
         sa.ForeignKey("departments.id")
     )
+
     department: so.Mapped["m.Department"] = so.relationship(
         "Department", back_populates="patients"
     )
+
     appointments: so.Mapped[List["m.Appointment"]] = so.relationship(
         "Appointment", back_populates="patient"
     )
@@ -90,11 +99,8 @@ class Patient(BaseModel, PasswordMixin, UserMixin, SearchableMixin):
         sa.DateTime, default=gen_datetime
     )
 
-    national_id: so.Mapped[str] = so.mapped_column(sa.String(10), unique=True, nullable=False)
 
     vitals: so.Mapped[List["m.Vital"]] = so.relationship("Vital", back_populates="patient")
-
-    gender: so.Mapped[GenderType] = so.mapped_column(sa.Enum(GenderType), nullable=False)
 
     diagnoses: so.Mapped[List["m.Diagnose"]] = so.relationship("Diagnose", back_populates="patient")
 
