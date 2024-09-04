@@ -1,7 +1,7 @@
 from urllib.parse import urlsplit
 from web_flask.auth import bp
 from web_flask import db
-from flask import redirect, url_for, render_template, flash, request
+from flask import redirect, url_for, render_template, flash, request, session
 from flask_login import logout_user, current_user, login_user
 from web_flask.auth.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm
 from web_flask.auth.email import send_password_reset_email
@@ -29,12 +29,34 @@ def login():
                   "danger")
             return redirect(url_for("auth.login"))
         login_user(patient, remember=form.remember.data)
+        session['user_type'] = patient.__class__.__name__
         next_page = request.args.get("next")
         if not next_page or urlsplit(next_page).netloc != "":
             next_page = url_for("main.edit_profile")
         return redirect(next_page)
     return render_template("login.html", title="Login - Raseel", form=form)
 
+
+@bp.route("/staff/login", methods=["GET", "POST"])
+def staff_login():
+    if current_user.is_authenticated:
+        return redirect(url_for("doctor_bp.current_appointments"))
+    form = LoginForm()
+    if form.validate_on_submit():
+        staff = db.session.scalar(
+            sa.select(m.Doctor).where(m.Doctor.email == form.email.data)
+        )
+        if staff is None or not staff.check_password(form.password.data):
+            flash("Login Unsuccessful. Please check email and password",
+                  "danger")
+            return redirect(url_for("auth.staff_login"))
+        login_user(staff, remember=form.remember.data)
+        session['user_type'] = staff.__class__.__name__
+        next_page = request.args.get("next")
+        if not next_page or urlsplit(next_page).netloc != "":
+            next_page = url_for("doctor_bp.current_appointments")
+        return redirect(next_page)
+    return render_template("login.html", title="Staff Login - Raseel", form=form)
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -48,6 +70,8 @@ def register():
             "contact_number": form.contact_number.data,
             "password": form.password.data,
             "birth_date": form.birth_date.data,
+            "gender": m.GenderType(form.gender.data),
+            "national_id": form.national_id.data
         }
         patient = m.Patient(**patient_data)
         db.session.add(patient)

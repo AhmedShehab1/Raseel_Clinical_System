@@ -7,17 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-01 00:18+0300\n"
-"PO-Revision-Date: 2024-08-29 22:32+0300\n"
+"POT-Creation-Date: 2024-08-30 22:29+0300\n"
+"PO-Revision-Date: 2024-08-30 22:30+0300\n"
 "Last-Translator: \n"
-"Language: ar\n"
 "Language-Team: ar <LL@li.org>\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
-"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
 "Generated-By: Babel 2.16.0\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: web_flask/__init__.py:24
 msgid "Please log in to access this page."
@@ -93,19 +94,19 @@ msgstr "العيادة"
 msgid "Name and academic certificates"
 msgstr "الاسم والشهادات الأكاديمية"
 
-#: web_flask/templates/base_visitors.html:30
+#: web_flask/templates/base_visitors.html:25
 msgid "&copy; 2024 Raseel Medical Care Center"
 msgstr "© مركز رسيل للرعاية الطبية 2024"
 
-#: web_flask/templates/base_visitors.html:39
+#: web_flask/templates/base_visitors.html:34
 msgid "Schedule appointment"
 msgstr "احجز الآن"
 
-#: web_flask/templates/base_visitors.html:40
+#: web_flask/templates/base_visitors.html:35
 msgid "Complete Intake"
 msgstr "استكمال بيانات الإدخال"
 
-#: web_flask/templates/base_visitors.html:41
+#: web_flask/templates/base_visitors.html:36
 msgid "Services"
 msgstr "الخدمات"
 
@@ -117,17 +118,17 @@ msgstr "مركز رسيل للرعاية الطبية"
 msgid ""
 "Welcome to Raseel Medical Care Center At Raseel Medical Care Center, we "
 "are dedicated to providing exceptional healthcare services tailored to "
-"your needs. Our team of experienced medical professionals is committed to"
-" ensuring the highest standards of care in a compassionate and welcoming "
-"environment. Whether you are visiting for a routine check-up or "
-"specialized treatment we are here to support your health journey every "
-"step of the way."
+"your needs. Our team of experienced medical professionals is committed "
+"to ensuring the highest standards of care in a compassionate and "
+"welcoming environment. Whether you are visiting for a routine check-up "
+"or specialized treatment we are here to support your health journey "
+"every step of the way."
 msgstr ""
 "مرحباً بك في مركز رسيل للرعاية الطبية في مركز رسيل للرعاية الطبية، نحن "
 "ملتزمون بتقديم خدمات رعاية صحية استثنائية مصممة خصيصاً لتلبية احتياجاتك. "
 "يلتزم فريقنا من المهنيين الطبيين ذوي الخبرة بضمان توفير أعلى معايير "
-"الرعاية في بيئة تتسم بالرحمة والترحاب. سواءً كنت تزورنا لإجراء فحص روتيني"
-" أو علاج متخصص، فنحن هنا لدعم رحلتك الصحية في كل خطوة من خطواتها."
+"الرعاية في بيئة تتسم بالرحمة والترحاب. سواءً كنت تزورنا لإجراء فحص روتيني "
+"أو علاج متخصص، فنحن هنا لدعم رحلتك الصحية في كل خطوة من خطواتها."
 
 #: web_flask/templates/index.html:9
 msgid "View Services"
@@ -147,12 +148,12 @@ msgid ""
 "services through a clinical web-based system. We prioritize accessible "
 "and quality healthcare, ensuring that every patient receives the care "
 "they need. Our dedicated team of professionals is committed to improving "
-"health outcomes and enhancing patient satisfaction. Experience healthcare"
-" like never before with Raseel Medical Care Center, where your health is "
-"our mission."
+"health outcomes and enhancing patient satisfaction. Experience "
+"healthcare like never before with Raseel Medical Care Center, where your "
+"health is our mission."
 msgstr ""
-"يقدم مركز رسيل للرعاية الطبية في الرياض خدمات طبية شاملة من خلال نظام طبي"
-" قائم على شبكة الإنترنت. نحن نعطي الأولوية للرعاية الصحية التي يسهل "
+"يقدم مركز رسيل للرعاية الطبية في الرياض خدمات طبية شاملة من خلال نظام "
+"طبي قائم على شبكة الإنترنت. نحن نعطي الأولوية للرعاية الصحية التي يسهل "
 "الوصول إليها وذات الجودة العالية، مما يضمن حصول كل مريض على الرعاية التي "
 "يحتاجها. يلتزم فريقنا المتفاني من المتخصصين بتحسين النتائج الصحية وتعزيز "
 "رضا المرضى. اختبر الرعاية الصحية بشكل لم يسبق له مثيل مع مركز رسيل "
@@ -187,8 +188,6 @@ msgid ""
 msgstr ""
 
 #: web_flask/templates/medical_departments.html:21
-#: web_flask/templates/medical_departments.html:192
-#: web_flask/templates/receptionist/book_appointment.html:129
 msgid "Department of Obstetrics and Gynecology"
 msgstr ""
 
@@ -220,7 +219,6 @@ msgid "Processors and procedures module."
 msgstr ""
 
 #: web_flask/templates/medical_departments.html:40
-#: web_flask/templates/medical_departments.html:198
 msgid "Children's Department"
 msgstr ""
 
@@ -229,7 +227,6 @@ msgid "Vaccination unit and treatment unit."
 msgstr ""
 
 #: web_flask/templates/medical_departments.html:57
-#: web_flask/templates/receptionist/book_appointment.html:130
 msgid "The Department of Surgery"
 msgstr ""
 
@@ -290,8 +287,6 @@ msgid "Endocrinology and Diabetes (coming soon)."
 msgstr ""
 
 #: web_flask/templates/medical_departments.html:111
-#: web_flask/templates/medical_departments.html:216
-#: web_flask/templates/receptionist/book_appointment.html:132
 msgid "The Emergency and General Medicine Department"
 msgstr ""
 
@@ -312,8 +307,6 @@ msgid "Observation and treatment department (7 beds)."
 msgstr ""
 
 #: web_flask/templates/medical_departments.html:130
-#: web_flask/templates/medical_departments.html:228
-#: web_flask/templates/receptionist/book_appointment.html:131
 msgid "Diagnostic Radiology Department"
 msgstr ""
 
@@ -323,28 +316,27 @@ msgstr ""
 
 #: web_flask/templates/medical_departments.html:138
 msgid "Panoramic dental x-rays."
-msgstr ""
+msgstr "الأشعة السينية البانورامية للأسنان."
 
 #: web_flask/templates/medical_departments.html:139
 msgid "Ultrasound."
-msgstr ""
+msgstr "الموجات فوق الصوتية."
 
 #: web_flask/templates/medical_departments.html:140
 msgid "CT scan (coming soon)."
 msgstr ""
 
 #: web_flask/templates/medical_departments.html:149
-#: web_flask/templates/medical_departments.html:234
 msgid "The laboratory section"
-msgstr ""
+msgstr "قسم المختبر"
 
 #: web_flask/templates/medical_departments.html:156
 msgid "Chemistry department."
-msgstr ""
+msgstr "قسم الكيمياء."
 
 #: web_flask/templates/medical_departments.html:157
 msgid "Blood."
-msgstr ""
+msgstr "الدم."
 
 #: web_flask/templates/medical_departments.html:158
 msgid "Immunity."
@@ -352,29 +344,14 @@ msgstr ""
 
 #: web_flask/templates/medical_departments.html:159
 msgid "Microbiology."
-msgstr ""
+msgstr "علم الأحياء الدقيقة."
 
 #: web_flask/templates/medical_departments.html:168
-#: web_flask/templates/medical_departments.html:204
 msgid "Department of Pharmacy"
 msgstr ""
 
 #: web_flask/templates/medical_departments.html:173
 msgid "The department is specialized in dispensing medicines."
-msgstr ""
-
-#: web_flask/templates/medical_departments.html:186
-msgid "Department of Surgery"
-msgstr ""
-
-#: web_flask/templates/medical_departments.html:210
-#: web_flask/templates/receptionist/book_appointment.html:134
-msgid "The Dental Department"
-msgstr ""
-
-#: web_flask/templates/medical_departments.html:222
-#: web_flask/templates/receptionist/book_appointment.html:133
-msgid "Department of Internal Medicine"
 msgstr ""
 
 #: web_flask/templates/doctor/doctor_base.html:35
@@ -391,211 +368,3 @@ msgstr ""
 #, python-format
 msgid "%(time_from_now)s"
 msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:22
-msgid "Personal Information"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:25
-msgid "Full Name"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:26
-#: web_flask/templates/receptionist/book_appointment.html:37
-#: web_flask/templates/receptionist/book_appointment.html:44
-#: web_flask/templates/receptionist/book_appointment.html:55
-#: web_flask/templates/receptionist/book_appointment.html:62
-#: web_flask/templates/receptionist/book_appointment.html:96
-#: web_flask/templates/receptionist/book_appointment.html:125
-#: web_flask/templates/receptionist/book_appointment.html:140
-msgid "*"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:31
-msgid "Birth Date"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:36
-msgid "Naional ID"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:43
-msgid "Age"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:49
-msgid "Email"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:54
-msgid "Phone"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:61
-msgid "City"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:65
-msgid "Choose your city"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:66
-msgid "Riyadh"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:67
-msgid "Jeddah"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:68
-msgid "Mecca"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:69
-msgid "Medina"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:70
-msgid "Ad Dammām"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:71
-msgid "Tabūk"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:72
-msgid "Al Hufūf"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:73
-msgid "Al Qaţīf"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:74
-msgid "Al Ḩillah"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:75
-msgid "Aţ Ţā’if"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:76
-msgid "Al Jubayl"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:77
-msgid "Buraydah"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:78
-msgid "Ḩafr al Bāţin"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:79
-msgid "Yanbu"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:80
-msgid "Ḩā’il"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:81
-msgid "Abhā"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:82
-msgid "Sakākā"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:83
-msgid "Al Qurayyāt"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:84
-msgid "Jāzān"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:85
-msgid "Najrān"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:86
-msgid "Al Wajh"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:87
-msgid "Arar"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:88
-msgid "Al Bāḩah"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:89
-msgid "Tathlīth"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:90
-msgid "Other"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:95
-msgid "Gender"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:99
-msgid "Choose your gender"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:105
-msgid "Address"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:106
-msgid "12 Main St"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:110
-msgid "Address 2"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:112
-msgid "Apartment, studio, or floor"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:116
-msgid "Appointment Information"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:124
-msgid "Department"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:128
-msgid "Choose the department"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:139
-msgid "Doctor"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:143
-msgid "Choose a doctor"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:149
-msgid "Attach photos"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:156
-msgid "Comments"
-msgstr ""
-
-#: web_flask/templates/receptionist/book_appointment.html:162
-#, fuzzy
-msgid "Complete Booking"
-msgstr "استكمال بيانات الإدخال"
-
-#~ msgid "Appointment Reason or Messege"
-#~ msgstr ""
-
