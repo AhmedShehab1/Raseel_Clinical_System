@@ -45,11 +45,13 @@ def create_app(config_class=Config):
     from web_flask.doctor_bp import doctor_bp
     from web_flask.auth import bp as auth_bp
     from web_flask.cli import bp as cli_bp
+    from web_flask.patient_bp import patient_bp
     app.register_blueprint(errors_bp)
     app.register_blueprint(doctor_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(cli_bp)
+    app.register_blueprint(patient_bp)
 
     if not app.debug and not app.testing:
         if app.config["MAIL_SERVER"]:
