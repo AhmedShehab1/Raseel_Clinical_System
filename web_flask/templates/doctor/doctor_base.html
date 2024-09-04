@@ -6,6 +6,8 @@
         <title>{{ title }}</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="icon" href="{{ url_for('static', filename='images/Logo.png.webp') }}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='js/doctor.js') }}"></script>
     </head>
     <body>
         <div class="container">
@@ -33,7 +35,7 @@
             </thead>
             <tbody>
                 {% for appointment in appointments %}
-                <tr>
+                <tr class='appointment-item'>
                     <td>{{ _('%(patient_name)s', patient_name=appointment.patient.name) }}</td>
                     <td>{{ _('%(datetime)s', datetime=moment(appointment.appointment_time).format('LLLL')) }}</td>
                         <td>{{ _('%(time_from_now)s', time_from_now=moment(appointment.appointment_time).fromNow()) }}</td>
@@ -149,7 +151,7 @@
                             </div>
                             <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
                             <a href="{{ url_for('doctor_bp.update_appointment', appointment_id=appointment.id) }}" class="btn btn-primary">Update</a>
-                            <a href="{{ url_for('doctor_bp.delete_appointment', appointment_id=appointment.id) }}" class="btn btn-danger">Delete</a>
+                            <a class="btn btn-danger delete_appointment" data-id="{{ appointment.id }}">Delete</a>
 
                         </td>
                     </tr>
