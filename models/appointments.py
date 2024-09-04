@@ -31,7 +31,7 @@ class Appointment(BaseModel):
         sa.Enum(AppointmentStatus), index=True, nullable=False
     )
     reason: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
-    notes: so.Mapped[str] = so.mapped_column(sa.String(256))
+    notes: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     patient: so.Mapped["m.Patient"] = so.relationship(
         "Patient", back_populates="appointments"
     )

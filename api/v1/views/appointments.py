@@ -1,8 +1,10 @@
+from api.v1.errors import bad_request
 from web_flask import db
 from api.v1.views import bp
 from models import Appointment
 from flask import request
 from datetime import datetime
+import sqlalchemy as sa
 
 def get_app(app_id):
     return db.get_or_404(Appointment, app_id)
@@ -32,6 +34,29 @@ def delete_appointment(appointment_id):
 
     return {}, 200
 
+
+@bp.post('/appointments')
+def add_appointment():
+    data = request.get_json()
+    if 'patient_id' not in data or 'doctor_id' not in data or 'appointment_time' not in data or 'status' not in data:
+        return bad_request('Missing required fields')
+
+    if db.session.scalar(sa.select(Appointment).where(
+        Appointment.appointment_time == data['appointment_time'],
+        Appointment.doctor_id == data['doctor_id']
+        )):
+        return bad_request('Doctor already has an appointment at that time')
+
+    if db.session.scalar(sa.select(Appointment).where(
+        Appointment.appointment_time == data['appointment_time'],
+        Appointment.patient_id == data['patient_id']
+        )):
+        return bad_request('Patient already has an appointment at that time')
+
+    app = Appointment(**data)
+    db.session.add(app)
+    save()
+    return app.to_dict(), 201
 
 @bp.put('/appointments/<string:appointment_id>')
 def update_app(appointment_id):
