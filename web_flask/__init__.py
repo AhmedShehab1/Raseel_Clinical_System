@@ -1,5 +1,5 @@
 # flake8: noqa
-from flask import Flask
+from flask import Flask, session, request, current_app
 from flask_mail import Mail
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -8,6 +8,7 @@ from flask_login import LoginManager
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _l
+from elasticsearch import Elasticsearch
 import logging
 import pretty_errors
 import os
@@ -24,20 +25,20 @@ login_manager.login_view = "login"
 login_manager.login_message = _l("Please log in to access this page.")
 
 def get_locale():
-    # return request.accept_languages.best_match(current_app.config['LANGUAGES'])
-    return "ar"
+    return request.accept_languages.best_match(current_app.config['LANGUAGES'])
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
+                        if app.config['ELASTICSEARCH_URL'] else None
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
     moment.init_app(app)
     babel.init_app(app, locale_selector=get_locale)
     login_manager.init_app(app)
-    babel.init_app(app)
 
     from web_flask.main import bp as main_bp
     from web_flask.errors import bp as errors_bp
@@ -89,10 +90,15 @@ def create_app(config_class=Config):
     return app
 
 
-from models.base_model import BaseModel
 import models as m
+from models.base_model import BaseModel
 
 
 @login_manager.user_loader
-def load_patient(patient_id):
-    return db.session.get(m.Patient, patient_id)
+def load_user(user_id):
+    user_type = session.get("user_type")
+    if user_type:
+        user_model = getattr(m, user_type)
+        if user_model:
+            return db.session.get(user_model, user_id)
+    return None

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 import models as m
 from .base_model import BaseModel
 import sqlalchemy as sa
@@ -10,7 +10,7 @@ class Department(BaseModel):
     name: so.Mapped[str] = so.mapped_column(sa.String(64),
                                             index=True,
                                             nullable=False)
-    description: so.Mapped[str] = so.mapped_column(sa.String(256))
+    description: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     doctors: so.Mapped[List["m.Doctor"]] = so.relationship(
         "Doctor", back_populates="department"
     )

@@ -1,11 +1,13 @@
 {% extends "centeredForms.html" %}
 {% block options %}
-    <div class="mt-3">
-    <p class="mb-1">
-        {{ _('New User?') }}<a href="{{ url_for('auth.register') }}" class="text-decoration-none">{{ _('Register Here!') }}</a>
-    </p>
-    <p class="mb-0">
-        {{ _('Forgot Password?') }} <a href="{{ url_for('auth.reset_password_request') }}" class="text-decoration-none">{{ _('Reset Password') }}</a>
-    </p>
-    </div>
+    {% if request.endpoint == 'auth.login' %}
+        <div class="mt-3">
+        <p class="mb-1">
+            {{ _('New User?') }}<a href="{{ url_for('auth.register') }}" class="text-decoration-none">{{ _('Register Here!') }}</a>
+        </p>
+        <p class="mb-0">
+            {{ _('Forgot Password?') }} <a href="{{ url_for('auth.reset_password_request') }}" class="text-decoration-none">{{ _('Reset Password') }}</a>
+        </p>
+        </div>
+    {% endif %}
 {% endblock options %}
