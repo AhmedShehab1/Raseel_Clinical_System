@@ -10,6 +10,7 @@ import sqlalchemy as sa
 import models as m
 from flask_login import current_user, login_required
 from datetime import datetime, timedelta, timezone
+import uuid
 
 doctor_bp = Blueprint("doctor_bp", __name__, url_prefix="/doctor")
 
@@ -35,13 +36,13 @@ def current_appointments():
         sa.select(m.Appointment).where(
             current_user.id == m.Appointment.doctor_id,
             sa.func.date(m.Appointment.appointment_time) == datetime.now().date(),
-            m.Appointment.deleted_at == None
+            # m.Appointment.appointment_time == None
             )
     )
     filtered_appointments = get_filtered_appointments(appointments)
     current_time_utc = datetime.now(timezone.utc)
     return render_template(
-        "doctor/current.html", appointments=filtered_appointments, current_time_utc=current_time_utc, title="Current Appointments"
+        "doctor/current.html", appointments=filtered_appointments, current_time_utc=current_time_utc, title="Current Appointments", cache_id=uuid.uuid4()
     )
 
 
@@ -51,22 +52,8 @@ def upcoming_appointments():
     tomorrow = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
     appointments = db.session.scalars(
         sa.select(m.Appointment).where(current_user.id == m.Appointment.patient_id).filter(m.Appointment.appointment_time >= tomorrow)
+        m.Appointment.appointment_time == None
     )
     filtered_appointments = get_filtered_appointments(appointments)
     current_time_utc = datetime.now(timezone.utc)
-    return render_template("doctor/upcoming.html", appointments=filtered_appointments, current_time_utc=current_time_utc, title="Upcoming Appointments")
-
-
-@doctor_bp.route("/appointments/update/<string:appointment_id>")
-def update_appointment(appointment_id):
-    pass
-
-
-@doctor_bp.route("/appointments/delete/<string:appointment_id>")
-def delete_appointment(appointment_id):
-    pass
-
-
-@doctor_bp.route("/appointments/view/<string:appointment_id>")
-def view_appointment(appointment_id):
-    pass
+    return render_template("doctor/upcoming.html", appointments=filtered_appointments, current_time_utc=current_time_utc, title="Upcoming Appointments", cache_id=uuid.uuid4())
