@@ -81,7 +81,7 @@ $(document).ready(function () {
             data: JSON.stringify({ notes: generalNote }),
             success: function () {
               alert('All updates were successful');
-              (`#update-modal-${appointmentId}`).modal('hide');
+              $(`#update-modal-${appointmentId}`).modal('hide');
             },
             error: function () {
               alert('Failed to update appointment note.');
