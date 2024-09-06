@@ -75,11 +75,11 @@ class Patient(BaseModel, PasswordMixin, UserMixin, SearchableMixin):
 
     address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
-    medical_history: so.Mapped[Optional[str]] = so.mapped_column(sa.String(400))
-
     national_id: so.Mapped[str] = so.mapped_column(sa.String(10), unique=True, nullable=False)
 
     gender: so.Mapped[GenderType] = so.mapped_column(sa.Enum(GenderType), nullable=False)
+
+    medical_history: so.Mapped[Optional[str]] = so.mapped_column(sa.String(400))
 
     current_medications: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 

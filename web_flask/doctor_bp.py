@@ -51,8 +51,11 @@ def current_appointments():
 def upcoming_appointments():
     tomorrow = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
     appointments = db.session.scalars(
-        sa.select(m.Appointment).where(current_user.id == m.Appointment.patient_id).filter(m.Appointment.appointment_time >= tomorrow),
+        sa.select(m.Appointment).where(
+            current_user.id == m.Appointment.patient_id,
+        m.Appointment.appointment_time >= tomorrow,
         m.Appointment.appointment_time == None
+        )
     )
     filtered_appointments = get_filtered_appointments(appointments)
     current_time_utc = datetime.now(timezone.utc)

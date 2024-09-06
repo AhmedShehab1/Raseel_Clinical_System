@@ -3,7 +3,12 @@ from web_flask.auth import bp
 from web_flask import db
 from flask import redirect, url_for, render_template, flash, request, session
 from flask_login import logout_user, current_user, login_user
-from web_flask.auth.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm
+from web_flask.auth.forms import (
+    LoginForm,
+    RegistrationForm,
+    ResetPasswordForm,
+    ResetPasswordRequestForm
+    )
 from web_flask.auth.email import send_password_reset_email
 import sqlalchemy as sa
 import models as m
