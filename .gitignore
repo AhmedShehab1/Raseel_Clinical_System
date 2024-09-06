@@ -4,3 +4,5 @@ messages.pot
 .env
 pusher
 deploy.sh
+.vscode/
+app.db

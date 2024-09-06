@@ -1,0 +1,234 @@
+{% extends "receptionist/base_receptionist.html" %}
+
+
+{% block head_link %}
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+{% endblock head_link %}
+
+
+{% block content %}
+
+  <form style="margin:0px">
+    <div class="row g-3 align-items-top justify-content-between">
+      <div class="row g-3 col-12 col-lg-6" style="margin: 30px 20px">
+        <p class='personal-info text-center'>{{_('Personal Information')}}</p>
+        <div class="col-md-7">
+          <label for="inputFullName" class="form-label">
+            {{_('Full Name')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <input type="text" class="form-control" id="inputFullName" style="border: 1px solid gray" required>
+        </div>
+        <div class="col-md-5">
+          <label for="inputBirthDate" class="form-label">{{_('Birth Date')}}</label>
+          <input type="date" class="form-control" id="inputBirthDate" style="border: 1px solid gray">
+        </div>
+        <div class="col-md-8">
+          <label for="inputNaionalID" class="form-label">
+            {{_('Naional ID')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <input type="tel" class="form-control" id="inputNaionalID" maxlength="14" pattern="^[0-9]{14}$" style="border: 1px solid gray" required>
+        </div>
+        <div class="col-md-4">
+          <label for="inputAge" class="form-label">
+            {{_('Age')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <input type="number" class="form-control" id="inputAge" min="0" style="border: 1px solid gray" required>
+        </div>
+        <div class="col-md-6">
+          <label for="inputEmail" class="form-label">{{_('Email')}}</label>
+          <input type="email" class="form-control" id="inputEmail" style="border: 1px solid gray">
+        </div>
+        <div class="col-md-6">
+          <label for="inputPhone" class="form-label">
+            {{_('Phone')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <input type="tel" class="form-control" id="inputPhone" maxlength="10" pattern="^05[0-9]{8}$" style="border: 1px solid gray" required>
+        </div>
+        <div class="col-md-6">
+          <label for="inputCity" class="form-label">
+            {{_('City')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <select id="inputCity" class="form-select" style="border: 1px solid gray" required>
+            <option value="">{{_('Choose your city')}}</option>
+            <option value="riyadh">{{_('Riyadh')}}</option>
+            <option value="jeddah">{{_('Jeddah')}}</option>
+            <option value="mecca">{{_('Mecca')}}</option>
+            <option value="medina">{{_('Medina')}}</option>
+            <option value="ad_dammam">{{_('Ad Dammām')}}</option>
+            <option value="tabuk">{{_('Tabūk')}}</option>
+            <option value="al_hufuf">{{_('Al Hufūf')}}</option>
+            <option value="al_qatif">{{_('Al Qaţīf')}}</option>
+            <option value="al_hillah">{{_('Al Ḩillah')}}</option>
+            <option value="at_taif">{{_('Aţ Ţā’if')}}</option>
+            <option value="al_jubayl">{{_('Al Jubayl')}}</option>
+            <option value="buraydah">{{_('Buraydah')}}</option>
+            <option value="hafr_al_Batin">{{_('Ḩafr al Bāţin')}}</option>
+            <option value="Yanbu">{{_('Yanbu')}}</option>
+            <option value="hail">{{_('Ḩā’il')}}</option>
+            <option value="abha">{{_('Abhā')}}</option>
+            <option value="sakaka">{{_('Sakākā')}}</option>
+            <option value="al_qurayyat">{{_('Al Qurayyāt')}}</option>
+            <option value="jazan">{{_('Jāzān')}}</option>
+            <option value="najran">{{_('Najrān')}}</option>
+            <option value="al_wajh">{{_('Al Wajh')}}</option>
+            <option value="arar">{{_('Arar')}}</option>
+            <option value="al_Baḩah">{{_('Al Bāḩah')}}</option>
+            <option value="tathlith">{{_('Tathlīth')}}</option>
+            <option value="other">{{_('Other')}}</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="inputGender" class="form-label">
+            {{_('Gender')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <Select class="form-select" id="inputGender" style="border: 1px solid gray" required>
+            <option value="">{{_('Choose your gender')}}</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </Select>
+        </div>
+        <div class="col-12">
+          <label for="inputAddress" class="form-label">{{_('Address')}}</label>
+          <input type="text" class="form-control" id="inputAddress" placeholder="{{_('12 Main St')}}" style="border: 1px solid gray">
+        </div>
+        <div class="col-12">
+          <label for="inputAddress2" class="form-label">
+            {{_('Address 2')}}
+          </label>
+          <input type="text" class="form-control" id="inputAddress2" placeholder="{{_('Apartment, studio, or floor')}}" style="border: 1px solid gray">
+        </div>
+      </div>
+      <div class="row g-3 col-12 col-lg-5" style="margin: 30px 20px">
+        <p class='appointment-info text-center'>{{_('Appointment Information')}}</p>
+
+        <div class="col-12">
+          <label for="inputDateTime" class="form-label">
+            {{_('Appointment Date and Time')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <input type="datetime-local" class="form-control" id="inputDateTime" style="border: 1px solid gray" required>
+        </div>
+
+        <div class="col-md-6">
+          <label for="inputDepartment" class="form-label">
+            {{_('Department')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <select id="inputDepartment" class="form-select" style="border: 1px solid gray" required>
+            <!-- Options will be added dynamically -->
+            <option value="">{{_('Choose the department')}}</option>
+            <option value="1">{{_('The Department of Surgery')}}</option>
+            <option value="2">{{_('Diagnostic Radiology Department')}}</option>
+            <option value="3">{{_('The Emergency and General Medicine Department')}}</option>
+            <option value="4">{{_('The Dental Department')}}</option>
+            <option value="5">{{_('Department of Obstetrics and Gynecology')}}</option>
+            <option value="6">{{_('Department of Internal Medicine')}}</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="inputDoctor" class="form-label">
+            {{_('Doctor')}}
+            <span class="required-field-sign">{{_('*')}}</span>
+          </label>
+          <select id="inputDoctor" class="form-select" style="border: 1px solid gray" required>
+            <option value="">{{_('Choose a doctor')}}</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label for="inputAttach" class="form-label">
+            {{_('Attach photos')}}
+          </label>
+          <input type="file" class="form-control" id="inputAttach" style="border: 1px solid gray">
+        </div>
+        <div class="form-floating col-6">
+          <textarea class="form-control" id="floatingTextarea" style="height:100px; border: 1px solid gray;"></textarea>
+          <label for="floatingTextarea" style="margin-left:5px; ">
+            {{_('Comments')}}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" style="text-align:center">
+      <button type="submit" class="btn btn-primary book-button" style="padding: 15px 40px">{{_('Complete Booking')}}</button>
+    </div>
+  </form>
+
+  <script>
+    const departmentSelect = document.getElementById('inputDepartment');
+    const datetimeSelect = document.getElementById('inputDateTime');
+    const doctorSelect = document.getElementById('inputDoctor');
+
+    var departments;
+    const all_doctors = new Object();
+    // Test data
+      all_doctors["1"] = [{ "id": "1", "name": 'Dr. Ahmed'}, { "id": "5", "name": 'Dr. Mohamed'}, { "id": "8", "name": 'Dr. Ali'}, { "id": "10", "name": 'Dr. Mahmoud'}];
+      all_doctors["2"] = [{ "id": "2", "name": 'Dr. Mazen'}, { "id": "6", "name": 'Dr. Hossam'}, { "id": "9", "name": 'Dr. Zaki'}];
+      all_doctors["3"] = [{ "id": "3", "name": 'Dr. Anas'}, { "id": "7", "name": 'Dr. Hassan'}];
+      all_doctors["4"] = [{ "id": "4", "name": 'Dr. Sherif'}];
+      all_doctors["5"] = [];
+
+    $.ajax({
+      url: '/api/v1/departments',
+      method: 'GET',
+      type: 'GET',
+      contentType: 'application/json',
+      success: function (data_departments) {
+        departments = data_departments.results; // data_departments.results is a list of objects containing all departments
+        departments.forEach((department) => {
+          let option = document.createElement('option');
+          option.setAttribute('value', str(department.id));
+          option.setAttribute('label', department.name);
+          departmentSelect.appendChild(option);
+          all_doctors[str(department.id)] = department.doctors; // department.doctors is a list of objects containing all doctors in the department
+        });
+      },
+      error: function () {
+        alert('Failed to load the departments, Please try again.');
+      },
+    });
+
+    departmentSelect.addEventListener("change", (event) => {
+      resetDoctorOptions(doctorSelect);
+
+      const department_id = event.target.value;
+      const doctors = all_doctors[department_id];
+
+      if (typeof doctors === "undefined" || doctors.length === 0) {
+        if (department_id !== "") {
+          alert('Unfortunately, this department is currently closed.');
+        }
+        return;
+      }
+
+      doctors.forEach((doctor) => {
+        let option = document.createElement('option');
+        option.setAttribute('value', doctor.id);
+        option.setAttribute('label', doctor.name);
+        doctorSelect.appendChild(option);
+      });
+    });
+
+    function resetDoctorOptions(doctorSelectElement) {
+      let optionIndex, lenght = doctorSelectElement.options.length - 1;
+
+      for (optionIndex = lenght; optionIndex >= 0; optionIndex--) {
+        doctorSelectElement.remove(optionIndex);
+      }
+      let option = document.createElement('option');
+      option.setAttribute('value', '');
+      option.setAttribute('label', "Choose a doctor");
+      doctorSelectElement.appendChild(option);
+      doctorSelectElement.value = '';
+    }
+
+  </script>
+
+{% endblock content%}
