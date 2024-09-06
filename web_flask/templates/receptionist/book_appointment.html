@@ -1,18 +1,35 @@
 {% extends "receptionist/base_receptionist.html" %}
 
 
-{% block head_link %}
+{% block head_links %}
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-{% endblock head_link %}
+{% endblock head_links %}
 
+{% block nav_pills %}
+
+  <li class="nav-item">
+    <a href="#" class="nav-link link-body-emphasis my-nav-pill">
+        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+        Dashboard
+    </a>
+  </li>
+
+  <li>
+    <a href="#" class="nav-link my-nav-pill active" aria-current="page">
+        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+        Book Appointment
+    </a>
+  </li>
+
+{% endblock nav_pills %}
 
 {% block content %}
 
   <form style="margin:0px">
     <div class="row g-3 align-items-top justify-content-between">
-      <div class="row g-3 col-12 col-lg-6" style="margin: 30px 20px">
+      <div class="row g-3 col-12 col-lg-6" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
         <p class='personal-info text-center'>{{_('Personal Information')}}</p>
         <div class="col-md-7">
           <label for="inputFullName" class="form-label">
@@ -106,7 +123,7 @@
           <input type="text" class="form-control" id="inputAddress2" placeholder="{{_('Apartment, studio, or floor')}}" style="border: 1px solid gray">
         </div>
       </div>
-      <div class="row g-3 col-12 col-lg-5" style="margin: 30px 20px">
+      <div class="row g-3 col-12 col-lg-5" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
         <p class='appointment-info text-center'>{{_('Appointment Information')}}</p>
 
         <div class="col-12">
