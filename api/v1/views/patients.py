@@ -1,6 +1,6 @@
 from datetime import datetime
 from api.v1.errors import bad_request
-from api.v1.views import bp
+from api.v1.views import bp, save, get_from_db
 from web_flask import db
 from models import Patient
 from models import Prescription
@@ -8,13 +8,7 @@ from models import Diagnose
 import sqlalchemy as sa
 from flask import request
 
-def get_patient_from_db(patient_id):
-    return db.get_or_404(Patient, patient_id)
 
-def save(model, new=False):
-    if new:
-        db.session.add(model)
-    db.session.commit()
 
 def update_data(model, data):
     if 'email' in data and data['email'] != model.email and db.session.scalar(sa.select(Patient).where(Patient.email == data['email'])):
@@ -32,12 +26,12 @@ def update_data(model, data):
 
 @bp.get('/patients/<string:patient_id>')
 def get_patient(patient_id):
-    return get_patient_from_db(patient_id).to_dict(), 200
+    return get_from_db(patient_id, Patient).to_dict(), 200
 
 
 @bp.delete('/patients/<string:patient_id>')
 def delete_patient(patient_id):
-    patient = get_patient_from_db(patient_id)
+    patient = get_from_db(patient_id, Patient)
 
     patient.deleted_at = datetime.utcnow()
     save()
@@ -61,14 +55,14 @@ def add_patient():
 
 @bp.put('/patients/<string:patient_id>')
 def update_patient(patient_id):
-    patient = get_patient_from_db(patient_id)
+    patient = get_from_db(patient_id, Patient)
     data = request.get_json()
     update_data(patient, data)
     return patient.to_dict(), 200
 
 @bp.post('/patients/<string:patient_id>/medications')
 def add_medication(patient_id):
-    _ = get_patient_from_db(patient_id)
+    _ = get_from_db(patient_id, Patient)
     data = request.get_json()
     if "medication" not in data or "dosage" not in data:
         bad_request('Missing required fields')
@@ -78,7 +72,7 @@ def add_medication(patient_id):
 
 @bp.post('/patients/<string:patient_id>/diagnosises')
 def add_diagnosis(patient_id):
-    _ = get_patient_from_db(patient_id)
+    _ = get_from_db(patient_id, Patient)
     data = request.get_json()
     if "name" not in data:
         bad_request('Missing required fields')

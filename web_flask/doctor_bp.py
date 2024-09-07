@@ -1,7 +1,6 @@
 from flask import (
     Blueprint, render_template,
     request, g,
-    redirect, url_for,
     current_app, session
 )
 
@@ -19,7 +18,7 @@ def get_filtered_appointments(appointments):
     session['previous_endpoint'] = request.endpoint
     if g.search_form.validate():
         page = request.args.get("page", 1, type=int)
-        search_results, _ = m.Patient.search(g.search_form.q.data, page,
+        search_results = m.Patient.search(g.search_form.q.data, page,
                                              current_app.config.get('SEARCH_RESULTS_PER_PAGE', 10))
         apps = []
         for patient in search_results:

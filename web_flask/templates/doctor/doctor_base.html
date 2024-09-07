@@ -11,7 +11,7 @@
     </head>
     <body>
         <div class="container">
-            <header class="d-flex  justify-content-center py-3">
+            <header class="d-flex justify-content-center py-3">
                 <ul class="nav nav-pills">
                     <li class="nav-item"><a href="{{ url_for('doctor_bp.current_appointments') }}" {% if request.endpoint == 'doctor_bp.current_appointments' %}class="nav-link active" aria-current="page"{% else %}class="nav-link"{% endif %}>Current Appointments</a></li>
                     <li class="nav-item"><a href="{{ url_for('doctor_bp.upcoming_appointments') }}" {% if request.endpoint == 'doctor_bp.upcoming_appointments' %}class="nav-link active" aria-current="page"{% else %}class="nav-link"{% endif %}>Upcoming Appointments</a></li>
@@ -19,7 +19,9 @@
             </header>
         </div>
         <p class="ms-3 fw-bold lead text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
+        <div class="d-flex justify-content-center">
         {% include "_search.html" %}
+        </div>
         <hr>
 
         {% block content %}
