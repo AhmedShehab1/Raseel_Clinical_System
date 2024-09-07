@@ -48,6 +48,7 @@ def create_app(config_class=Config):
     from api.v1.views import bp as api_bp
     from web_flask.receptionist_bp import receptionist_bp
     from web_flask.patient_bp import patient_bp
+    from web_flask.admin_bp import bp as admin_bp
     app.register_blueprint(errors_bp)
     app.register_blueprint(doctor_bp)
     app.register_blueprint(auth_bp)
@@ -56,6 +57,7 @@ def create_app(config_class=Config):
     app.register_blueprint(api_bp)
     app.register_blueprint(receptionist_bp)
     app.register_blueprint(patient_bp)
+    app.register_blueprint(admin_bp)
 
     if not app.debug and not app.testing:
         if app.config["MAIL_SERVER"]:

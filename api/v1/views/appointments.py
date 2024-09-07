@@ -1,16 +1,11 @@
 from api.v1.errors import bad_request
 from web_flask import db
-from api.v1.views import bp
+from api.v1.views import bp, save, get_from_db
 from models import Appointment
 from flask import request
 from datetime import datetime
 import sqlalchemy as sa
 
-def get_app(app_id):
-    return db.get_or_404(Appointment, app_id)
-
-def save():
-    db.session.commit()
 
 def update_item(item, data):
     for k, v in data.items():
@@ -21,13 +16,13 @@ def update_item(item, data):
 
 @bp.get('/appointments/<string:appointment_id>')
 def get_appointment(appointment_id):
-    app = get_app(appointment_id)
+    app = get_from_db(appointment_id, Appointment)
     return app.to_dict(), 200
 
 
 @bp.delete('/appointments/<string:appointment_id>')
 def delete_appointment(appointment_id):
-    app = get_app(appointment_id)
+    app = get_from_db(appointment_id, Appointment)
 
     app.deleted_at = datetime.utcnow()
     save()
@@ -54,13 +49,12 @@ def add_appointment():
         return bad_request('Patient already has an appointment at that time')
 
     app = Appointment(**data)
-    db.session.add(app)
-    save()
+    save(app, new=True)
     return app.to_dict(), 201
 
 @bp.put('/appointments/<string:appointment_id>')
 def update_app(appointment_id):
-    app = get_app(appointment_id)
+    app = get_from_db(appointment_id, Appointment)
     data = request.get_json()
     update_item(app, data)
     return app.to_dict(), 200

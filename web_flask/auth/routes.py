@@ -51,9 +51,20 @@ def staff_login():
         staff = db.session.scalar(
             sa.select(m.Doctor).where(m.Doctor.email == form.email.data)
         )
-        if staff is None or not staff.check_password(form.password.data):
+        if staff is None:
+            staff = db.session.scalar(
+                sa.select(m.Admin).where(m.Admin.email == form.email.data)
+            )
+            if staff is None or not staff.check_password(form.password.data):
+                flash("Login Unsuccessful. Please check email and password",
+                    "danger")
+                return redirect(url_for("auth.staff_login"))
+            login_user(staff, remember=form.remember.data)
+            session['user_type'] = staff.__class__.__name__
+            return redirect(url_for("admin_bp.admin_dashboard"))
+        elif not staff.check_password(form.password.data):
             flash("Login Unsuccessful. Please check email and password",
-                  "danger")
+                    "danger")
             return redirect(url_for("auth.staff_login"))
         login_user(staff, remember=form.remember.data)
         session['user_type'] = staff.__class__.__name__

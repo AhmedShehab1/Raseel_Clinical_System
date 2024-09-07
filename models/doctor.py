@@ -4,7 +4,7 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from flask_login import UserMixin
 
-class Doctor(m.StaffMember, UserMixin):
+class Doctor(m.StaffMember):
     """
     Doctor model class
     Args:
@@ -13,10 +13,6 @@ class Doctor(m.StaffMember, UserMixin):
     """
 
     __tablename__ = "doctors"
-
-    email: so.Mapped[str] = so.mapped_column(
-        sa.String(120), index=True, unique=True, nullable=False
-    )
 
     certificates: so.Mapped[str] = so.mapped_column(sa.String(256),
                                                     nullable=False)

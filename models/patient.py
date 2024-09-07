@@ -5,14 +5,14 @@ import models as m
 from .base_model import BaseModel, gen_datetime
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from utils import PasswordMixin
+from utils import PasswordMixin, SearchableMixin
 from flask_login import UserMixin
 import jwt
 from web_flask import db
 from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import date
 from flask import current_app
-from utils.search_util import SearchableMixin
+
 
 class GenderType(str, Enum):
     Male = "male"
