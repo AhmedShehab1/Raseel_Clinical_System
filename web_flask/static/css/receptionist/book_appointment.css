@@ -111,7 +111,7 @@ fieldset {
 }
 
 /*Hide all except first fieldset*/
-fieldset:not(:last-of-type) {
+fieldset:not(:first-of-type) {
     display: none;
 }
 
