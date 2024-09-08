@@ -20,4 +20,19 @@ def book_appointment():
         str: Render the receptionist template for booking an appointiment
     """
 
+    if request.method == "GET":
+        #Search on the patient
+        pass
+
     return render_template("receptionist/book_appointment.html", title="Book Appointment - Raseel")
+
+@receptionist_bp.route("/dashboard", methods=["GET", "POST"])
+@login_required
+def dashboard():
+    """Dashboard page for the receptionist that shows the list of patients' appointments
+
+    Returns:
+        str: Render the receptionist dashboard template
+    """
+
+    return render_template("receptionist/dashboard.html", title="Receptionist Dashboard - Raseel")
