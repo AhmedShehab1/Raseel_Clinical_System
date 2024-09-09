@@ -1,6 +1,6 @@
 from api.v1.errors import bad_request
 from web_flask import db
-from api.v1.views import bp, save, get_from_db
+from api.v1.views import bp, get_from_db, save
 from models import Doctor, Admin, Department
 from flask import request
 from datetime import datetime
@@ -38,6 +38,10 @@ def delete_member(member_id):
 @bp.get('/staff-members/<string:member_id>')
 def get_member(member_id):
     member = get_from_db(member_id, Doctor, Admin)
+    if member.__class__ == Doctor:
+        dict_member = member.to_dict()
+        dict_member['department'] = member.department.name
+        return dict_member, 200
     return member.to_dict(), 200
 
 
@@ -70,7 +74,7 @@ def handle_department(data):
 @bp.post('/staff-members/')
 @validate_json
 def add_member(data):
-    required_fields = ['email', 'password', 'phone', 'name', 'role']
+    required_fields = ['email', 'password', 'name', 'role']
     errors = validate_required_fields(data, required_fields)
     if errors:
         return {'errors': errors}, 400
@@ -100,13 +104,13 @@ def add_member(data):
         if check:
             return check
     new_member = cls(**data)
-    save(new_member, new=True)
+    save(new_member)
     return new_member.to_dict(), 201
 
-@bp.route('/staff-members/<string:member_id>', methods=['PUT', 'POST'])
+@bp.put('/staff-members/<string:member_id>')
 @validate_json
-def manage_member(data, member_id=None):
-    required_fields = ['email', 'phone', 'name', 'role']
+def manage_member(data, member_id):
+    required_fields = ['email', 'name', 'role']
 
     errors = validate_required_fields(data, required_fields)
     if errors:

@@ -21,7 +21,6 @@ $(document).ready(function () {
   });
 
   function handleSubmitForm(url, type, formData, successMessage) {
-    console.log(url, type, formData, successMessage);
     $.ajax({
         url: url,
         type: type,
@@ -34,11 +33,17 @@ $(document).ready(function () {
         },
         error: function (xhr) {
             const response = xhr.responseJSON;
-            console.log(response);
             if (response.errors) {
                 for (const [field, errorMsg] of Object.entries(response.errors)) {
-                    $(`input[name="${field}"]`).addClass('is-invalid');
-                    $(`input[name="${field}"]`).next('.invalid-feedback').text(errorMsg);
+                    let fieldElement = $(`[name="${field}"]`);
+                    fieldElement.removeClass('is-valid').addClass('is-invalid');
+
+                    let feedbackElement = fieldElement.next('.invalid-feedback')
+                    if (feedbackElement.length === 0) {
+                        feedbackElement = "<div class='invalid-feedback'></div>"
+                        fieldElement.after(feedbackElement);
+                    }
+                    feedbackElement.text(errorMsg).show();
                 }
             } else {
                 alert('Failed to process your request, Please try again.');
@@ -52,6 +57,7 @@ $(document).ready(function () {
     modal.find('input[name="email"]').val(member.email);
     modal.find('input[name="phone"]').val(member.phone);
     modal.find('input[name="role"]').val(member.__class__);
+    modal.find('input[name="department"]').val(member.department);
     toggleDoctorFields(member.__class__, member.certificates, member.department);
     }
 
@@ -82,6 +88,7 @@ $(document).ready(function () {
       type: 'GET',
       contentType: 'application/json',
       success: function (data) {
+        console.log(data);
         updateModalFields(modal, data);
       },
       error: function () {
@@ -103,7 +110,6 @@ $(document).ready(function () {
             role: form.find('select[name="role"]').val() || form.find('input[name="role"]').val(),
         };
 
-        console.log(formData);
       const phoneField = $('#edit-phone');
       if (phoneField.val() && !phoneField[0].checkValidity()) {
         phoneField.addClass('is-invalid');

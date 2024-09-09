@@ -35,7 +35,7 @@ def current_appointments():
         sa.select(m.Appointment).where(
             current_user.id == m.Appointment.doctor_id,
             sa.func.date(m.Appointment.appointment_time) == datetime.now().date(),
-            # m.Appointment.appointment_time == None
+            m.Appointment.deleted_at == None
             )
     )
     filtered_appointments = get_filtered_appointments(appointments)
@@ -51,9 +51,9 @@ def upcoming_appointments():
     tomorrow = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
     appointments = db.session.scalars(
         sa.select(m.Appointment).where(
-            current_user.id == m.Appointment.patient_id,
-        m.Appointment.appointment_time >= tomorrow,
-        m.Appointment.appointment_time == None
+            current_user.id == m.Appointment.doctor_id,
+            sa.func.date(m.Appointment.appointment_time) >= tomorrow,
+            m.Appointment.deleted_at == None
         )
     )
     filtered_appointments = get_filtered_appointments(appointments)

@@ -50,7 +50,7 @@ def add_patient():
     if db.session.scalar(sa.select(Patient).where(Patient.national_id == data['national_id'])):
         return bad_request('National ID already exists')
     patient = Patient(**data)
-    save(patient, new=True)
+    save(patient)
     return patient.to_dict(), 201
 
 @bp.put('/patients/<string:patient_id>')
@@ -67,7 +67,7 @@ def add_medication(patient_id):
     if "medication" not in data or "dosage" not in data:
         bad_request('Missing required fields')
     prescription = Prescription(patient_id=patient_id, medication=data['medication'], dosage=data['dosage'])
-    save(prescription, new=True)
+    save(prescription)
     return {'message': 'Medication added successfully'}, 201
 
 @bp.post('/patients/<string:patient_id>/diagnosises')
@@ -77,5 +77,5 @@ def add_diagnosis(patient_id):
     if "name" not in data:
         bad_request('Missing required fields')
     diagnosis = Diagnose(patient_id=patient_id, name=data['name'])
-    save(diagnosis, new=True)
+    save(diagnosis)
     return {'message': 'Diagnosis added successfully'}, 201

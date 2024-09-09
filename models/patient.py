@@ -10,8 +10,9 @@ from flask_login import UserMixin
 import jwt
 from web_flask import db
 from sqlalchemy.ext.hybrid import hybrid_property
-from datetime import date
+from datetime import date, datetime
 from flask import current_app
+
 
 
 class GenderType(str, Enum):
@@ -136,45 +137,90 @@ class Vital(BaseModel):
     temperature: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
     blood_pressure: so.Mapped[str] = so.mapped_column(sa.String(10), nullable=False)
     pulse: so.Mapped[int] = so.mapped_column(sa.Integer, nullable=False)
+    measured_at: so.Mapped[datetime] = so.mapped_column(sa.DateTime, default=datetime.utcnow)
 
 
     @property
     def vitals_list(self):
         return [
-            ("Height", self.height),
-            ("Weight", self.weight),
-            ("Temperature", self.temperature),
-            ("Blood Pressure", self.blood_pressure),
-            ("Pulse", self.pulse),
+            ("Height", self.height, "Normal", "success", "fa-check-circle"),
+            ("Weight", self.weight, "Normal", "success", "fa-check-circle"),
+            ("Temperature", self.temperature, self.status_temp, self.status_color_temp, self.status_icon_temp),
+            ("Blood Pressure", self.blood_pressure, self.status_blood_pressure, self.status_color_blood_pressure, self.status_icon_blood_pressure),
+            ("Pulse", self.pulse, self.status_pulse, self.status_color_pulse, self.status_icon_pulse),
+            ("BMI", self.bmi, self.status_bmi, self.status_color_bmi, self.status_icon_bmi),
         ]
 
     @hybrid_property
     def bmi(self):
-        return self.weight / (self.height ** 2)
+        height_in_meters = self.height / 100
+        return round(self.weight / (height_in_meters ** 2), 2)
 
     @hybrid_property
-    def status(self):
-        if self.temperature > 100 or self.blood_pressure > 140 or self.blood_pressure < 90 or self.pulse > 100 or self.pulse < 60 or self.bmi > 25:
+    def status_temp(self):
+        if self.temperature > 100:
             return "Critical"
         return "Normal"
 
     @hybrid_property
-    def status_color(self):
-        if self.status == "Critical":
-            return "danger"
-        return "success"
+    def status_color_temp(self):
+        return "danger" if self.status_temp == "Critical" else "success"
 
     @hybrid_property
-    def status_icon(self):
-        if self.status == "Critical":
-            return "fa-exclamation-triangle"
-        return "fa-check-circle"
+    def status_icon_temp(self):
+        return "fa-exclamation-triangle" if self.status_temp == "Critical" else "fa-check-circle"
 
     @hybrid_property
-    def status_text(self):
-        if self.status == "Critical":
+    def status_pulse(self):
+        if self.pulse > 100 or self.pulse < 60:
             return "Critical"
         return "Normal"
+
+    @hybrid_property
+    def status_icon_pulse(self):
+        return "fa-exclamation-triangle" if self.status_pulse == "Critical" else "fa-check-circle"
+
+    @hybrid_property
+    def status_color_pulse(self):
+        return "danger" if self.status_pulse == "Critical" else "success"
+
+
+    @hybrid_property
+    def status_bmi(self):
+        if self.bmi > 25:
+            return "Critical"
+        return "Normal"
+
+    @hybrid_property
+    def status_color_bmi(self):
+        return "danger" if self.status_bmi == "Critical" else "success"
+
+    @hybrid_property
+    def status_icon_bmi(self):
+        return "fa-exclamation-triangle" if self.status_bmi == "Critical" else "fa-check-circle"
+
+    @hybrid_property
+    def systolic_bp(self):
+        return int(self.blood_pressure.split('/')[0])
+
+    @hybrid_property
+    def diastolic_bp(self):
+        return int(self.blood_pressure.split('/')[1])
+
+    @hybrid_property
+    def status_blood_pressure(self):
+        if self.systolic_bp in range(90, 141) and self.diastolic_bp in range(60, 91):
+            return "Normal"
+        return "Critical"
+
+    @hybrid_property
+    def status_color_blood_pressure(self):
+        return "danger" if self.status_blood_pressure == "Critical" else "success"
+
+    @hybrid_property
+    def status_icon_blood_pressure(self):
+        return "fa-exclamation-triangle" if self.status_blood_pressure == "Critical" else "fa-check-circle"
+
 
 class Diagnose(BaseModel):
     """

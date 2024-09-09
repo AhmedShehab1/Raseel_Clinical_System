@@ -44,3 +44,4 @@ class StaffMember(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
     last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
         sa.DateTime, default=gen_datetime
     )
+

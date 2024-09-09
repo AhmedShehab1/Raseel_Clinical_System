@@ -49,7 +49,7 @@ def add_appointment():
         return bad_request('Patient already has an appointment at that time')
 
     app = Appointment(**data)
-    save(app, new=True)
+    save(app)
     return app.to_dict(), 201
 
 @bp.put('/appointments/<string:appointment_id>')

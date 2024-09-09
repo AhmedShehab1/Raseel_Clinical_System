@@ -49,11 +49,16 @@ def staff_login():
     form = LoginForm()
     if form.validate_on_submit():
         staff = db.session.scalar(
-            sa.select(m.Doctor).where(m.Doctor.email == form.email.data)
+            sa.select(m.Doctor).where(m.Doctor.email == form.email.data,
+                                      m.Doctor.deleted_at == None)
+
         )
         if staff is None:
             staff = db.session.scalar(
-                sa.select(m.Admin).where(m.Admin.email == form.email.data)
+                sa.select(m.Admin).where(
+                                         m.Admin.email == form.email.data,
+                                         m.Admin.deleted_at == None)
+
             )
             if staff is None or not staff.check_password(form.password.data):
                 flash("Login Unsuccessful. Please check email and password",

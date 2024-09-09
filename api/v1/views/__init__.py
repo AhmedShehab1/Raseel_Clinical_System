@@ -13,10 +13,12 @@ def get_from_db(id, *models):
             return record
     abort(404)
 
-def save(model=None, new=False):
-    if new:
+
+def save(model=None):
+    if model:
         db.session.add(model)
     db.session.commit()
+
 
 from api.v1.views.appointments import *
 from api.v1.views.departments import *
