@@ -1,48 +1,227 @@
 $(document).ready(function(){
+    const formData = {};
+    const newPatientData = {};
+    const patientAttributes = ['name', 'password', 'email', 'contact_number', 'gender', 'national_id', 'birth_date'];
     var fieldsets = $('fieldset');
-    console.log(fieldsets);
-    var current_fs = 0, previous_fs = -1, next_fs = 1; //fieldsets
+    var current_fs = 0, previous_fs = fieldsets.length - 1, next_fs = 1; //fieldsets
     var opacity;
+    var all_doctors_working_hours = {};
 
-    $(".skip").click(function(){
-        // Make all the values in the fieldset empty => ""
+    $(".form-check-input").click(function(){
+        const deselectButton = $(".deselect")[0];
+        deselectButton.disabled = false;
+        deselectButton.classList.remove('btn-outline-secondary');
+        deselectButton.classList.add('btn-secondary');
     });
 
-    $(".submit").click(function(){
-        //Check required fields
-        var requiredFields = $(fieldsets[current_fs]).find('.required');
-        if (!isRequiredFieldsValid(current_fs)) {
+    $(".deselect").click(function(){
+        const patientsList = document.querySelectorAll('.form-check-input');
+        if (typeof patientsList !== 'undefined' && patientsList !== null) {
+            patientsList.forEach((patient) => {
+                if (patient.checked) {
+                    patient.checked = false;
+                }
+            });
+        }
+        const deselectButton = $(this)[0];
+        deselectButton.disabled = true;
+        deselectButton.classList.remove('btn-secondary');
+        deselectButton.classList.add('btn-outline-secondary');
+    });
+
+    $(".skip").click(function(){
+        // Make all fields' value equal to "" in the current fieldset, which is fieldsets[current_fs] at current_fs = 3
+        const fields = $(fieldsets[current_fs])[0].querySelectorAll('input, select, textarea');
+        fields.forEach((field) => {
+            if (field.type === 'button' || field.type === 'submit') {
+                return;
+            }
+            field.value = "";
+        });
+        $(this).parent().find('input[name="next"]').click();
+    });
+
+    $(".submit").click(function(event){
+        const fieldsetData = {};
+        const fields = $(fieldsets[current_fs])[0].querySelectorAll('input, select, textarea');
+        var valid = true;
+
+        fields.forEach((field) => {
+            if (field.type === 'button' || field.type === 'submit') {
+                return;
+            }
+            fieldsetData[field.name] = field.value;
+            removeFeedback(field);
+            if (!field.checkValidity()) {
+                createInvalidFeedback(field, field.validationMessage);
+                valid = false;
+            } else {
+                createValidFeedback(field);
+            }
+
+        });
+        fieldsets[current_fs].classList.add('was-validated');
+
+        const date = fieldsetData['datetime'].split('T')[0];
+        const time = fieldsetData['datetime'].split('T')[1];
+        const hour = time.split(':')[0];
+        const miniutes = time.split(':')[1][0] + time.split(':')[1][1];
+        const am_pm = time.split(':')[1][2] + time.split(':')[1][3];
+        if (parseInt(miniutes) < 30) {
+            fieldsetData['datetime'] = date + 'T' + hour + ':' + '00' + am_pm;
+        } else {
+            fieldsetData['datetime'] = date + 'T' + hour + ':' + '30' + am_pm;
+        }
+
+        const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+        const appointmentDate = new Date(fieldsetData['datetime']);
+        const appointmentDay = weekday[appointmentDate.getDay()];
+        const doctorID = fieldsetData['doctor'];
+        const doctorWorkingHours = all_doctors_working_hours[doctorID];
+
+        if (typeof doctorWorkingHours !== 'undefined') {
+            doctorWorkingHours.forEach((workingHour) => {
+                if (workingHour['day'] === appointmentDay) {
+                    const startHour = parseInt(workingHour['start_hour'].split(':')[0]);
+                    const startMinutes = parseInt(workingHour['start_hour'].split(':')[1]) + (startHour * 60);
+                    
+                    const endHour = parseInt(workingHour['end_hour'].split(':')[0]);
+                    const endMinutes = parseInt(workingHour['end_hour'].split(':')[1]) + (endHour * 60);
+
+                    const appointmentMinutes = parseInt(hour) * 60 + parseInt(miniutes);
+                    if (appointmentMinutes < startMinutes || appointmentMinutes > endMinutes) {
+                        alert('The appointment time is not within the working hours of the doctor. Please choose another time or select another doctor.');
+                        valid = false;
+                    }
+                }
+            });
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/v1/appointments/' + fieldsetData['doctor'],
+            contentType: 'application/json; charset=utf-8',
+            success: function(data) {
+                for (const appointment of data) {
+                    if (appointment['appointment_time'] === fieldsetData['datetime']) {
+                        alert('The appointment time is not available. Please choose another time or select another doctor.');
+                        valid = false;
+                        break;
+                    }
+                }
+            },
+            error: function(error) {
+                alert('An error occurred while checking the availability of the appointment time.');
+            }
+        });
+        if (!valid) {
+            event.preventDefault();
+            event.stopPropagation();
             return;
         }
 
-        const name = $('#inputFullName').val();
-        const email = $('#inputemail').val();
+        Object.assign(formData, fieldsetData);
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/appointments',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(formData),
+            success: function() {
+                alert('Appointment has been successfully booked.');
+                window.location.href = '/receptionist/dashboard';
+            },
+            error: function() {
+                alert('An error occurred while booking the appointment.');
+            }
+        });
+
     });
 
-    $(".next").click(function(){
-        //Check required fields
-        var requiredFields = $(fieldsets[current_fs]).find('.required');
-        if (!isRequiredFieldsValid(requiredFields)) {
-            return;
+    $(".next").click(function(event){
+        const fieldsetData = {};
+        if (fieldsets[current_fs].classList.contains('search-form')) {
+            const patientsList = document.querySelectorAll('.form-check-input');
+            if (typeof patientsList !== 'undefined' && patientsList !== null) {
+                const patientID = getPatientID(patientsList);
+                if (typeof patientID !== 'undefined' && patientID !== null) {
+                    fieldsetData['patient_id'] = patientID;
+                    for (let i = 1; i < 3; i++) {
+                        fieldsets[i].classList.add('skipped');
+                        $("#progressbar li").eq(i).addClass("active");
+                    }
+                }
+            }
+        } else {
+            const fields = $(fieldsets[current_fs])[0].querySelectorAll('input, select, textarea');
+            var valid = true;
+            var fieldsValue = {};
+            fields.forEach((field) => {
+                if (field.type === 'button' || field.type === 'submit') {
+                    return;
+                }
+                if (!(current_fs === 1 || current_fs === 2) || patientAttributes.includes(field.name)) {
+                    fieldsValue[field.name] = field.value;
+                }
+                removeFeedback(field);
+                if (!field.checkValidity()) {
+                    createInvalidFeedback(field, field.validationMessage);
+                    valid = false;
+                } else {
+                    createValidFeedback(field);
+                }
+
+            });
+
+            fieldsets[current_fs].classList.add('was-validated');
+            if (!valid) {
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
+
+            if (current_fs === 1 || current_fs === 2) {
+                Object.assign(newPatientData, fieldsValue);
+                if (current_fs === 2) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/v1/patients',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        data: JSON.stringify(newPatientData),
+                        success: function(data) {
+                            fieldsetData['patient_id'] = data['id'];
+                        },
+                        error: function(error) {
+                            alert('An error occurred while creating a new account.');
+                        }
+                    });
+                }
+            } else {
+                Object.assign(fieldsetData, fieldsValue);
+            }
+        }
+
+        if (Object.keys(fieldsetData).length !== 0) {
+            Object.assign(formData, fieldsetData);
         }
 
         previous_fs = current_fs;
-        if (fieldsets[next_fs].classList.contains('skipped')) {
-            current_fs = next_fs + 1;
-            while (fieldsets[current_fs].classList.contains('skipped') && current_fs < fieldsets.length - 1) {
-                current_fs += 1;
-            }
-        } else {
-            current_fs = next_fs;
+        current_fs += 1;
+
+        while (fieldsets[current_fs].classList.contains('skipped') && current_fs < fieldsets.length - 1) {
+            current_fs += 1;
         }
         next_fs = current_fs + 1;
+
         //Add Class Active
-        $("#progressbar li").eq($("fieldset").index($(fieldsets[current_fs]))).addClass("active");
+        $("#progressbar li").eq(current_fs).addClass("active");
         
         //show the next fieldset
         $(fieldsets[current_fs]).show();
         if (current_fs === 4) {
-            loadDepartments();
+            all_doctors_working_hours = loadDepartments();
         }
         //hide the current fieldset with style
         $(fieldsets[previous_fs]).animate({opacity: 0}, {
@@ -62,20 +241,17 @@ $(document).ready(function(){
     
     $(".previous").click(function(){
         next_fs = current_fs;
-        if (fieldsets[previous_fs].classList.contains('skipped')) {
-            current_fs = previous_fs - 1;
-            while (fieldsets[current_fs].classList.contains('skipped') && current_fs > 0) {
-                current_fs -= 1;
-            }
-        } else {
-            current_fs = previous_fs;
+        current_fs -= 1;
+
+        while (fieldsets[current_fs].classList.contains('skipped') && current_fs > 0) {
+            fieldsets[current_fs].classList.remove('skipped');
+            $("#progressbar li").eq(current_fs).removeClass("active");
+            current_fs -= 1;
         }
         previous_fs = current_fs - 1;
-        console.log(current_fs);
-        console.log($(fieldsets[current_fs]));
         
         //Remove class active
-        $("#progressbar li").eq($("fieldset").index($(fieldsets[next_fs]))).removeClass("active");
+        $("#progressbar li").eq(next_fs).removeClass("active");
         
         //show the previous fieldset
         $(fieldsets[current_fs]).show();
@@ -97,141 +273,40 @@ $(document).ready(function(){
     });
 });
 
-function isRequiredFieldsValid(requiredFields) {
-    var valid = true;
-
-    for (let i = 0; i < requiredFields.length; i++) {
-        const field = $(requiredFields[i]);
-        if (validateNullValue(field) === false || validateCustomFields(field) === false) {
-            field.css('border-color', 'red');
-            field.addClass('is-invalid');
-            valid = false;
-        } else {
-            field.css('border-color', 'gray');
-            removeInvalidFeedback(field);
-            field.removeClass('is-invalid');
+function getPatientID(patientsList) {
+    for (let i = 0; i < patientsList.length; i++) {
+        if (patientsList[i].checked) {
+            return patientsList[i].value;
         }
     }
-    if (!valid) {
-        return false;
-    }
+    return null;
 }
 
-function validateCustomFields(field) {
-    var fieldType = field.attr('type');
-
-    if (fieldType === 'email') {
-        return validateEmail(field.val());
-    } else if (fieldType === 'datetime-local') {
-        return validateDateTime(field);
-    } else if (fieldType === 'password') {
-        return field.attr('id') === 'inputPassword' ? validatePassword(field.val()) : validateConfirmPassword(field.val());
-    } else if (fieldType === 'date') {
-        return field.attr('id') === 'inputBirthDate' ? validateBirthDate(field.val()) : validateDate(field.val());
-    } else if (fieldType === 'tel' || fieldType === 'number') {
-        return field.attr('id') === 'inputPhone' ? validateContactNumber(field.val()) : validateNationalId(field.val());
-    } else {
-        return true;
+function removeFeedback(field) {
+    field.classList.remove('is-invalid');
+    field.classList.remove('is-valid');
+    const inputFormat = $(field).parent()[0].querySelector('#input-format');
+    if (inputFormat !== null) {
+        inputFormat.classList.add('visually-hidden');
     }
-}
-
-function validateNullValue(field) {
-    if (field.val() === '') {
-        createInvalidFeedback(field, 'Please fill out this field.');
-        return false;
+    const feedback = field.parentNode.querySelector('.invalid-feedback');
+    if (feedback !== null) {
+        feedback.remove();
     }
-
-    return true;
-}
-
-function validateEmail(email) {
-    var regex = /^\S+@\S+\.\S+$/;
-
-    if (regex.test(email) === false) {
-        createInvalidFeedback($('#inputEmail'), 'Please enter a valid email address.');
-        return false;
-    }
-
-    return true;
-}
-
-function validateDateTime(dateTime) {
-    if (new Date(dateTime.val()) < new Date()) {
-        createInvalidFeedback($('#inputDateTime'), 'Date must be in the future.');
-        return false;
-    }
-
-    return true;
-}
-
-function validatePassword(password) {
-    var regex = /^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\da-zA-Z]).{8,})$/;
-
-    if (regex.test(password) === false) {
-        createInvalidFeedback($('#inputPassword'),
-        'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character, and be at least 8 characters long.');
-        return false;
-    }
-
-    return true;
-}
-
-function validateConfirmPassword(confirmPassword) {
-    var password = $('#inputPassword').val();
-
-    if (confirmPassword !== password) {
-        createInvalidFeedback($('#inputConfirmPassword'), 'Passwords do not match.');
-        return false;
-    }
-
-    return true;
-}
-
-function validateBirthDate(birthDate) {
-    if (new Date(birthDate) > new Date()) {
-        createInvalidFeedback($('#inputBirthDate'), 'Date must be in the past.');
-        return false;
-    }
-
-    return true;
-}
-
-function validateDate(date) {
-    if (new Date(date) < new Date()) {
-        createInvalidFeedback($('#inputDate'), 'Date must be in the future.');
-        return false;
-    }
-
-    return true;
-}
-
-function validateContactNumber(contactNumber) {
-    var regex = /^05[0-9]{8}$/;
-
-    if (regex.test(contactNumber) === false) {
-        createInvalidFeedback($('#inputPhone'), 'Please enter a valid contact number 05########.');
-        return false;
-    }
-
-    return true;
-}
-
-function validateNationalId(nationalID) {
-    var regex = /^22[0-9]{8}$/;
-
-    if (regex.test(nationalID) === false) {
-        createInvalidFeedback($('#inputNationalID'), 'Please enter a valid national ID 22########.');
-        return false;
-    }
-
-    return true;
 }
 
 function createInvalidFeedback(field, message) {
-    var subMessage = field.parent().find('.invalid-feedback');
-    subMessage.text(message);
+    field.classList.add('is-invalid');
+    const inputFormat = $(field).parent()[0].querySelector('#input-format');
+    if (inputFormat !== null) {
+        inputFormat.classList.remove('visually-hidden');
+    }
+    const feedback = document.createElement('div');
+    feedback.classList.add('invalid-feedback');
+    feedback.innerHTML = message;
+    field.parentNode.appendChild(feedback);
 }
-function removeInvalidFeedback(field) {
-    var subMessage = field.parent().find('.invalid-feedback');
-    subMessage.text('');
+
+function createValidFeedback(field) {
+    field.classList.add('is-valid');
 }

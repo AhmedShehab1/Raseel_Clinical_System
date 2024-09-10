@@ -58,18 +58,6 @@
     padding: 3px 19px;
 }
 
-/*ProgressBar connectors*/
-#progressbar li:after {
-    content: '';
-    width: 100%;
-    height: 2px;
-    background: lightgray;
-    position: absolute;
-    left: 0;
-    top: 25px;
-    z-index: -1;
-}
-
 /*Color number of the step and the connector before it*/
 #progressbar li.active:before, #progressbar li.active:after {
     background: rgb(29, 165, 224);
@@ -111,7 +99,7 @@ fieldset {
 }
 
 /*Hide all except first fieldset*/
-fieldset:not(:first-of-type) {
+fieldset {
     display: none;
 }
 
@@ -144,4 +132,9 @@ fieldset .form-card {
 .search:hover {
     background-color: rgb(185, 185, 185);
     border: 1px solid gray;
+}
+
+.format-label {
+    font-size: 16px;
+    color: rgb(185, 185, 185);
 }

@@ -1,8 +1,6 @@
-from api.v1.errors import bad_request
 from web_flask import db
 from api.v1.views import bp
-from models import Department, Doctor
-from flask import request
+from models import Department
 import sqlalchemy as sa
 
 
@@ -90,45 +88,6 @@ def get_all_departments():
             dictionaries representing each department.
         int: the status code of the response.
     """
-
-    # dep_query = sa.delete(Department).where(Department.name.in_(["Cardiology", "Surgery", "Dental", "Orthopedics"]))
-    # db.session.execute(dep_query)
-    # doc_query = sa.delete(Doctor).where(Doctor.name.in_(["Dr. Mazen", "Dr. Ahmed", "Dr. Anas", "Dr. Sherif"]))
-    # db.session.execute(doc_query)
-    # db.session.commit()
-
-    # surgery_doctors = []
-    # dental_doctors = []
-    # cardiology_doctors = []
-    # orthopedics_doctors = []
-    # surgery = Department('Surgery', doctors=surgery_doctors)
-    # dental = Department('Dental', doctors=dental_doctors)
-    # cardiology = Department('Cardiology', doctors=cardiology_doctors)
-    # orthopedics = Department('Orthopedics', doctors=orthopedics_doctors)
-    # mazen = Doctor('Dr. Mazen', '12345@Aa', 'mazen@gmail.com', 'MBBS', str(surgery.id))
-    # ahmed = Doctor('Dr. Ahmed', '12345@Aa', 'ahmed2@gmail.com', 'MBBS', str(surgery.id))
-    # anas = Doctor('Dr. Anas', '12345@Aa', 'anas@gmail.com', 'MBBS', str(surgery.id))
-    # sherif = Doctor('Dr. Sherif', '12345@Aa', 'sherif@gmail.com', 'MBBS', str(dental.id))
-    # surgery_doctors.append(mazen)
-    # surgery_doctors.append(ahmed)
-    # surgery_doctors.append(anas)
-    # dental_doctors.append(sherif)
-    # db.session.add(mazen)
-    # db.session.commit()
-    # db.session.add(ahmed)
-    # db.session.commit()
-    # db.session.add(anas)
-    # db.session.commit()
-    # db.session.add(sherif)
-    # db.session.commit()
-    # db.session.add(surgery)
-    # db.session.commit()
-    # db.session.add(cardiology)
-    # db.session.commit()
-    # db.session.add(dental)
-    # db.session.commit()
-    # db.session.add(orthopedics)
-    # db.session.commit()
 
     departments_list = db.session.scalars(sa.select(Department)).all()
     departments = AllDepartments(departments_list)
