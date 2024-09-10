@@ -7,6 +7,16 @@ $(document).ready(function(){
     var opacity;
     var all_doctors_working_hours = {};
 
+
+    $("form").bind("keypress", function (event) {
+        if (event.keyCode === 13) {
+            console.log(event.keyCode);
+            $(".search").attr('value');
+            $(".submit").attr('value');
+            event.preventDefault();
+        }
+    });
+
     $(".form-check-input").click(function(){
         const deselectButton = $(".deselect")[0];
         deselectButton.disabled = false;
