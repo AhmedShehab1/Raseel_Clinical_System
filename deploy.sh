@@ -169,3 +169,32 @@ sudo systemctl enable elasticsearch
 
 
 sudo cat /etc/letsencrypt/live/staff.ahmedshehab.tech/fullchain.pem /etc/letsencrypt/live/staff.ahmedshehab.tech/privkey.pem > /etc/haproxy/certs/staff.ahmedshehab.tech.pem
+
+
+stop replica;
+CHANGE REPLICATION SOURCE TO
+    source_host='34.227.92.129',
+    source_port=3306,
+    source_user='replica_user',
+    source_password='password',
+    source_log_file='mysql-bin.000159',
+    source_log_pos=806;
+START REPLICA;
+
+
+
+mysql -u replica_user -p -h 34.227.92.129 -P 3306
+
+mysql -u replica_user -p -h 52.72.8.208 -P 3306
+
+
+GRANT CREATE ON *.* TO 'replica_user'@'52.72.8.208';
+
+GRANT ALL PRIVILEGES ON *.* TO 'replica_user'@'52.72.8.208';
+
+
+create database Raseel_db character set utf8 collate utf8_bin;
+create user 'raseel'@'localhost' identified by 'password';
+grant all privileges on Raseel_db.* to 'raseel'@'localhost';
+flush privileges;
+quit;

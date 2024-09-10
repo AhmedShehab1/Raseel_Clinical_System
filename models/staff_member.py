@@ -1,13 +1,14 @@
 from typing import Optional
-from utils import PasswordMixin
+from utils import PasswordMixin, SearchableMixin
 import sqlalchemy.orm as so
 import sqlalchemy as sa
 import models as m
 from .base_model import BaseModel, gen_datetime
+from flask_login import UserMixin
 
-
-class StaffMember(BaseModel, PasswordMixin):
+class StaffMember(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
     __abstract__ = True
+    __searchable__ = ["name", "phone"]
 
     def __init__(self, password: str, **kwargs):
         """
@@ -19,6 +20,10 @@ class StaffMember(BaseModel, PasswordMixin):
         PasswordMixin.__init__(self, password)
         super().__init__(**kwargs)
 
+
+    email: so.Mapped[str] = so.mapped_column(
+        sa.String(120), index=True, unique=True, nullable=False
+    )
 
     name: so.Mapped[str] = so.mapped_column(
         sa.String(64), index=True, nullable=False
@@ -39,3 +44,4 @@ class StaffMember(BaseModel, PasswordMixin):
     last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
         sa.DateTime, default=gen_datetime
     )
+

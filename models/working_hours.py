@@ -27,7 +27,7 @@ class WorkingHours(BaseModel):
         sa.ForeignKey("doctors.id"), index=True, nullable=False
     )
 
-    doctor: so.Mapped["m.Doctor"] = so.relationship(
+    doctor: so.Mapped["m.Doctor"] = so.relationship (
         "Doctor", back_populates="working_hours"
     )
 
