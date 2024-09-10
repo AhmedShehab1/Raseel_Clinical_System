@@ -55,7 +55,7 @@
             {% set current_patients = patients|selectattr("deleted_at", "none")|list %}
             {% if current_patients == [] %}
               <div id="no-results" class="d-flex align-items-center justify-content-center" style="margin: 30px 30px">
-                <p>{{_('No results found')}}</p>
+                <img src="../static/images/no_results_404.png" alt="No Results" style="width: 350px">
               </div>
             {% else %}
               <ul class="list-group" id="patients-list" style="width:400px">
