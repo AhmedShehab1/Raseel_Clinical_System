@@ -14,6 +14,12 @@ def update_item(item, data):
         setattr(item, k, v)
     save()
 
+# Get all appointments of a specific doctor
+@bp.get('/appointments/<string:doctor_id>')
+def get_doctor_appointments(doctor_id):
+    appointments = db.session.scalars(sa.select(Appointment).where(Appointment.doctor_id == doctor_id)).all()
+    return [app.to_dict() for app in appointments], 200
+
 @bp.get('/appointments/<string:appointment_id>')
 def get_appointment(appointment_id):
     app = get_from_db(appointment_id, Appointment)

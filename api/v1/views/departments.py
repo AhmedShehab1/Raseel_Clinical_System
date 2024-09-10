@@ -1,8 +1,6 @@
-from api.v1.errors import bad_request
 from web_flask import db
 from api.v1.views import bp
 from models import Department
-from flask import request
 import sqlalchemy as sa
 
 
@@ -17,7 +15,7 @@ class AllDepartments:
         to_dict() - returns a dictionary representation of the class.
     """
 
-    def __init__(self, departments_list: list):
+    def __init__(self, departments_list):
         """Initialize the AllDepartments class.
 
         Args:
@@ -91,8 +89,8 @@ def get_all_departments():
         int: the status code of the response.
     """
 
-    departments_list = db.session.scalars(sa.select(Department))
-    departments = AllDepartments(departments_list.all())
+    departments_list = db.session.scalars(sa.select(Department)).all()
+    departments = AllDepartments(departments_list)
     status_code = 200 if departments.count > 0 else 404
 
     return departments.to_dict(), status_code

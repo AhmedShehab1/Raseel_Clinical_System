@@ -203,22 +203,7 @@ ul.navbar-nav {
     color: red;
 }
 
-.book-button {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.personal-info {
-    color: rgb(13, 110, 253);
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-right: 0px;
-    margin-left: 0px;
-    font-weight: bold;
-    font-size: 25px;
-}
-
-.appointment-info {
+.fieldset-title {
     color: rgb(13, 110, 253);
     margin-top: 0px;
     margin-bottom: 0px;

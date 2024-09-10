@@ -1,4 +1,6 @@
 import models as m
+import sqlalchemy as sa
+import sqlalchemy.orm as so
 
 
 class Receptionist(m.StaffMember):

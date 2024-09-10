@@ -1,12 +1,9 @@
-import models as m
-from flask import Blueprint, render_template, redirect, url_for, request, flash, g
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from web_flask import db
+from flask_login import current_user, login_required
 from web_flask.main.forms import (
     EditProfileInfo,
-    VisitorForm
 )
-import sqlalchemy as sa
-from flask_login import current_user, login_required
 
 
 patient_bp = Blueprint("patient_bp", __name__, url_prefix="/patient")
