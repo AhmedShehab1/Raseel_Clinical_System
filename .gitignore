@@ -6,3 +6,5 @@ pusher
 deploy.sh
 .vscode/
 app.db
+data_generator.py
+Raseel_dump.sql
