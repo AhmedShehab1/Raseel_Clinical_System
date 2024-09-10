@@ -35,7 +35,7 @@ class AllDepartments:
 
 def fetch_department(department_id):
     """Fetch a department from the database
-    
+
     Args:
         department_id: str - the id of the department to fetch.
 

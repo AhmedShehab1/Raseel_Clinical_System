@@ -50,7 +50,18 @@ class BaseModel(db.Model):
             new_dict['created_at'] = new_dict['created_at'].strftime(time)
         if "updated_at" in new_dict:
             new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
+
         new_dict["__class__"] = self.__class__.__name__
+
         if "_sa_instance_state" in new_dict:
             del new_dict["_sa_instance_state"]
+
+        for key, value in new_dict.items():
+            if isinstance(value, BaseModel):
+                new_dict[key] = value.to_dict()
+            elif isinstance(value, list) and all(isinstance(i, BaseModel) for i in value):
+                new_dict[key] = [i.to_dict() for i in value]
+            elif isinstance(value, dict) and all(isinstance(i, BaseModel) for i in value.values()):
+                new_dict[key] = {k: v.to_dict() for k, v in value.items()}
+
         return new_dict

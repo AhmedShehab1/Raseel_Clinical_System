@@ -5,16 +5,28 @@ import sqlalchemy as sa
 class SearchableMixin:
     @classmethod
     def search(cls, expression, page, per_page, fields=None):
-        ids, total = query_index(cls.__tablename__, expression, page, per_page, fields)
-        if total == 0:
-            return [], 0
+        if cls.__abstract__: # Check if the class is abstract
+            results = []
+            for subclass in cls.__subclasses__():
+                ids = query_index(subclass.__tablename__, expression, page, per_page, fields)
+                if len(ids) > 0:
+                    when = []
+                    for i in range(len(ids)):
+                        when.append((ids[i], i))
+                    query = sa.select(subclass).where(subclass.id.in_(ids)).order_by(db.case(*when, value=subclass.id))
+                    results.extend(db.session.scalars(query))
+            return results
+
+        ids = query_index(cls.__tablename__, expression, page, per_page, fields)
+        if len(ids) == 0:
+            return []
         when = []
         for i in range(len(ids)):
             when.append((ids[i], i))
         query = sa.select(cls).where(cls.id.in_(ids)).order_by(
             db.case(*when, value=cls.id)
         )
-        return db.session.scalars(query), total
+        return db.session.scalars(query)
 
     @classmethod
     def before_commit(cls, session):
@@ -39,8 +51,13 @@ class SearchableMixin:
 
     @classmethod
     def reindex(cls):
-        for obj in db.session.scalars(sa.select(cls)):
-            add_to_index(cls.__tablename__, obj)
+        if cls.__abstract__:
+            for subclass in cls.__subclasses__():
+                for obj in db.session.scalars(sa.select(subclass)):
+                    add_to_index(subclass.__tablename__, obj)
+        else:
+            for obj in db.session.scalars(sa.select(cls)):
+                add_to_index(cls.__tablename__, obj)
 
 db.event.listen(db.session, "before_commit", SearchableMixin.before_commit)
 db.event.listen(db.session, "after_commit", SearchableMixin.after_commit)

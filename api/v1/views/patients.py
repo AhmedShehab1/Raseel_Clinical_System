@@ -1,39 +1,37 @@
 from datetime import datetime
 from api.v1.errors import bad_request
-from api.v1.views import bp
+from api.v1.views import bp, save, get_from_db
 from web_flask import db
 from models import Patient
+from models import Prescription
+from models import Diagnose
 import sqlalchemy as sa
 from flask import request
 
-def get_patient(patient_id):
-    return db.get_or_404(Patient, patient_id)
 
-def save():
-    db.session.commit()
 
-def update_patient(patient, data):
-    if 'email' in data and data['email'] != patient.email and db.session.scalar(sa.select(Patient).where(Patient.email == data['email'])):
+def update_data(model, data):
+    if 'email' in data and data['email'] != model.email and db.session.scalar(sa.select(Patient).where(Patient.email == data['email'])):
         return bad_request('Email already exists')
-    if 'contact_number' in data and data['contact_number'] != patient.contact_number and db.session.scalar(sa.select(Patient).where(Patient.contact_number == data['contact_number'])):
+    if 'contact_number' in data and data['contact_number'] != model.contact_number and db.session.scalar(sa.select(Patient).where(Patient.contact_number == data['contact_number'])):
         return bad_request('Contact number already exists')
-    if 'national_id' in data and data['national_id'] != patient.national_id and db.session.scalar(sa.select(Patient).where(Patient.national_id == data['national_id'])):
+    if 'national_id' in data and data['national_id'] != model.national_id and db.session.scalar(sa.select(Patient).where(Patient.national_id == data['national_id'])):
         return bad_request('National ID already exists')
     for k, v in data.items():
         if k in ['id', 'created_at', 'updated_at', 'deleted_at', 'last_seen', 'password_hash']:
             continue
-        setattr(patient, k, v)
+        setattr(model, k, v)
     save()
 
 
 @bp.get('/patients/<string:patient_id>')
 def get_patient(patient_id):
-    return get_patient(patient_id).to_dict(), 200
+    return get_from_db(patient_id, Patient).to_dict(), 200
 
 
 @bp.delete('/patients/<string:patient_id>')
 def delete_patient(patient_id):
-    patient = get_patient(patient_id)
+    patient = get_from_db(patient_id, Patient)
 
     patient.deleted_at = datetime.utcnow()
     save()
@@ -52,13 +50,32 @@ def add_patient():
     if db.session.scalar(sa.select(Patient).where(Patient.national_id == data['national_id'])):
         return bad_request('National ID already exists')
     patient = Patient(**data)
-    db.session.add(patient)
-    save()
+    save(patient)
     return patient.to_dict(), 201
 
 @bp.put('/patients/<string:patient_id>')
 def update_patient(patient_id):
-    patient = get_patient(patient_id)
+    patient = get_from_db(patient_id, Patient)
     data = request.get_json()
-    update_patient(patient, data)
+    update_data(patient, data)
     return patient.to_dict(), 200
+
+@bp.post('/patients/<string:patient_id>/medications')
+def add_medication(patient_id):
+    _ = get_from_db(patient_id, Patient)
+    data = request.get_json()
+    if "medication" not in data or "dosage" not in data:
+        bad_request('Missing required fields')
+    prescription = Prescription(patient_id=patient_id, medication=data['medication'], dosage=data['dosage'])
+    save(prescription)
+    return {'message': 'Medication added successfully'}, 201
+
+@bp.post('/patients/<string:patient_id>/diagnosises')
+def add_diagnosis(patient_id):
+    _ = get_from_db(patient_id, Patient)
+    data = request.get_json()
+    if "name" not in data:
+        bad_request('Missing required fields')
+    diagnosis = Diagnose(patient_id=patient_id, name=data['name'])
+    save(diagnosis)
+    return {'message': 'Diagnosis added successfully'}, 201

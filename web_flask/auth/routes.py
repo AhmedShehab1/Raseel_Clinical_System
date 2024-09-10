@@ -3,7 +3,12 @@ from web_flask.auth import bp
 from web_flask import db
 from flask import redirect, url_for, render_template, flash, request, session
 from flask_login import logout_user, current_user, login_user
-from web_flask.auth.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm
+from web_flask.auth.forms import (
+    LoginForm,
+    RegistrationForm,
+    ResetPasswordForm,
+    ResetPasswordRequestForm
+    )
 from web_flask.auth.email import send_password_reset_email
 import sqlalchemy as sa
 import models as m
@@ -44,11 +49,27 @@ def staff_login():
     form = LoginForm()
     if form.validate_on_submit():
         staff = db.session.scalar(
-            sa.select(m.Doctor).where(m.Doctor.email == form.email.data)
+            sa.select(m.Doctor).where(m.Doctor.email == form.email.data,
+                                      m.Doctor.deleted_at == None)
+
         )
-        if staff is None or not staff.check_password(form.password.data):
+        if staff is None:
+            staff = db.session.scalar(
+                sa.select(m.Admin).where(
+                                         m.Admin.email == form.email.data,
+                                         m.Admin.deleted_at == None)
+
+            )
+            if staff is None or not staff.check_password(form.password.data):
+                flash("Login Unsuccessful. Please check email and password",
+                    "danger")
+                return redirect(url_for("auth.staff_login"))
+            login_user(staff, remember=form.remember.data)
+            session['user_type'] = staff.__class__.__name__
+            return redirect(url_for("admin_bp.admin_dashboard"))
+        elif not staff.check_password(form.password.data):
             flash("Login Unsuccessful. Please check email and password",
-                  "danger")
+                    "danger")
             return redirect(url_for("auth.staff_login"))
         login_user(staff, remember=form.remember.data)
         session['user_type'] = staff.__class__.__name__
