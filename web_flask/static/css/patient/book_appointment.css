@@ -1,0 +1,7 @@
+#progressbar #symptoms:before {
+    content: "2";
+}
+
+#progressbar #appointment_info:before {
+    content: "3";
+}

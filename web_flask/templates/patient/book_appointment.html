@@ -1,106 +1,31 @@
-{% extends "patient/base_patient.html" %}
+{% extends "base_book_appointment.html" %}
 
+{% block head_links_extra %}
+    <script src="../static/js/patient/book_appointment.js"></script>
+    <link rel='stylesheet' href="../static/css/patient/book_appointment.css">
+{% endblock head_links_extra %}
 
-{% block head_link %}
+{% block nav_pills %}
+    <li class="nav-item">
+        <a href="{{ url_for('patient_bp.dashboard')}}" class="nav-link link-body-emphasis my-nav-pill">
+            <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></svg>
+            Dashboard
+        </a>
+    </li>
 
-  <link rel="stylesheet" href="../static/css/book_appointment/calendar/fonts/icomoon/style.css">
+    <li>
+        <a href="{{ url_for('patient_bp.book_appointment')}}" class="nav-link my-nav-pill active" aria-current="page">
+            <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></svg>
+            Book Appointment
+        </a>
+    </li>
+{% endblock nav_pills %}
 
-  <link href='../static/css/book_appointment/calendar/core/main.css' rel='stylesheet'>
-  <link href='../static/css/book_appointment/calendar/daygrid/main.css' rel='stylesheet'>
+{% block progressbar_li_extra %}{% endblock progressbar_li_extra %}
 
-  <!-- Style -->
-  <link rel="stylesheet" href="../static/css/book_appointment/calendar/style.css">
+{% block search_step_nav_buttons %}
+    <input type="button" name="continue_with_current_account" class="continue btn btn-outline-primary" id="{{ current_user.id }}" value="Continue with Your Account">
+    <input type="button" name="next" class="next btn btn-primary" value="Next" style="margin: 0;">
+{% endblock search_step_nav_buttons %}
 
-{% endblock head_link %}
-
-
-{% block content %}
-
-  <form style="margin:0px">
-    <div class="row g-3 align-items-top justify-content-between">
-      <div class="row g-3 col-12 col-lg-6" style="margin: 30px 20px">
-
-        <div class="col-md-6">
-          <label for="inputDepartment" class="form-label">
-            {{_('Department')}}
-            <span class="required-field-sign">{{_('*')}}</span>
-          </label>
-          <select id="inputDepartment" class="form-select" style="border: 1px solid gray" required>
-            <option value="">{{_('Choose the department')}}</option>
-            <option value="department_of_obstetrics_and_gynecology">{{_('Department of Obstetrics and Gynecology')}}</option>
-            <option value="department_of_surgery">{{_('The Department of Surgery')}}</option>
-            <option value="diagnostic_radiology_department">{{_('Diagnostic Radiology Department')}}</option>
-            <option value="emergency_and_general_medicine_department">{{_('The Emergency and General Medicine Department')}}</option>
-            <option value="department_of_internal_medicine">{{_('Department of Internal Medicine')}}</option>
-            <option value="dental_department">{{_('The Dental Department')}}</option>
-          </select>
-        </div>
-
-        <div class="col-md-6">
-          <label for="inputDoctor" class="form-label">
-            {{_('Doctor')}}
-            <span class="required-field-sign">{{_('*')}}</span>
-          </label>
-          <select id="inputDoctor" class="form-select" style="border: 1px solid gray" required>
-            <option value="">{{_('Choose a doctor')}}</option>
-            <option>...</option>
-          </select>
-        </div>
-
-        <div class="col-6">
-          <label for="inputAttach" class="form-label">
-            {{_('Attach photos')}}
-          </label>
-          <input type="file" class="form-control" id="inputAttach" style="border: 1px solid gray">
-        </div>
-
-        <div class="form-floating col-6">
-          <textarea class="form-control" id="floatingTextarea" style="height:100px; border: 1px solid gray;"></textarea>
-          <label for="floatingTextarea" style="margin-left:5px; ">
-            {{_('Comments')}}
-          </label>
-        </div>
-
-        <div class="col-12" style="text-align:center">
-          <button type="submit" class="btn btn-primary book-button" style="padding: 15px 40px">{{_('Complete Booking')}}</button>
-        </div>
-      </div>
-      <div class="row g-3 col-12 col-lg-5" style="margin: 30px 20px">
-
-        <div class="content">
-          <div id='calendar'></div>
-        </div>
-
-      </div>
-    </div>
-  </form>
-
-  <script src="../static/js/book_appointment/calendar/jquery-3.3.1.min.js"></script>
-  <script src="../static/js/book_appointment/calendar/popper.min.js"></script>
-  <script src="../static/js/book_appointment/calendar/bootstrap.min.js"></script>
-
-  <script src='../static/js/book_appointment/calendar/core/main.js'></script>
-  <script src='../static/js/book_appointment/calendar/interaction/main.js'></script>
-  <script src='../static/js/book_appointment/calendar/daygrid/main.js'></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var calendarEl = document.getElementById('calendar');
-
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: [ 'interaction', 'dayGrid' ],
-        defaultDate: new Date().toISOString().split('T')[0],
-        editable: true,
-        eventLimit: true, // allow "more" link when too many events
-        events: [
-          // append events here example { title: 'event1', start: '2020-02-01' }
-        ]
-      });
-
-      calendar.render();
-    });
-
-  </script>
-
-  <script src="../static/js/book_appointment/calendar/main.js"></script>
-{% endblock content%}
+{% block fieldsets_extra %}{% endblock fieldsets_extra %}
