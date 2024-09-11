@@ -5,11 +5,26 @@ from threading import Thread
 
 
 def send_email_async(app, msg):
+    """
+    Send email asynchronously
+    Args:
+        app : Flask app
+        msg : Message object
+    """
     with app.app_context():
         mail.send(msg)
 
 
 def send_email(subject, sender, recipients, text_body, html_body):
+    """
+    Send email
+    Args:
+        subject (str): Email subject
+        sender       : Email sender
+        recipients   : Email recipients
+        text_body    : Email text body
+        html_body    : Email html body
+    """
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
@@ -17,6 +32,11 @@ def send_email(subject, sender, recipients, text_body, html_body):
 
 
 def send_password_reset_email(user):
+    """
+    Send password reset email
+    Args:
+        user: User object
+    """
     token = user.get_reset_password_token()
     send_email(
         "[Raseel Medical Center] Reset Your Password",

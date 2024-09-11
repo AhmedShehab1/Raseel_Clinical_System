@@ -51,7 +51,7 @@ class SearchableMixin:
 
     @classmethod
     def reindex(cls):
-        if cls.__abstract__:
+        if cls.__abstract__ == True:
             for subclass in cls.__subclasses__():
                 for obj in db.session.scalars(sa.select(subclass)):
                     add_to_index(subclass.__tablename__, obj)
