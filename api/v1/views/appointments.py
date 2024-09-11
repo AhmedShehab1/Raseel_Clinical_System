@@ -2,7 +2,7 @@ from api.v1.errors import bad_request
 from web_flask import db
 from api.v1.views import bp,  get_from_db
 from models import Appointment
-from flask import request
+from flask import request, jsonify
 from datetime import datetime
 import sqlalchemy as sa
 
@@ -25,7 +25,7 @@ def update_item(item, data):
 @bp.get('/appointments/<string:doctor_id>')
 def get_doctor_appointments(doctor_id):
     appointments = db.session.scalars(sa.select(Appointment).where(Appointment.doctor_id == doctor_id)).all()
-    return [app.to_dict() for app in appointments], 200
+    return jsonify([app.to_dict() for app in appointments]), 200
 
 @bp.get('/appointments/<string:appointment_id>')
 def get_appointment(appointment_id):

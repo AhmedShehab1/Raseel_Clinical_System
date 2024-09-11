@@ -1,7 +1,7 @@
 from web_flask import db
 from api.v1.views import bp
 from models import Department
-import sqlalchemy as sa
+from sqlalchemy.orm import joinedload
 
 
 class AllDepartments:
@@ -89,9 +89,7 @@ def get_all_departments():
         int: the status code of the response.
     """
 
-    departments_list = db.session.scalars(sa.select(Department)).all()
-    for department in departments_list:
-        print(department.doctors)
+    departments_list = db.session.query(Department).options(joinedload(Department.doctors)).all()
     departments = AllDepartments(departments_list)
     status_code = 200 if departments.count > 0 else 404
 

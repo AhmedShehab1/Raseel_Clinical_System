@@ -93,7 +93,7 @@
                   {{_('Doctor')}}
                   <span class="required-field-sign">{{_('*')}}</span>
                 </label>
-                <select name="doctor" type="select" class="form-select" required id="inputDoctor">
+                <select name="doctor_id" type="select" class="form-select" required id="inputDoctor">
                   <option value="">{{_('Choose a doctor')}}</option>
                 </select>
 
@@ -104,7 +104,7 @@
                   {{_('Date & Time')}}
                   <span class="required-field-sign">{{_('*')}}</span>
                 </label>
-                <input name="datetime" type="datetime-local" class="form-control" required id="inputDateTime">
+                <input name="appointment_time" type="datetime-local" class="form-control" required id="inputDateTime">
                 <label class="format-label form-label" id="input-note" for="inputDateTime" style="margin-top: 10px">
                   - If the number of minites is less than 30, it will be considered as 0.
                   <br>
@@ -116,7 +116,7 @@
                 <label for="inputComments" class="form-label">
                   {{_('Comments')}}
                 </label>
-                <textarea name="comments" type="textarea" class="form-control" id="inputComments"></textarea>
+                <textarea name="reason" type="textarea" class="form-control" id="inputComments"></textarea>
 
               </div>
             </div>
