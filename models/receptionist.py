@@ -12,3 +12,4 @@ class Receptionist(m.StaffMember):
     """
 
     __tablename__ = "receptionists"
+

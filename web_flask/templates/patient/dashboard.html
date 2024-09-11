@@ -1,0 +1,27 @@
+{% extends 'logged_in_base.html' %}
+
+{% block head_links %}
+
+{% endblock head_links %}
+
+{% block nav_pills %}
+
+    <li class="nav-item">
+        <a href="{{ url_for('patient_bp.dashboard')}}" class="nav-link my-nav-pill active" aria-current="page">
+            <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+            Dashboard
+        </a>
+    </li>
+
+    <li>
+        <a href="{{ url_for('patient_bp.book_appointment')}}" class="nav-link link-body-emphasis my-nav-pill">
+            <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+            Book Appointment
+        </a>
+    </li>
+
+{% endblock nav_pills %}
+
+{% block content %}
+
+{% endblock content %}

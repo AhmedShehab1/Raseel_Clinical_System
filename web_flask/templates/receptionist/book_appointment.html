@@ -1,349 +1,165 @@
-{% extends "logged_in_base.html" %}
+{% extends "base_book_appointment.html" %}
 
-
-{% block head_links %}
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="../static/js/receptionist/book_appointment.js"></script>
-  <link rel='stylesheet' href="../static/css/receptionist/book_appointment.css">
-
-{% endblock head_links %}
+{% block head_links_extra %}
+    <script src="../static/js/receptionist/book_appointment.js"></script>
+    <link rel='stylesheet' href="../static/css/receptionist/book_appointment.css">
+{% endblock head_links_extra %}
 
 {% block nav_pills %}
+    <li class="nav-item">
+        <a href="{{ url_for('receptionist_bp.dashboard')}}" class="nav-link link-body-emphasis my-nav-pill">
+            <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></svg>
+            Dashboard
+        </a>
+    </li>
 
-  <li class="nav-item">
-    <a href="{{ url_for('receptionist_bp.dashboard')}}" class="nav-link link-body-emphasis my-nav-pill">
-        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></svg>
-        Dashboard
-    </a>
-  </li>
-
-  <li>
-    <a href="{{ url_for('receptionist_bp.book_appointment')}}" class="nav-link my-nav-pill active" aria-current="page">
-        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></svg>
-        Book Appointment
-    </a>
-  </li>
-
+    <li>
+        <a href="{{ url_for('receptionist_bp.book_appointment')}}" class="nav-link my-nav-pill active" aria-current="page">
+            <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></svg>
+            Book Appointment
+        </a>
+    </li>
 {% endblock nav_pills %}
 
-{% block content %}
-  <div class="col-md-10 mx-auto col-lg-5 p-4 p-md-5 border rounded-3 bg-body-tertiary">
-      <ul class="d-flex align-items-center justify-content-center" id="progressbar" style="padding: 0 0">
-          <li class="active" id="account_search"><p class="step-name overflow-hidden">Account Search</p></li>
-          <li id="create_account"><p class="step-name overflow-hidden">Create New Account</p></li>
-          <li id="personal_info"><p class="step-name overflow-hidden">Presonal Info</p></li>
-          <li id="symptoms"><p class="step-name overflow-hidden">Symptoms</p></li>
-          <li id="appointment_info"><p class="step-name overflow-hidden">Appointment Info</p></li>
-      </ul>
+{% block progressbar_li_extra %}
+    <li id="create_account"><p class="step-name text-break">Create New Account</p></li>
+    <li id="personal_info"><p class="step-name text-break">Presonal Info</p></li>
+{% endblock progressbar_li_extra %}
 
-      <fieldset id='fieldset_0' class="search-form" style="display:block">
-        <p class='fieldset-title text-center' style="margin-top:16px">{{_('Find Patient Account')}}</p>
-        {% if g.search_form %}
-          <div class="d-flex justify-content-center" style="margin-top:16px">
-              <form class='navbar-form navbar-center w-75 d-flex align-items-center justify-content-center' style="margin-top:10px;" role='search' method='GET' action="{{ url_for(session['previous_endpoint']) }}">
-                  <div class='form-group'>
-                      {{ g.search_form.q(class='form-control', placeholder=g.search_form.q.label.text, size=70) }}
-                  </div>
-                  <input type="submit" method="GET" name="search" class="btn search" value="Search">
-              </form>
-          </div>
-        {% endif %}
+{% block search_step_nav_buttons %}
+    <input type="button" name="next" class="next btn btn-primary" value="Next" style="margin: 0;">
+    <div name="styling_div" value=""></div>
+{% endblock search_step_nav_buttons %}
 
-        <div id="search-results" class="d-flex align-items-center justify-content-center" style="margin: 30px 30px;">
-          {% if patients is not none %}
-            {% set current_patients = patients|selectattr("deleted_at", "none")|list %}
-            {% if current_patients == [] %}
-              <div id="no-results" class="d-flex align-items-center justify-content-center" style="margin: 30px 30px">
-                <img src="../static/images/no_results_404.png" alt="No Results" style="width: 350px">
-              </div>
-            {% else %}
-              <ul class="list-group" id="patients-list" style="width:400px">
-                {% for patient in current_patients %}
-                  <li class="list-group-item">
-                    <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="{{ patient.id }}" id="{{ patient.id }}">
-                    <label class="form-check-label" for="{{ patient.id }}">{{ patient.name }}</label>
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          {% endif %}
-        </div>
+{% block fieldsets_extra %}
 
-        <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
-            <input type="button" name="deselect" class="deselect btn btn-outline-secondary" value="Deselect" style="margin: 0;" disabled>
-            <input type="button" name="next" class="next btn btn-primary" value="Next" style="margin: 0;">
-            <div name="styling div" value=""></div>
-        </div>
-      </fieldset>
-
-      <form id="testForm" style="margin:0px" method="POST">
-
-        <fieldset id='fieldset_1' class="needs-validation"
-                  oninput='inputConfirmPassword.setCustomValidity(inputConfirmPassword.value != inputPassword.value ? "Passwords do not match." : "")'>
-          <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
+    <fieldset id='fieldset_1' class="needs-validation"
+            oninput='inputConfirmPassword.setCustomValidity(inputConfirmPassword.value != inputPassword.value ? "Passwords do not match." : "")'>
+        <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
             <p class='fieldset-title text-center'>{{_('Create New Account')}}</p>
 
             <div class="col-md-12">
-              <label for="inputEmail" class="form-label">{{_('Email')}}</label>
-              <input type="email" name="email" class="form-control" required id="inputEmail" pattern="^\S+@\S+\.\S+$">
-              <label class="visually-hidden format-label form-label" id="input-format" for="inputEmail">format: user@example.com</label>
+                <label for="inputEmail" class="form-label">{{_('Email')}}</label>
+                <input type="email" name="email" class="form-control" required id="inputEmail" pattern="^\S+@\S+\.\S+$">
+                <label class="visually-hidden format-label form-label" id="input-format" for="inputEmail">format: user@example.com</label>
             </div>
 
             <div class="col-md-12">
-              <label class="form-label" for="inputPassword">Password</label>
-              <input class="form-control" name="password" required id="inputPassword" type="password" pattern="^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\da-zA-Z]).{8,})$">
-              <label class="visually-hidden format-label form-label" id="input-format" for="inputPassword">
-                Password must contain at least 8 characters, including 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.
-              </label>
+                <label class="form-label" for="inputPassword">Password</label>
+                <input class="form-control" name="password" required id="inputPassword" type="password" pattern="^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\da-zA-Z]).{8,})$">
+                <label class="visually-hidden format-label form-label" id="input-format" for="inputPassword">
+                    Password must contain at least 8 characters, including 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.
+                </label>
             </div>
 
             <div class="col-md-12">
-              <label class="form-label" for="inputConfirmPassword">Repeat Password</label>
-              <input class="form-control" name="confirmPassword" required id="inputConfirmPassword" type="password" pattern="^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\da-zA-Z]).{8,})$">
+                <label class="form-label" for="inputConfirmPassword">Repeat Password</label>
+                <input class="form-control" name="confirmPassword" required id="inputConfirmPassword" type="password" pattern="^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\da-zA-Z]).{8,})$">
             </div>
-          </div>
+        </div>
 
-            <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
-              <input type="button" name="previous" class="previous btn" value="Previous">
-              <input type="button" name="next" class="next btn btn-primary" value="Next">
-            </div>
-        </fieldset>
+        <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
+            <input type="button" name="previous" class="previous btn" value="Previous">
+            <input type="button" name="next" class="next btn btn-primary" value="Next">
+        </div>
+    </fieldset>
 
-        <fieldset id='fieldset_2' class="needs-validation"
-                  oninput='inputBirthDate.setCustomValidity(new Date(inputBirthDate.value) > new Date() ? "Birth date cannot be in the future." : "")'>
-            <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
-              <p class='fieldset-title text-center'>{{_('Personal Information')}}</p>
+    <fieldset id='fieldset_2' class="needs-validation"
+            oninput='inputBirthDate.setCustomValidity(new Date(inputBirthDate.value) > new Date() ? "Birth date cannot be in the future." : "")'>
+        <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
+            <p class='fieldset-title text-center'>{{_('Personal Information')}}</p>
 
-              <div class="col-md-12">
+            <div class="col-md-12">
                 <label for="inputFullName" class="form-label">
-                  {{_('Full Name')}}
-                  <span class="required-field-sign">{{_('*')}}</span>
+                    {{_('Full Name')}}
+                    <span class="required-field-sign">{{_('*')}}</span>
                 </label>
                 <input name="name" type="text" class="form-control" required id="inputFullName">
-              </div>
+            </div>
 
-              <div class="col-md-6">
+            <div class="col-md-6">
                 <label for="inputNationalID" class="form-label">
-                  {{_('National ID')}}
-                  <span class="required-field-sign">{{_('*')}}</span>
+                    {{_('National ID')}}
+                    <span class="required-field-sign">{{_('*')}}</span>
                 </label>
                 <input name="national_id" type="tel" class="form-control" required id="inputNationalID" pattern="^22[0-9]{8}$">
                 <label class="visually-hidden format-label form-label" id="input-format" for="inputNationalID">format: 22xxxxxxxx , the length is exactly 10</label>
-              </div>
+            </div>
 
-              <div class="col-md-6">
+            <div class="col-md-6">
                 <label for="inputPhone" class="form-label">
-                  {{_('Contact Number')}}
-                  <span class="required-field-sign">{{_('*')}}</span>
+                    {{_('Contact Number')}}
+                    <span class="required-field-sign">{{_('*')}}</span>
                 </label>
                 <input name="contact_number" type="tel" class="form-control" required id="inputPhone" pattern="^05[0-9]{8}$">
                 <label class="visually-hidden format-label form-label" id="input-format" for="inputPhone">format: 05xxxxxxxx , the length is exactly 10</label>
-              </div>
+            </div>
 
-              <div class="col-md-6">
+            <div class="col-md-6">
                 <label for="inputBirthDate" class="form-label">
-                  {{_('Birth Date')}}
-                  <span class="required-field-sign">{{_('*')}}</span>
+                    {{_('Birth Date')}}
+                    <span class="required-field-sign">{{_('*')}}</span>
                 </label>
                 <input name="birth_date" type="date" class="form-control" required id="inputBirthDate">
-              </div>
+            </div>
 
-              <div class="col-md-6">
+            <div class="col-md-6">
                 <label for="inputGender" class="form-label">
-                  {{_('Gender')}}
-                  <span class="required-field-sign">{{_('*')}}</span>
+                    {{_('Gender')}}
+                    <span class="required-field-sign">{{_('*')}}</span>
                 </label>
                 <Select name="gender" type="select" class="form-select" required id="inputGender">
-                  <option value="">{{_('Choose your gender')}}</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                    <option value="">{{_('Choose your gender')}}</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
                 </Select>
-              </div>
+            </div>
 
-              <div class="col-md-12">
+            <div class="col-md-12">
                 <label for="inputCity" class="form-label">
-                  {{_('City')}}
-                  <span class="required-field-sign">{{_('*')}}</span>
+                    {{_('City')}}
+                    <span class="required-field-sign">{{_('*')}}</span>
                 </label>
                 <select name="city" type="select" id="inputCity" class="form-select" required>
-                  <option value="">{{_('Choose your city')}}</option>
-                  <option value="riyadh">{{_('Riyadh')}}</option>
-                  <option value="jeddah">{{_('Jeddah')}}</option>
-                  <option value="mecca">{{_('Mecca')}}</option>
-                  <option value="medina">{{_('Medina')}}</option>
-                  <option value="ad_dammam">{{_('Ad Dammām')}}</option>
-                  <option value="tabuk">{{_('Tabūk')}}</option>
-                  <option value="al_hufuf">{{_('Al Hufūf')}}</option>
-                  <option value="al_qatif">{{_('Al Qaţīf')}}</option>
-                  <option value="al_hillah">{{_('Al Ḩillah')}}</option>
-                  <option value="at_taif">{{_('Aţ Ţā’if')}}</option>
-                  <option value="al_jubayl">{{_('Al Jubayl')}}</option>
-                  <option value="buraydah">{{_('Buraydah')}}</option>
-                  <option value="hafr_al_Batin">{{_('Ḩafr al Bāţin')}}</option>
-                  <option value="Yanbu">{{_('Yanbu')}}</option>
-                  <option value="hail">{{_('Ḩā’il')}}</option>
-                  <option value="abha">{{_('Abhā')}}</option>
-                  <option value="sakaka">{{_('Sakākā')}}</option>
-                  <option value="al_qurayyat">{{_('Al Qurayyāt')}}</option>
-                  <option value="jazan">{{_('Jāzān')}}</option>
-                  <option value="najran">{{_('Najrān')}}</option>
-                  <option value="al_wajh">{{_('Al Wajh')}}</option>
-                  <option value="arar">{{_('Arar')}}</option>
-                  <option value="al_Baḩah">{{_('Al Bāḩah')}}</option>
-                  <option value="tathlith">{{_('Tathlīth')}}</option>
-                  <option value="other">{{_('Other')}}</option>
+                    <option value="">{{_('Choose your city')}}</option>
+                    <option value="riyadh">{{_('Riyadh')}}</option>
+                    <option value="jeddah">{{_('Jeddah')}}</option>
+                    <option value="mecca">{{_('Mecca')}}</option>
+                    <option value="medina">{{_('Medina')}}</option>
+                    <option value="ad_dammam">{{_('Ad Dammām')}}</option>
+                    <option value="tabuk">{{_('Tabūk')}}</option>
+                    <option value="al_hufuf">{{_('Al Hufūf')}}</option>
+                    <option value="al_qatif">{{_('Al Qaţīf')}}</option>
+                    <option value="al_hillah">{{_('Al Ḩillah')}}</option>
+                    <option value="at_taif">{{_('Aţ Ţā’if')}}</option>
+                    <option value="al_jubayl">{{_('Al Jubayl')}}</option>
+                    <option value="buraydah">{{_('Buraydah')}}</option>
+                    <option value="hafr_al_Batin">{{_('Ḩafr al Bāţin')}}</option>
+                    <option value="Yanbu">{{_('Yanbu')}}</option>
+                    <option value="hail">{{_('Ḩā’il')}}</option>
+                    <option value="abha">{{_('Abhā')}}</option>
+                    <option value="sakaka">{{_('Sakākā')}}</option>
+                    <option value="al_qurayyat">{{_('Al Qurayyāt')}}</option>
+                    <option value="jazan">{{_('Jāzān')}}</option>
+                    <option value="najran">{{_('Najrān')}}</option>
+                    <option value="al_wajh">{{_('Al Wajh')}}</option>
+                    <option value="arar">{{_('Arar')}}</option>
+                    <option value="al_Baḩah">{{_('Al Bāḩah')}}</option>
+                    <option value="tathlith">{{_('Tathlīth')}}</option>
+                    <option value="other">{{_('Other')}}</option>
                 </select>
-              </div>
+            </div>
 
-              <div class="col-12">
+            <div class="col-12">
                 <label for="inputAddress" class="form-label">{{_('Address')}}</label>
                 <textarea name="address" type="textarea" class="form-control" id="inputAddress" placeholder="{{_('12 Main St ...')}}"></textarea>
-              </div>
             </div>
+        </div>
 
-          <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
+        <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
             <input type="button" name="previous" class="previous btn" value="Previous">
             <input type="button" name="next" class="next btn btn-primary" value="Next">
-          </div>
-        </fieldset>
+        </div>
+    </fieldset>
 
-        <fieldset id='fieldset_3'>
-          <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
-            <p class='fieldset-title text-center'>{{_('Symptoms')}}</p>
-          </div>
-          <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
-            <input type="button" name="previous" class="previous btn" value="Previous">
-            <input type="button" name="skip" class="skip btn" value="Skip">
-            <input type="button" name="next" class="next btn btn-primary" value="Next">
-          </div>
-        </fieldset>
-
-        <fieldset id='fieldset_4' class="needs-validation"
-                  oninput='inputDateTime.setCustomValidity(new Date(inputDateTime.value) < new Date() ? "Appointment date cannot be in the past." : "")'>
-            <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
-              <p class='fieldset-title text-center'>{{_('Appointment Information')}}</p>
-
-              <div class="col-md-12">
-                <label for="inputDepartment" class="form-label">
-                  {{_('Department')}}
-                  <span class="required-field-sign">{{_('*')}}</span>
-                </label>
-                <select name="department" type="select" class="form-select" required id="inputDepartment">
-                  <option value="">{{_('Choose a department')}}</option>
-                </select>
-              </div>
-
-              <div class="col-md-12">
-                <label for="inputDoctor" class="form-label">
-                  {{_('Doctor')}}
-                  <span class="required-field-sign">{{_('*')}}</span>
-                </label>
-                <select name="doctor" type="select" class="form-select" required id="inputDoctor">
-                  <option value="">{{_('Choose a doctor')}}</option>
-                </select>
-
-              </div>
-
-              <div class="col-md-12">
-                <label for="inputDateTime" class="form-label">
-                  {{_('Date & Time')}}
-                  <span class="required-field-sign">{{_('*')}}</span>
-                </label>
-                <input name="datetime" type="datetime-local" class="form-control" required id="inputDateTime">
-                <label class="format-label form-label" id="input-note" for="inputDateTime" style="margin-top: 10px">
-                  - If the number of minites is less than 30, it will be considered as 0.
-                  <br>
-                  - If the number of minites is equal to or more than 30, it will be considered as 30.
-                </label>
-              </div>
-
-              <div class="col-md-12">
-                <label for="inputComments" class="form-label">
-                  {{_('Comments')}}
-                </label>
-                <textarea name="comments" type="textarea" class="form-control" id="inputComments"></textarea>
-
-              </div>
-            </div>
-          <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
-            <input type="button" name="previous" class="previous btn" value="Previous">
-            <button name="submit" type="submit" class="btn btn-primary submit">{{_('Complete Booking')}}</button>
-          </div>
-        </fieldset>
-
-      </form>
-  </div>
-
-  <script>
-    function loadDepartments() {
-        const departmentSelect = document.getElementById('inputDepartment');
-        const datetimeSelect = document.getElementById('inputDateTime');
-        const doctorSelect = document.getElementById('inputDoctor');
-
-        var departments;
-        const all_doctors = new Object();
-        const all_doctors_working_hours = new Object();
-
-        $.ajax({
-          url: '/api/v1/departments',
-          method: 'GET',
-          type: 'GET',
-          contentType: 'application/json',
-          success: function (data_departments) {
-            departments = data_departments.results; // data_departments.results is a list of objects containing all departments
-            var i = 0;
-            departments.forEach((department) => {
-              let option = document.createElement('option');
-              option.setAttribute('value', String(department.id));
-              option.setAttribute('label', department.name);
-              departmentSelect.appendChild(option);
-              console.log(department, department.id, department.doctors);
-              all_doctors[String(department.id)] = department.doctors; // department.doctors is a list of objects containing all doctors in the department
-            });
-          },
-          error: function () {
-            alert('Failed to load the departments, Please try again.');
-          },
-        });
-
-        departmentSelect.addEventListener("change", (event) => {
-          resetDoctorOptions(doctorSelect);
-
-          const department_id = event.target.value;
-          const doctors = all_doctors[department_id];
-
-          if (typeof doctors === "undefined" || doctors.length === 0) {
-            if (department_id !== "") {
-              alert('Unfortunately, this department is currently closed.');
-            }
-            return;
-          }
-
-          doctors.forEach((doctor) => {
-            let option = document.createElement('option');
-            option.setAttribute('value', doctor.id);
-            option.setAttribute('label', doctor.name);
-            doctorSelect.appendChild(option);
-            all_doctors_working_hours[doctor.id] = doctor.working_hours;
-          });
-        });
-
-        return all_doctors_working_hours;
-    }
-
-    function resetDoctorOptions(doctorSelectElement) {
-        let optionIndex, lenght = doctorSelectElement.options.length - 1;
-
-        for (optionIndex = lenght; optionIndex >= 0; optionIndex--) {
-          doctorSelectElement.remove(optionIndex);
-        }
-        let option = document.createElement('option');
-        option.setAttribute('value', '');
-        option.setAttribute('label', "Choose a doctor");
-        doctorSelectElement.appendChild(option);
-        doctorSelectElement.value = '';
-    }
-  </script>
-
-{% endblock content%}
+{% endblock fieldsets_extra %}

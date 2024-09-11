@@ -1,0 +1,131 @@
+{% extends "logged_in_base.html" %}
+
+
+{% block head_links %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="../static/js/base_book_appointment.js"></script>
+  <link rel='stylesheet' href="../static/css/base_book_appointment.css">
+  {% block head_links_extra %}{% endblock head_links_extra %}
+{% endblock head_links %}
+
+{% block nav_pills %}{% endblock nav_pills %}
+
+{% block content %}
+  <div class="col-md-10 mx-auto col-lg-5 p-4 p-md-5 border rounded-3 bg-body-tertiary">
+      <ul class="d-flex align-items-center justify-content-center" id="progressbar" style="padding: 0 0">
+          <li class="active" id="account_search"><p class="step-name text-break">Account Search</p></li>
+          {% block progressbar_li_extra %}{% endblock progressbar_li_extra %}
+          <li id="symptoms"><p class="step-name text-break">Symptoms</p></li>
+          <li id="appointment_info"><p class="step-name text-break">Appointment Info</p></li>
+      </ul>
+
+      <fieldset id='fieldset_0' class="search-form" style="display:block">
+        <p class='fieldset-title text-center' style="margin-top:16px">{{_('Find Patient Account')}}</p>
+        {% if g.search_form %}
+          <div class="d-flex justify-content-center" style="margin-top:16px">
+              <form class='navbar-form navbar-center w-75 d-flex align-items-center justify-content-center' style="margin-top:10px;" role='search' method='GET' action="{{ url_for(session['previous_endpoint']) }}">
+                  <div class='form-group'>
+                      {{ g.search_form.q(class='form-control', placeholder=g.search_form.q.label.text, size=70) }}
+                  </div>
+                  <input type="submit" method="GET" value="Search" class="btn search">
+              </form>
+          </div>
+        {% endif %}
+
+        <div id="search-results" class="d-flex align-items-center justify-content-center" style="margin: 30px 30px;">
+          {% if patients is not none %}
+            {% set current_patients = patients|selectattr("deleted_at", "none")|list %}
+            {% if current_patients == [] %}
+              <div id="no-results" class="d-flex align-items-center justify-content-center" style="margin: 30px 30px">
+                <img src="../static/images/no_results_404.png" alt="No Results" style="width: 350px">
+              </div>
+            {% else %}
+              <ul class="list-group" id="patients-list" style="width:400px">
+                {% for patient in current_patients %}
+                  <li class="list-group-item">
+                    <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="{{ patient.id }}" id="{{ patient.id }}">
+                    <label class="form-check-label" for="{{ patient.id }}">{{ patient.name }}</label>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endif %}
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
+            <input type="button" name="deselect" class="deselect btn btn-outline-secondary" value="Deselect" style="margin: 0;" disabled>
+            {% block search_step_nav_buttons %}{% endblock search_step_nav_buttons %}
+        </div>
+      </fieldset>
+
+      <form id="testForm" style="margin:0px" method="POST">
+
+        {% block fieldsets_extra %}{% endblock fieldsets_extra %}
+
+        <fieldset id='fieldset_3'>
+          <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
+            <p class='fieldset-title text-center'>{{_('Symptoms')}}</p>
+          </div>
+          <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
+            <input type="button" name="previous" class="previous btn" value="Previous">
+            <input type="button" name="skip" class="skip btn" value="Skip">
+            <input type="button" name="next" class="next btn btn-primary" value="Next">
+          </div>
+        </fieldset>
+
+        <fieldset id='fieldset_4' class="needs-validation"
+                  oninput='inputDateTime.setCustomValidity(new Date(inputDateTime.value) < new Date() ? "Appointment date cannot be in the past." : "")'>
+            <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
+              <p class='fieldset-title text-center'>{{_('Appointment Information')}}</p>
+
+              <div class="col-md-12">
+                <label for="inputDepartment" class="form-label">
+                  {{_('Department')}}
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
+                <select name="department" type="select" class="form-select" required id="inputDepartment">
+                  <option value="">{{_('Choose a department')}}</option>
+                </select>
+              </div>
+
+              <div class="col-md-12">
+                <label for="inputDoctor" class="form-label">
+                  {{_('Doctor')}}
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
+                <select name="doctor" type="select" class="form-select" required id="inputDoctor">
+                  <option value="">{{_('Choose a doctor')}}</option>
+                </select>
+
+              </div>
+
+              <div class="col-md-12">
+                <label for="inputDateTime" class="form-label">
+                  {{_('Date & Time')}}
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
+                <input name="datetime" type="datetime-local" class="form-control" required id="inputDateTime">
+                <label class="format-label form-label" id="input-note" for="inputDateTime" style="margin-top: 10px">
+                  - If the number of minites is less than 30, it will be considered as 0.
+                  <br>
+                  - If the number of minites is equal to or more than 30, it will be considered as 30.
+                </label>
+              </div>
+
+              <div class="col-md-12">
+                <label for="inputComments" class="form-label">
+                  {{_('Comments')}}
+                </label>
+                <textarea name="comments" type="textarea" class="form-control" id="inputComments"></textarea>
+
+              </div>
+            </div>
+          <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
+            <input type="button" name="previous" class="previous btn" value="Previous">
+            <button name="submit" type="submit" class="btn btn-primary submit">{{_('Complete Booking')}}</button>
+          </div>
+        </fieldset>
+
+      </form>
+  </div>
+{% endblock content%}
