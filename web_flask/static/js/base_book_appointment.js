@@ -14,7 +14,6 @@ $(document).ready(function(){
 
     $("form").bind("keypress", function (event) {
         if (event.keyCode === 13) {
-            console.log(event.keyCode);
             $(".search").attr('value');
             $(".submit").attr('value');
             event.preventDefault();
@@ -148,28 +147,30 @@ $(document).ready(function(){
     });
 
     $(".previous").click(() => {
+        const fields = $(fieldsets[current_fs])[0].querySelectorAll('input, select, textarea');
+        resetFieldsValue(fields);
         next_fs = current_fs;
         current_fs -= 1;
-    
+
         while (fieldsets[current_fs].classList.contains('skipped') && current_fs > 0) {
             fieldsets[current_fs].classList.remove('skipped');
             $("#progressbar li").eq(current_fs).removeClass("active");
             current_fs -= 1;
         }
         previous_fs = current_fs - 1;
-    
+
         //Remove class active
         $("#progressbar li").eq(next_fs).removeClass("active");
         
         //show the previous fieldset
         $(fieldsets[current_fs]).show();
-    
+
         //hide the current fieldset with style
         $(fieldsets[next_fs]).animate({opacity: 0}, {
             step: function(now) {
                 // for making fielset appear animation
                 opacity = 1 - now;
-    
+
                 $(fieldsets[next_fs]).css({
                     'display': 'none',
                     'position': 'relative'
@@ -256,8 +257,16 @@ function getFieldsValue(fields, attr=[]) {
     return fieldsValue;
 }
 
+function resetFieldsValue(fields) {
+    fields.forEach((field) => {
+        if (field.type === 'button' || field.type === 'submit') {
+            return;
+        }
+        delete formData[field.name];
+    });
+}
+
 function displayNextStep() {
-    console.log('dispalyNextStep');
     previous_fs = current_fs;
     current_fs += 1;
 
@@ -272,10 +281,7 @@ function displayNextStep() {
     //show the next fieldset
     $(fieldsets[current_fs]).show();
 
-    console.log($('#progressbar li'));
-    console.log($('#progressbar li').index($('#appointment_info')));
     if (current_fs === appointment_info_index) {
-        console.log('appointment_info_index');
         loadDepartments();
     }
 
@@ -296,7 +302,6 @@ function displayNextStep() {
 }
 
 function loadDepartments() {
-    console.log('loadDepartments');
     const departmentSelect = document.getElementById('inputDepartment');
     const doctorSelect = document.getElementById('inputDoctor');
 
@@ -315,7 +320,6 @@ function loadDepartments() {
                 option.setAttribute('value', String(department.id));
                 option.setAttribute('label', department.name);
                 departmentSelect.appendChild(option);
-                console.log(department, department.id, department.doctors);
                 all_doctors[String(department.id)] = department.doctors; // department.doctors is a list of objects containing all doctors in the department
             });
         },

@@ -1,3 +1,6 @@
+const patientAttributes = ['name', 'password', 'email', 'contact_number', 'gender', 'national_id', 'birth_date'];
+const newPatientData = new Object();
+
 function nextClicked(event) {
     const fieldsetData = new Object();
 
@@ -12,8 +15,6 @@ function nextClicked(event) {
             }
         }
     } else {
-        const patientAttributes = ['name', 'password', 'email', 'contact_number', 'gender', 'national_id', 'birth_date'];
-        const newPatientData = new Object();
         const fields = $(fieldsets[current_fs])[0].querySelectorAll('input, select, textarea');
         const fieldsValue = getFieldsValue(fields, patientAttributes);
         if (!fieldsValue) {

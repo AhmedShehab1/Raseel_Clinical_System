@@ -12,3 +12,7 @@ class Receptionist(m.StaffMember):
     """
 
     __tablename__ = "receptionists"
+
+    email: so.Mapped[str] = so.mapped_column(
+        sa.String(120), index=True, unique=True, nullable=False
+    )
