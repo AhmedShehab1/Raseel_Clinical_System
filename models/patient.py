@@ -20,12 +20,14 @@ class GenderType(str, Enum):
     Female = "female"
 
 
-class Patient(BaseModel, PasswordMixin, UserMixin, SearchableMixin):
+class Patient(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
     """
     Patient model class
     Args:
         BaseModel (): Base model class
     """
+    __abstract__ = False
+    __tablename__ = "patients"
     __searchable__ = ['name', 'email', 'contact_number', 'national_id']
 
     def __init__(self, password: str, **kwargs):
@@ -56,7 +58,6 @@ class Patient(BaseModel, PasswordMixin, UserMixin, SearchableMixin):
         except Exception:
             return None
 
-    __tablename__ = "patients"
     name: so.Mapped[str] = so.mapped_column(sa.String(64),
                                             index=True,
                                             nullable=False)

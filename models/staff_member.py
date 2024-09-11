@@ -8,7 +8,7 @@ from flask_login import UserMixin
 
 class StaffMember(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
     __abstract__ = True
-    __searchable__ = ["name", "phone"]
+    __searchable__ = ["name", "phone", "email"]
 
     def __init__(self, password: str, **kwargs):
         """

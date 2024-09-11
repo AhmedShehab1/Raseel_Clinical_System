@@ -4,6 +4,8 @@ var current_fs, previous_fs, next_fs; //fieldsets indexes
 var create_account_index, personal_info_index, appointment_info_index;
 var opacity;
 var all_doctors_working_hours = new Object();
+const all_doctors = new Object();
+const appointmentAttributes = ['doctor_id', 'patient_id', 'appointment_time', 'reason'];
 
 $(document).ready(function(){
     fieldsets = $("fieldset");
@@ -59,7 +61,7 @@ $(document).ready(function(){
         const fields = $(fieldsets[current_fs])[0].querySelectorAll('input, select, textarea');
         var valid = true;
 
-        const fieldsValue = getFieldsValue(fields);
+        const fieldsValue = getFieldsValue(fields, attr=appointmentAttributes);
         if (!fieldsValue) {
             event.preventDefault();
             event.stopPropagation();
@@ -67,20 +69,20 @@ $(document).ready(function(){
         } else {
             Object.assign(fieldsetData, fieldsValue);
         }
+        console.log("appointment_time: ", fieldsetData['appointment_time']);
 
-        const date = fieldsetData['datetime'].split('T')[0];
-        const time = fieldsetData['datetime'].split('T')[1];
+        const date = fieldsetData['appointment_time'].split('T')[0];
+        const time = fieldsetData['appointment_time'].split('T')[1];
         const hour = time.split(':')[0];
-        const miniutes = time.split(':')[1][0] + time.split(':')[1][1];
-        const am_pm = time.split(':')[1][2] + time.split(':')[1][3];
+        const miniutes = time.split(':')[1];
         if (parseInt(miniutes) < 30) {
-            fieldsetData['datetime'] = date + 'T' + hour + ':' + '00' + am_pm;
+            fieldsetData['appointment_time'] = date + 'T' + hour + ':' + '00';
         } else {
-            fieldsetData['datetime'] = date + 'T' + hour + ':' + '30' + am_pm;
+            fieldsetData['appointment_time'] = date + 'T' + hour + ':' + '30';
         }
 
         const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-        const appointmentDate = new Date(fieldsetData['datetime']);
+        const appointmentDate = new Date(fieldsetData['appointment_time']);
         const appointmentDay = weekday[appointmentDate.getDay()];
         const doctorID = fieldsetData['doctor'];
         const doctorWorkingHours = all_doctors_working_hours[doctorID];
@@ -90,7 +92,7 @@ $(document).ready(function(){
                 if (workingHour['day'] === appointmentDay) {
                     const startHour = parseInt(workingHour['start_hour'].split(':')[0]);
                     const startMinutes = parseInt(workingHour['start_hour'].split(':')[1]) + (startHour * 60);
-                    
+
                     const endHour = parseInt(workingHour['end_hour'].split(':')[0]);
                     const endMinutes = parseInt(workingHour['end_hour'].split(':')[1]) + (endHour * 60);
 
@@ -109,7 +111,7 @@ $(document).ready(function(){
             contentType: 'application/json; charset=utf-8',
             success: function(data) {
                 for (const appointment of data) {
-                    if (appointment['appointment_time'] === fieldsetData['datetime']) {
+                    if (appointment['appointment_time'] === fieldsetData['appointment_time']) {
                         alert('The appointment time is not available. Please choose another time or select another doctor.');
                         valid = false;
                         break;
@@ -128,6 +130,8 @@ $(document).ready(function(){
         }
 
         Object.assign(formData, fieldsetData);
+        formData['status'] = 'scheduled';
+        console.log("formData: ", formData);
 
         $.ajax({
             type: 'POST',
@@ -137,7 +141,7 @@ $(document).ready(function(){
             data: JSON.stringify(formData),
             success: function() {
                 alert('Appointment has been successfully booked.');
-                window.location.href = '/receptionist/dashboard';
+                // window.location.href = '/receptionist/dashboard';
             },
             error: function() {
                 alert('An error occurred while booking the appointment.');
@@ -243,8 +247,7 @@ function getFieldsValue(fields, attr=[]) {
         } else {
             createValidFeedback(field);
             if (attr.length === 0 ||
-                attr.includes(field.name) ||
-                !(current_fs === create_account_index || current_fs === personal_info_index)
+                attr.includes(field.name)
             ) {
                 fieldsValue[field.name] = field.value;
             }
@@ -306,15 +309,14 @@ function loadDepartments() {
     const doctorSelect = document.getElementById('inputDoctor');
 
     var departments;
-    const all_doctors = new Object();
 
     $.ajax({
         url: '/api/v1/departments',
         method: 'GET',
         type: 'GET',
         contentType: 'application/json',
-        success: function (data_departments) {
-            departments = data_departments.results; // data_departments.results is a list of objects containing all departments
+        success: function (data) {
+            departments = data.results; // data_departments.results is a list of objects containing all departments
             departments.forEach((department) => {
                 let option = document.createElement('option');
                 option.setAttribute('value', String(department.id));
