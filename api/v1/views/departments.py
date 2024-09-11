@@ -90,6 +90,8 @@ def get_all_departments():
     """
 
     departments_list = db.session.scalars(sa.select(Department)).all()
+    for department in departments_list:
+        print(department.doctors)
     departments = AllDepartments(departments_list)
     status_code = 200 if departments.count > 0 else 404
 

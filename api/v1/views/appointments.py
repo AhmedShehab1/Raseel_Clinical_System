@@ -1,10 +1,17 @@
 from api.v1.errors import bad_request
 from web_flask import db
-from api.v1.views import bp, save, get_from_db
+from api.v1.views import bp,  get_from_db
 from models import Appointment
 from flask import request
 from datetime import datetime
 import sqlalchemy as sa
+
+
+def save(model=None):
+    print("model")
+    if model:
+        db.session.add(model)
+    db.session.commit()
 
 
 def update_item(item, data):

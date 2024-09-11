@@ -14,12 +14,6 @@ def get_from_db(id, *models):
     abort(404)
 
 
-def save(model=None):
-    if model:
-        db.session.add(model)
-    db.session.commit()
-
-
 from api.v1.views.appointments import *
 from api.v1.views.departments import *
 from api.v1.errors import *

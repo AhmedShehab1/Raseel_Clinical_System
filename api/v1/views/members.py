@@ -1,12 +1,18 @@
 from api.v1.errors import bad_request
 from web_flask import db
-from api.v1.views import bp, get_from_db, save
+from api.v1.views import bp, get_from_db
 from models import Doctor, Admin, Department
 from flask import request
 from datetime import datetime
 from functools import wraps
 import sqlalchemy as sa
 
+
+def save(model=None):
+    print("model")
+    if model:
+        db.session.add(model)
+    db.session.commit()
 
 def validate_json(f):
     @wraps(f)
