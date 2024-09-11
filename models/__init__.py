@@ -5,6 +5,7 @@ from .department import Department
 from .appointments import Appointment
 from .working_hours import WorkingHours
 from .doctor import Doctor
+from .receptionist import Receptionist
 from .appointments import AppointmentStatus
 from .admin import Admin
 from .patient import Vital
