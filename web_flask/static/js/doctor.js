@@ -36,14 +36,17 @@ $(document).ready(function () {
       $(`.${listClass}`).empty();
     });
   }
+  let appointmentId, patientId;
 
   $('.update').click(function () {
-    const appointmentId = $(this).attr('data-appointment-id');
-    const patientId = $(this).attr('data-patient-id');
+    appointmentId = $(this).attr('data-appointment-id');
+    patientId = $(this).attr('data-patient-id');
+  });
 
-    $('.submit-button').click(function () {
+  $('.submit-button').click(function () {
       const medicationData = {};
       const diagnosisData = {};
+      
       $('.modal-body').find('input, select').each(function () {
         const val = $(this).val();
         const attribute = $(this).attr('attribute');
@@ -135,5 +138,5 @@ $(document).ready(function () {
         }
       });
     });
-  });
+
 });

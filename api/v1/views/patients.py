@@ -1,6 +1,6 @@
 from datetime import datetime
 from api.v1.errors import bad_request
-from api.v1.views import bp, save, get_from_db
+from api.v1.views import bp, get_from_db
 from web_flask import db
 from models import Patient
 from models import Prescription
@@ -8,7 +8,11 @@ from models import Diagnose
 import sqlalchemy as sa
 from flask import request
 
-
+def save(model=None):
+    print("model")
+    if model:
+        db.session.add(model)
+    db.session.commit()
 
 def update_data(model, data):
     if 'email' in data and data['email'] != model.email and db.session.scalar(sa.select(Patient).where(Patient.email == data['email'])):
@@ -53,6 +57,7 @@ def add_patient():
     save(patient)
     return patient.to_dict(), 201
 
+
 @bp.put('/patients/<string:patient_id>')
 def update_patient(patient_id):
     patient = get_from_db(patient_id, Patient)
@@ -60,15 +65,19 @@ def update_patient(patient_id):
     update_data(patient, data)
     return patient.to_dict(), 200
 
+
 @bp.post('/patients/<string:patient_id>/medications')
 def add_medication(patient_id):
+    print('medications')
     _ = get_from_db(patient_id, Patient)
     data = request.get_json()
     if "medication" not in data or "dosage" not in data:
         bad_request('Missing required fields')
     prescription = Prescription(patient_id=patient_id, medication=data['medication'], dosage=data['dosage'])
+    print('medications')
     save(prescription)
     return {'message': 'Medication added successfully'}, 201
+
 
 @bp.post('/patients/<string:patient_id>/diagnosises')
 def add_diagnosis(patient_id):
@@ -77,5 +86,6 @@ def add_diagnosis(patient_id):
     if "name" not in data:
         bad_request('Missing required fields')
     diagnosis = Diagnose(patient_id=patient_id, name=data['name'])
-    save(diagnosis)
+    print('diagnosis')
+    save(model=diagnosis)
     return {'message': 'Diagnosis added successfully'}, 201
