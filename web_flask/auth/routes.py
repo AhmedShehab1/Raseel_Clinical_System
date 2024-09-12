@@ -1,7 +1,14 @@
 from urllib.parse import urlsplit
 from web_flask.auth import bp
 from web_flask import db
-from flask import redirect, url_for, render_template, flash, request, session
+from flask import (
+    redirect,
+    url_for,
+    render_template,
+    flash,
+    request,
+    session,abort
+    )
 from flask_login import logout_user, current_user, login_user
 from web_flask.auth.forms import (
     LoginForm,
@@ -22,8 +29,10 @@ def logout():
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
+    if request.host == 'staff.ahmedshehab.tech':
+        abort(404)
     if current_user.is_authenticated:
-        return redirect(url_for("main.edit_profile"))
+        return redirect(url_for("patient_bp.dashboard"))
     form = LoginForm()
     if form.validate_on_submit():
         patient = db.session.scalar(
@@ -37,7 +46,7 @@ def login():
         session['user_type'] = patient.__class__.__name__
         next_page = request.args.get("next")
         if not next_page or urlsplit(next_page).netloc != "":
-            next_page = url_for("main.edit_profile")
+            next_page = url_for("patient_bp.dashboard")
         return redirect(next_page)
     return render_template("login.html", title="Login - Raseel", form=form)
 
@@ -82,7 +91,7 @@ def staff_login():
 @bp.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("main.edit_profile"))
+        return redirect(url_for("patient_bp.dashboard"))
     form = RegistrationForm()
     if form.validate_on_submit():
         patient_data = {
@@ -106,7 +115,7 @@ def register():
 @bp.route("/reset_password_request", methods=["GET", "POST"])
 def reset_password_request():
     if current_user.is_authenticated:
-        return redirect(url_for("main.edit_profile"))
+        return redirect(url_for("patient_bp.dashboard"))
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
         patient = db.session.scalar(
@@ -126,7 +135,7 @@ def reset_password_request():
 @bp.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_password(token):
     if current_user.is_authenticated:
-        return redirect(url_for("main.edit_profile"))
+        return redirect(url_for("patietn_bp.dashboard"))
     patient = m.Patient.verify_reset_password_token(token)
     if not patient:
         return redirect(url_for("main.index"))
