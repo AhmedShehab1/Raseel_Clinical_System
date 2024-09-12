@@ -69,7 +69,6 @@ $(document).ready(function(){
         } else {
             Object.assign(fieldsetData, fieldsValue);
         }
-        console.log("appointment_time: ", fieldsetData['appointment_time']);
 
         const date = fieldsetData['appointment_time'].split('T')[0];
         const time = fieldsetData['appointment_time'].split('T')[1];
@@ -84,7 +83,7 @@ $(document).ready(function(){
         const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
         const appointmentDate = new Date(fieldsetData['appointment_time']);
         const appointmentDay = weekday[appointmentDate.getDay()];
-        const doctorID = fieldsetData['doctor'];
+        const doctorID = fieldsetData['doctor_id'];
         const doctorWorkingHours = all_doctors_working_hours[doctorID];
 
         if (typeof doctorWorkingHours !== 'undefined') {
@@ -98,30 +97,13 @@ $(document).ready(function(){
 
                     const appointmentMinutes = parseInt(hour) * 60 + parseInt(miniutes);
                     if (appointmentMinutes < startMinutes || appointmentMinutes > endMinutes) {
-                        alert('The appointment time is not within the working hours of the doctor. Please choose another time or select another doctor.');
+                        const dateTimeField = $('input[name=appointment_time]')[0];
+                        createInvalidFeedback(dateTimeField, 'Doctor is not available at this time.');
                         valid = false;
                     }
                 }
             });
         }
-
-        $.ajax({
-            type: 'GET',
-            url: '/api/v1/appointments/' + fieldsetData['doctor'],
-            contentType: 'application/json; charset=utf-8',
-            success: function(data) {
-                for (const appointment of data) {
-                    if (appointment['appointment_time'] === fieldsetData['appointment_time']) {
-                        alert('The appointment time is not available. Please choose another time or select another doctor.');
-                        valid = false;
-                        break;
-                    }
-                }
-            },
-            error: function(error) {
-                alert('An error occurred while checking the availability of the appointment time.');
-            }
-        });
 
         if (!valid) {
             event.preventDefault();
@@ -131,23 +113,8 @@ $(document).ready(function(){
 
         Object.assign(formData, fieldsetData);
         formData['status'] = 'scheduled';
-        console.log("formData: ", formData);
 
-        $.ajax({
-            type: 'POST',
-            url: '/api/v1/appointments',
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify(formData),
-            success: function() {
-                alert('Appointment has been successfully booked.');
-                // window.location.href = '/receptionist/dashboard';
-            },
-            error: function() {
-                alert('An error occurred while booking the appointment.');
-            }
-        });
-
+        submitForm(formData);
     });
 
     $(".previous").click(() => {
@@ -325,12 +292,13 @@ function loadDepartments() {
                 all_doctors[String(department.id)] = department.doctors; // department.doctors is a list of objects containing all doctors in the department
             });
         },
-        error: function () {
-            alert('Failed to load the departments, Please try again.');
-        },
+        error: function() {
+            window.location.reload();
+        }
     });
 
     departmentSelect.addEventListener("change", (event) => {
+        removeFeedback(departmentSelect);
         resetDoctorOptions(doctorSelect);
 
         const department_id = event.target.value;
@@ -338,7 +306,7 @@ function loadDepartments() {
 
         if (typeof doctors === "undefined" || doctors.length === 0) {
             if (department_id !== "") {
-                alert('Unfortunately, this department is currently closed.');
+                createInvalidFeedback(departmentSelect, 'Unfortunately, this department is currently closed.');
             }
             return;
         }

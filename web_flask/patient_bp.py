@@ -5,9 +5,9 @@ from web_flask.search_patients import search_patients
 
 patient_bp = Blueprint("patient_bp", __name__, url_prefix="/patient")
 
-@patient_bp.route("/book-appointment")
+@patient_bp.route("/book-appointment", methods=["GET", "POST"])
 @login_required
-def book_appointment():
+def patient_book_appointment():
     """
     Book an appointment for a patient using his/her account
 
@@ -15,9 +15,8 @@ def book_appointment():
         str: Render the patient template for booking an appointiment
     """
 
-    if request.method == "GET":
-        #Search on the patient
-        search_results = search_patients()
+    #Search on the patient
+    search_results = search_patients()
 
     return render_template("patient/book_appointment.html", title="Book Appointment - Raseel", patients=search_results, current_user=current_user)
 

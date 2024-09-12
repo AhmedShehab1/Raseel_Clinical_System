@@ -88,7 +88,6 @@ $(document).ready(function () {
       type: 'GET',
       contentType: 'application/json',
       success: function (data) {
-        console.log(data);
         updateModalFields(modal, data);
       },
       error: function () {

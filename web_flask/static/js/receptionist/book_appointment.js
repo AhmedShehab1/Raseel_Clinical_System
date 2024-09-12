@@ -34,9 +34,11 @@ function nextClicked(event) {
                     data: JSON.stringify(newPatientData),
                     success: function(data) {
                         fieldsetData['patient_id'] = data['id'];
+                        Object.assign(formData, fieldsetData);
+
                     },
-                    error: function(error) {
-                        alert('An error occurred while creating a new account.');
+                    error: function() {
+                        window.location.reload();
                     }
                 });
             }
@@ -44,7 +46,6 @@ function nextClicked(event) {
             Object.assign(fieldsetData, fieldsValue);
         }
     }
-
     if (Object.keys(fieldsetData).length !== 0) {
         Object.assign(formData, fieldsetData);
     }
@@ -53,4 +54,20 @@ function nextClicked(event) {
 
 function continueClicked(){
     return;
+}
+
+function submitForm(data) {
+    $.ajax({
+        type: 'POST',
+        url: '/api/v1/appointments',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(data),
+        success: function() {
+            window.location.href = '/receptionist/dashboard'
+        },
+        error: function() {
+            window.location.reload();
+        }
+    });
 }

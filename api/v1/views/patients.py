@@ -6,13 +6,13 @@ from models import Patient
 from models import Prescription
 from models import Diagnose
 import sqlalchemy as sa
-from flask import request
+from flask import request, flash
 
 def save(model=None):
-    print("model")
     if model:
         db.session.add(model)
     db.session.commit()
+    print(model) # DONOT DELETE IT, To show the ID of the model saved
 
 def update_data(model, data):
     if 'email' in data and data['email'] != model.email and db.session.scalar(sa.select(Patient).where(Patient.email == data['email'])):
@@ -46,15 +46,20 @@ def delete_patient(patient_id):
 def add_patient():
     data = request.get_json()
     if 'name' not in data or 'email' not in data or 'contact_number' not in data or 'birth_date' not in data or 'password' not in data or 'national_id' not in data or 'gender' not in data:
+        flash('Missing required fields', 'danger')
         return bad_request('Missing required fields')
     if db.session.scalar(sa.select(Patient).where(Patient.email == data['email'])):
+        flash('Email already exists', 'danger')
         return bad_request('Email already exists')
     if db.session.scalar(sa.select(Patient).where(Patient.contact_number == data['contact_number'])):
+        flash('Contact number already exists', 'danger')
         return bad_request('Contact number already exists')
     if db.session.scalar(sa.select(Patient).where(Patient.national_id == data['national_id'])):
+        flash('National ID already exists', 'danger')
         return bad_request('National ID already exists')
     patient = Patient(**data)
     save(patient)
+    flash('Account added successfully', 'success')
     return patient.to_dict(), 201
 
 
@@ -68,13 +73,11 @@ def update_patient(patient_id):
 
 @bp.post('/patients/<string:patient_id>/medications')
 def add_medication(patient_id):
-    print('medications')
     _ = get_from_db(patient_id, Patient)
     data = request.get_json()
     if "medication" not in data or "dosage" not in data:
         bad_request('Missing required fields')
     prescription = Prescription(patient_id=patient_id, medication=data['medication'], dosage=data['dosage'])
-    print('medications')
     save(prescription)
     return {'message': 'Medication added successfully'}, 201
 
@@ -86,6 +89,5 @@ def add_diagnosis(patient_id):
     if "name" not in data:
         bad_request('Missing required fields')
     diagnosis = Diagnose(patient_id=patient_id, name=data['name'])
-    print('diagnosis')
     save(model=diagnosis)
     return {'message': 'Diagnosis added successfully'}, 201

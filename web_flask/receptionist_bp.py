@@ -13,9 +13,8 @@ def book_appointment():
         str: Render the receptionist template for booking an appointiment
     """
 
-    if request.method == "GET":
-        #Search on the patient
-        search_results = search_patients()
+    #Search on the patient
+    search_results = search_patients()
 
     return render_template("receptionist/book_appointment.html", title="Book Appointment - Raseel", patients=search_results)
 
