@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request
 from flask_login import login_required
-from web_flask.search_patients import search_patients
+from web_flask.table_search import table_search
+from datetime import datetime, timezone
 
 receptionist_bp = Blueprint("receptionist_bp", __name__, url_prefix="/receptionist")
 
@@ -14,7 +15,7 @@ def book_appointment():
     """
 
     #Search on the patient
-    search_results = search_patients()
+    search_results = table_search()
 
     return render_template("receptionist/book_appointment.html", title="Book Appointment - Raseel", patients=search_results)
 
@@ -27,4 +28,11 @@ def dashboard():
         str: Render the receptionist dashboard template
     """
 
-    return render_template("receptionist/dashboard.html", title="Receptionist Dashboard - Raseel")
+    search_results = table_search()
+    current_time_utc = datetime.now(timezone.utc)
+    return render_template(
+        'receptionist/dashboard.html',
+        title='Receptionist Dashboard - Raseel',
+        current_time_utc=current_time_utc,
+        results=search_results
+    )

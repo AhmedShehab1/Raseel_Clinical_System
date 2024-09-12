@@ -5,7 +5,7 @@ from sqlalchemy.orm import joinedload
 from flask import flash
 
 
-class AllDepartments:
+class listAllObjects:
     """Class to represent all departments in the database.
 
     Attributes:
@@ -17,7 +17,7 @@ class AllDepartments:
     """
 
     def __init__(self, departments_list):
-        """Initialize the AllDepartments class.
+        """Initialize the listAllObjects class.
 
         Args:
             departments_list: list - a list of Department objects.
@@ -91,7 +91,7 @@ def get_all_departments():
     """
 
     departments_list = db.session.query(Department).options(joinedload(Department.doctors)).all()
-    departments = AllDepartments(departments_list)
+    departments = listAllObjects(departments_list)
     if departments.count > 0:
         status_code = 200
     else:
