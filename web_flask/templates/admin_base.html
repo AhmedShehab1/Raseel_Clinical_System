@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for result in results|selectattr("deleted_at", "none") %}
+                {% for result in results|selectattr("deleted_at", "none")|list %}
                     <tr class="member-item">
                         <td>{{ result.name }}</td>
                         <td>{{ result.__class__.__name__ }}</td>

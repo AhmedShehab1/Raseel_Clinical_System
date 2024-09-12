@@ -2,6 +2,14 @@
 
 {% block head_links %}
 
+    <script src="../static/js/receptionist/dashboard.js"></script>
+    <style>
+        .table-lable {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+
 {% endblock head_links %}
 
 {% block nav_pills %}
@@ -23,5 +31,59 @@
 {% endblock nav_pills %}
 
 {% block content %}
-
+    <h2 class="fw-bold text-center mt-3">Receptionist's Dashboard</h2>
+    <p class="ms-3 fw-bold lead text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
+    <header class="d-flex align-items-center justify-content-around">
+        <p class="fw-bold text-center mt-3" style="font-size:25px">Patients Table</p>
+        <div>
+            {% if g.search_form %}
+                <form class='d-flex align-items-center navbar-form navbar-center w-75' role='search' method='GET' action="{{ url_for(session['previous_endpoint']) }}">
+                    <div class='form-group'>
+                        {{ g.search_form.q(class='form-control', placeholder=g.search_form.q.label.text, size=40) }}
+                    </div>
+                    <input type="submit" method="GET" class="btn btn-secondary search" value="Search" style="margin-left: 10px;">
+                </form>
+            {% endif %}
+        </div>
+        <input type="button" class="btn btn-primary book-appointment" value="Book New Appointment">
+    </header>
+    <hr>
+    <table class="table table-striped" style="height:360px">
+        <thead>
+            <tr>
+                <th scope="col">Patient Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Contact Number</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="table_body">
+            {% for result in results|selectattr("deleted_at", "none")|list %}
+                <tr class="member-item">
+                    <td>{{ result.name }}</td>
+                    <td>{{ result.email }}</td>
+                    <td>{{ result.contact_number }}</td>
+                    <td>
+                        <a class="btn btn-warning edit-member" data-bs-toggle="modal" data-bs-target="#editModal-{{result.id}}" data-id={{ result.id }}>Appointments</a>
+                    </td>
+                </tr>
+                <div class="modal fade" id="editModal-{{result.id}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Appointments</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <ul>
+                                {% for appointment in result.appointments %}
+                                    <li>{{ appointment.appointment_time }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ moment.include_moment() }}
 {% endblock content %}

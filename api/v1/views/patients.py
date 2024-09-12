@@ -7,6 +7,8 @@ from models import Prescription
 from models import Diagnose
 import sqlalchemy as sa
 from flask import request, flash
+from api.v1.views.departments import listAllObjects as AllPatients
+from sqlalchemy.orm import joinedload
 
 def save(model=None):
     if model:
@@ -91,3 +93,23 @@ def add_diagnosis(patient_id):
     diagnosis = Diagnose(patient_id=patient_id, name=data['name'])
     save(model=diagnosis)
     return {'message': 'Diagnosis added successfully'}, 201
+
+@bp.get('/patients')
+def get_all_patients():
+    """Get all patients in the database.
+
+    Returns:
+        dict: a json format containing the count of patients and a list of
+            dictionaries representing each department.
+        int: the status code of the response.
+    """
+
+    patients_list = db.session.query(Patient).options(joinedload(Patient.appointments)).all()
+    patients = AllPatients(patients_list)
+    if patients.count > 0:
+        status_code = 200
+    else:
+        status_code = 404
+        return bad_request('Failed to load the accounts of patients, please try again later')
+
+    return patients.to_dict(), status_code

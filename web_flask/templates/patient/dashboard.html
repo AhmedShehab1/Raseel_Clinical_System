@@ -2,19 +2,27 @@
 
 {% block head_links %}
 
+    <script src="../static/js/patient/dashboard.js"></script>
+    <style>
+        .table-lable {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+
 {% endblock head_links %}
 
 {% block nav_pills %}
 
     <li class="nav-item">
-        <a href="{{ url_for('patient_bp.dashboard')}}" class="nav-link my-nav-pill active" aria-current="page">
+        <a href="{{ url_for('receptionist_bp.dashboard')}}" class="nav-link my-nav-pill active" aria-current="page">
             <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>
             Dashboard
         </a>
     </li>
 
     <li>
-        <a href="{{ url_for('patient_bp.patient_book_appointment')}}" class="nav-link link-body-emphasis my-nav-pill">
+        <a href="{{ url_for('receptionist_bp.book_appointment')}}" class="nav-link link-body-emphasis my-nav-pill">
             <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
             Book Appointment
         </a>
@@ -23,5 +31,33 @@
 {% endblock nav_pills %}
 
 {% block content %}
-
+    <h2 class="fw-bold text-center mt-3">{{current_user.name}}'s Dashboard</h2>
+    <p class="ms-3 fw-bold lead text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
+    <header class="d-flex align-items-end justify-content-around">
+        <p class="fw-bold text-center mt-3" style="font-size:25px">Appointments Table</p>
+        <div></div>
+        <input type="button" class="btn btn-primary book-appointment" value="Book New Appointment">
+    </header>
+    <hr>
+    <table class="text-center table table-striped" style="height:360px">
+        <thead>
+            <tr>
+                <th scope="col">Index</th>
+                <th scope="col">Day</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+            </tr>
+        </thead>
+        <tbody class="table_body">
+            {% for result in results|selectattr("deleted_at", "none")|list %}
+                <tr class="member-item">
+                    <td>{{ loop.index }}</td>
+                    <td>{{ moment(result.appointment_time).format('dddd') }}</td>
+                    <td>{{ moment(result.appointment_time).format('LL') }}</td>
+                    <td>{{ moment(result.appointment_time).fromNow() }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ moment.include_moment() }}
 {% endblock content %}
