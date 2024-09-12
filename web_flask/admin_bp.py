@@ -13,7 +13,6 @@ def get_search_results(results):
         page = request.args.get("page", 1, type=int)
         search_results = StaffMember.search(g.search_form.q.data, page,
                                              current_app.config.get('SEARCH_RESULTS_PER_PAGE', 20))
-        print(search_results)
         results.extend(search_results)
 
 

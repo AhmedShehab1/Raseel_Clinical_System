@@ -9,7 +9,6 @@ import sqlalchemy as sa
 
 
 def save(model=None):
-    print("model")
     if model:
         db.session.add(model)
     db.session.commit()

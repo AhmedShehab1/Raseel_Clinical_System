@@ -2,6 +2,7 @@ from web_flask import db
 from api.v1.views import bp
 from models import Department
 from sqlalchemy.orm import joinedload
+from flask import flash
 
 
 class AllDepartments:
@@ -91,6 +92,10 @@ def get_all_departments():
 
     departments_list = db.session.query(Department).options(joinedload(Department.doctors)).all()
     departments = AllDepartments(departments_list)
-    status_code = 200 if departments.count > 0 else 404
+    if departments.count > 0:
+        status_code = 200
+    else:
+        status_code = 404
+        flash('Failed to load departments, please try again later', 'primary')
 
     return departments.to_dict(), status_code
