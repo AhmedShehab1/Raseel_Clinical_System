@@ -180,7 +180,6 @@ The Doctor's dashboard allows quick access to patient information, appointment s
 ![Doctor Interface](images/doctor_interface.png)
 ![Doctor Interface (Patient Modal)](images/doctor_dashboard_patient_modal.png)
 ![Doctor Interface (Patient Modal)](images/doctor_dashboard_patient_modal_1.png)
-![Doctor Interface (Update Patient)](images/doctor_dashboard_update_patient.png)
 
 ### Appointment Scheduling
 The scheduling feature for doctors and receptionists helps manage appointments and avoid conflicts.
