@@ -17,8 +17,39 @@ from web_flask.auth.forms import (
     ResetPasswordRequestForm
     )
 from web_flask.auth.email import send_password_reset_email
+from functools import wraps
 import sqlalchemy as sa
 import models as m
+
+ROLE_DASHBOARD_MAP = {
+    'Admin': 'admin_bp.admin_dashboard',
+    'Doctor': 'doctor_bp.current_appointments',
+    'Receptionist': 'receptionist_bp.dashboard',
+}
+
+
+def get_staff_by_email(email: str):
+    result = m.StaffMember.search(email, 1, 1, ['email'])
+    if result and result[0].deleted_at is None:
+        return result[0]
+    return None
+
+def login_handler(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        form = args[0]
+        staff = get_staff_by_email(form.email.data)
+        print(staff)
+        if staff is None or not staff.check_password(form.password.data):
+            flash("Login Unsuccessful. Please check email and password",
+                  "danger")
+            return redirect(url_for('auth.staff_login'))
+        login_user(staff, remember=form.remember.data)
+        session['user_type'] = staff.__class__.__name__
+
+        return func(*args, staff=staff, **kwargs)
+
+    return wrapper
 
 
 @bp.route("/logout")
@@ -30,7 +61,7 @@ def logout():
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.host == 'staff.ahmedshehab.tech':
-        abort(404)
+        return redirect(url_for('auth.staff_login'))
     if current_user.is_authenticated:
         return redirect(url_for("patient_bp.dashboard"))
     form = LoginForm()
@@ -39,8 +70,7 @@ def login():
             sa.select(m.Patient).where(m.Patient.email == form.email.data)
         )
         if patient is None or not patient.check_password(form.password.data):
-            flash("Login Unsuccessful. Please check email and password",
-                  "danger")
+
             return redirect(url_for("auth.login"))
         login_user(patient, remember=form.remember.data)
         session['user_type'] = patient.__class__.__name__
@@ -54,39 +84,24 @@ def login():
 @bp.route("/staff/login", methods=["GET", "POST"])
 def staff_login():
     if current_user.is_authenticated:
-        return redirect(url_for("doctor_bp.current_appointments"))
+        return redirect(url_for(ROLE_DASHBOARD_MAP[session['user_type']]))
+
     form = LoginForm()
     if form.validate_on_submit():
-        staff = db.session.scalar(
-            sa.select(m.Doctor).where(m.Doctor.email == form.email.data,
-                                      m.Doctor.deleted_at == None)
+        process_login(form)
 
-        )
-        if staff is None:
-            staff = db.session.scalar(
-                sa.select(m.Admin).where(
-                                         m.Admin.email == form.email.data,
-                                         m.Admin.deleted_at == None)
-
-            )
-            if staff is None or not staff.check_password(form.password.data):
-                flash("Login Unsuccessful. Please check email and password",
-                    "danger")
-                return redirect(url_for("auth.staff_login"))
-            login_user(staff, remember=form.remember.data)
-            session['user_type'] = staff.__class__.__name__
-            return redirect(url_for("admin_bp.admin_dashboard"))
-        elif not staff.check_password(form.password.data):
-            flash("Login Unsuccessful. Please check email and password",
-                    "danger")
-            return redirect(url_for("auth.staff_login"))
-        login_user(staff, remember=form.remember.data)
-        session['user_type'] = staff.__class__.__name__
-        next_page = request.args.get("next")
-        if not next_page or urlsplit(next_page).netloc != "":
-            next_page = url_for("doctor_bp.current_appointments")
-        return redirect(next_page)
     return render_template("login.html", title="Staff Login - Raseel", form=form)
+
+@login_handler
+def process_login(form, staff):
+    next_page = request.args.get("next")
+    dashboard_route = ROLE_DASHBOARD_MAP.get(session['user_type'])
+    if not dashboard_route:
+         flash("Role does not have an assigned dashboard.", "warning")
+         return redirect(url_for("auth.staff_login"))
+    if not next_page or urlsplit(next_page).netloc != "":
+        next_page = url_for(dashboard_route)
+    return redirect(next_page)
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
