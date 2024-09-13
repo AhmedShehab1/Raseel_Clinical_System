@@ -1,7 +1,7 @@
 from api.v1.errors import bad_request
 from web_flask import db
 from api.v1.views import bp, get_from_db
-from models import Doctor, Admin, Department
+from models import Doctor, Admin, Department, Receptionist
 from flask import request
 from datetime import datetime
 from functools import wraps
@@ -35,14 +35,14 @@ def update_item(item, data):
 
 @bp.delete('/staff-members/<string:member_id>')
 def delete_member(member_id):
-    member = get_from_db(member_id, Doctor, Admin)
+    member = get_from_db(member_id, Doctor, Admin, Receptionist)
     member.deleted_at = datetime.utcnow()
     save()
     return {}, 200
 
 @bp.get('/staff-members/<string:member_id>')
 def get_member(member_id):
-    member = get_from_db(member_id, Doctor, Admin)
+    member = get_from_db(member_id, Doctor, Admin, Receptionist)
     if member.__class__ == Doctor:
         dict_member = member.to_dict()
         dict_member['department'] = member.department.name

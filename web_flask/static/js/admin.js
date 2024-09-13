@@ -54,6 +54,7 @@ $(document).ready(function () {
                     feedbackElement.text(errorMsg).show();
                 }
             } else {
+                swal(response.entries, '', 'error')
                 swal('Failed to process your request, Please try again.', '', 'error');
             }
         }
