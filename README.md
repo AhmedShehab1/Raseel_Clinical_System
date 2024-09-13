@@ -99,7 +99,51 @@ To set up the project locally, follow these steps:
    docker run --name elasticsearch -d --rm -p 9200:9200 --memory="2GB" -e discovery.type=single-node -e xpack.security.enabled=false -t docker.elastic.co/elasticsearch/elasticsearch:8.11.1
    ```
 
-8. **Run the Flask application**:
+8. **Reindex Documents for ElasticSearch Functionality**
+    ```bash
+    # Enter Flask shell to execute reindexing commands
+    flask shell
+    ```
+    Inside the shell, execute the following commands:
+    ```python
+    >>> Patient.reindex()
+    >>> StaffMember.reindex()
+    ```
+This will ensure your ElasticSearch indices are populated correctly and ready for searching.
+
+### 9. **Environment Setup**
+
+You need to create two environment configuration files: `.flaskenv` and `.env` in the root directory of your project.
+
+#### **.flaskenv**
+```ini
+FLASK_APP=web_flask.clinical_system
+FLASK_DEBUG=1
+FLASK_ENV=development
+
+# Mail server settings (for features like resetting user passwords)
+MAIL_SERVER=us2.smtp.mailhostbox.com
+MAIL_PORT=587
+MAIL_USE_TLS=1
+```
+#### **.env**
+```ini
+# ElasticSearch URL (comment this line if you're not using ElasticSearch)
+ELASTICSEARCH_URL='http://localhost:9200'
+
+# Email functionality support
+MAIL_USERNAME=your-email@example.com
+MAIL_PASSWORD=your-email-password
+MAIL_DEFAULT_SENDER=your-email@example.com
+
+# Flask secret key
+SECRET_KEY='try_to_guess_me'
+
+# MySQL Database connection URL
+DATABASE_URL=mysql+mysqldb://raseel:password@localhost:3306/Raseel_db
+```
+
+9. **Run the Flask application**:
    ```bash
    flask run
    ```
