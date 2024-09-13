@@ -111,7 +111,7 @@ To set up the project locally, follow these steps:
     ```
 This will ensure your ElasticSearch indices are populated correctly and ready for searching.
 
-### 9. **Environment Setup**
+ 9. **Environment Setup**
 
 You need to create two environment configuration files: `.flaskenv` and `.env` in the root directory of your project.
 
@@ -143,7 +143,7 @@ SECRET_KEY='try_to_guess_me'
 DATABASE_URL=mysql+mysqldb://raseel:password@localhost:3306/Raseel_db
 ```
 
-9. **Run the Flask application**:
+10. **Run the Flask application**:
    ```bash
    flask run
    ```
