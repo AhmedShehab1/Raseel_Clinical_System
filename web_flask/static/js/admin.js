@@ -4,20 +4,28 @@ $(document).ready(function () {
     const staffMemberId = $(this).attr('data-id');
     const button = $(this);
 
-    if (confirm('Are you sure you want to delete this member?')) {
-      $.ajax({
-        url: `/api/v1/staff-members/${staffMemberId}`,
-        type: 'DELETE',
-        contentType: 'application/json',
-        success: function () {
-          button.closest('.member-item').remove();
-          alert('member deleted successfully.');
+
+    swal('Are you sure you want to delete this member?', {
+        buttons: {
+            cancel: true,
+            confirm: true
         },
-        error: function () {
-          alert('Failed to delete the member, Please try again.');
+    }).then((value) => {
+        if (value) {
+            $.ajax({
+                url: `/api/v1/staff-members/${staffMemberId}`,
+                type: 'DELETE',
+                contentType: 'application/json',
+                success: function () {
+                  button.closest('.member-item').remove();
+                  swal('member deleted successfully.', '', 'success');
+                },
+                error: function () {
+                  swal('Failed to delete the member, Please try again.', '', 'error');
+                }
+              });
         }
-      });
-    }
+    })
   });
 
   function handleSubmitForm(url, type, formData, successMessage) {
@@ -27,7 +35,7 @@ $(document).ready(function () {
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function () {
-            alert(successMessage);
+            swal(successMessage, '', "success");
             $('.modal').modal('hide');
             $('.needs-validation').removeClass('was-validated').trigger('reset');
         },
@@ -46,7 +54,7 @@ $(document).ready(function () {
                     feedbackElement.text(errorMsg).show();
                 }
             } else {
-                alert('Failed to process your request, Please try again.');
+                swal('Failed to process your request, Please try again.', '', 'error');
             }
         }
     });
@@ -91,7 +99,7 @@ $(document).ready(function () {
         updateModalFields(modal, data);
       },
       error: function () {
-        alert('Failed to fetch member details, Please try again.');
+        swal('Failed to fetch member details, Please try again.', '', 'error');
       }
     });
  });
@@ -114,6 +122,13 @@ $(document).ready(function () {
         phoneField.addClass('is-invalid');
       } else {
         phoneField.removeClass('is-invalid');
+      }
+
+      const passwordField = $('#edit-password');
+      if (passwordField.val() && !passwordField[0].checkValidity()) {
+        passwordField.addClass('is-invalid');
+      } else {
+        passwordField.removeClass('is-invalid');
       }
 
       if (!this.checkValidity()) {

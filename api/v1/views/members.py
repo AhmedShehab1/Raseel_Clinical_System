@@ -51,10 +51,11 @@ def get_member(member_id):
 
 
 def check_uniqueness(cls, field, val, error_msg):
-    if db.session.scalar(sa.select(cls).where(
-        getattr(cls, field) == val,
-            )):
-        return {'errors': {field: error_msg}}, 400
+    if val is not None:
+        if db.session.scalar(sa.select(cls).where(
+            getattr(cls, field) == val,
+                )):
+            return {'errors': {field: error_msg}}, 400
     return None
 
 def validate_required_fields(data, required_fields):
