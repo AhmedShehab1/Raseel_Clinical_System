@@ -1,5 +1,10 @@
 {% extends "base_visitors.html" %}
 
+{% block head_link %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src={{ url_for('static', filename='js/submitRequestToEmail.js') }}></script>
+{% endblock head_link %}
+
 {% block content %}
         <section class="hero-section d-flex h-100 text-center text-bg-dark">
           <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -76,17 +81,17 @@
                         <p class="font-monospace fw-bold text-primary">GET IN TOUCH</p>
                         <h3>We're here to help</h3>
                         <form action="">
-                            <label for="name" class="form-label">Name</label>
+                            <label for="name" class="form-label">Name<span class="required-field-sign">*</span></label>
                             <input type="text" class="form-control" id="name" required aria-required="true" aria-label="Name">
-                            <label for="email" class="form-label">Email address</label>
+                            <label for="email" class="form-label">Email<span class="required-field-sign">*</span></label>
                             <input type="email" class="form-control" id="email" required aria-required="true" aria-label="email">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="phone" pattern="\d{10}" required aria-required="true" aria-label="phone">
-                            <label for="message" class="form-label">Message</label>
+                            <label for="phone" class="form-label">Phone Number<span class="required-field-sign">*</span></label>
+                            <input type="tel" class="form-control" inputmode="tel" id="phone" pattern="^05\d{8}" required aria-required="true" aria-label="phone">
+                            <label for="message" class="form-label">Message<span class="required-field-sign">*</span></label>
                             <textarea style="resize: none;" class="form-control" id="message" rows="3" required aria-required="true" aria-label="message"></textarea>
                             <input type="checkbox" class="form-check-input" id="terms" required aria-required="true" aria-label="terms">
-                            <label for="terms" class="form-label">I allow this website to store my submission so they can respond to my inquiry.</label>
-                            <button type="submit" class="w-100 btn btn-primary mt-3">Submit</button>
+                            <label for="terms" class="form-label">I allow this website to store my submission so they can respond to my inquiry.<span class="required-field-sign">*</span></label>
+                            <button type="submit" id="submit-btn" class="w-100 btn btn-primary mt-3">Submit</button>
                         </form>
                     </div>
                     <div class="col-12 col-lg-6 bg-light mt-5">

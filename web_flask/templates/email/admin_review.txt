@@ -1,0 +1,12 @@
+New Registration Request
+
+A new user has registered and requires approval. Here are the details:
+
+- Name: {{ data.name }}
+- Email: {{ data.email}}
+- Contact Number: {{ data.contact_number }}
+- National ID: {{ data.national_id }}
+
+{{ url_for('auth.registration_review', action='approve', token=token, _external=True) }}
+{{ url_for('auth.registration_review', action='reject', token=token, _external=True) }}
+    

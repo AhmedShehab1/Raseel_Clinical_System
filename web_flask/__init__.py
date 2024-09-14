@@ -9,6 +9,8 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _l
 from elasticsearch import Elasticsearch
+# from flask_limiter import Limiter
+# from flask_limiter.util import get_remote_address
 import logging
 import pretty_errors
 import os
@@ -23,6 +25,11 @@ babel = Babel()
 login_manager = LoginManager()  # This is the login manager
 login_manager.login_view = "login"
 login_manager.login_message = _l("Please log in to access this page.")
+# limiter = Limiter(
+#     key_func=get_remote_address,
+#     default_limits=['10 per minute'],
+# )
+
 
 def get_locale():
     return request.accept_languages.best_match(current_app.config['LANGUAGES'])
@@ -39,6 +46,7 @@ def create_app(config_class=Config):
     moment.init_app(app)
     babel.init_app(app, locale_selector=get_locale)
     login_manager.init_app(app)
+    # limiter.init_app(app)
 
     from web_flask.main import bp as main_bp
     from web_flask.errors import bp as errors_bp

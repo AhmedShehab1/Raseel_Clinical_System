@@ -1,0 +1,18 @@
+<!DOCTYPE>
+<html>
+    <body>
+        <h1>New Registration Request</h1>
+        <p>A new user has registered and requires approval. Here are the details:</p>
+        <ul>
+          <li>Name: {{ data.name }}</li>
+          <li>Email: {{ data.email}}</li>
+          <li>Contact Number: {{ data.contact_number }}</li>
+          <li>National Id: {{ data.national_id }}</li>
+        </ul>
+        <p>
+          <a href=" {{ url_for('auth.registration_review', action='approve', token=token, _external=True) }}">Approve</a>
+          |
+          <a href=" {{ url_for('auth.registration_review', action='reject', token=token, _external=True) }}">Reject</a>
+        </p>
+    </body>
+</html>

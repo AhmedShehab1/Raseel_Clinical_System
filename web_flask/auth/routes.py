@@ -7,7 +7,7 @@ from flask import (
     render_template,
     flash,
     request,
-    session,abort
+    session
     )
 from flask_login import logout_user, current_user, login_user
 from web_flask.auth.forms import (
@@ -18,6 +18,7 @@ from web_flask.auth.forms import (
     )
 from web_flask.auth.email import send_password_reset_email
 from functools import wraps
+from web_flask.auth.email import send_admin_review_email
 import sqlalchemy as sa
 import models as m
 
@@ -67,10 +68,13 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         patient = db.session.scalar(
-            sa.select(m.Patient).where(m.Patient.email == form.email.data)
+            sa.select(m.Patient).where(m.Patient.email == form.email.data,
+                                       m.Patient.deleted_at == None,
+                                       m.Patient.status == True)
         )
         if patient is None or not patient.check_password(form.password.data):
-
+            flash("Login Unsuccessful. Please check email and password",
+                  "danger")
             return redirect(url_for("auth.login"))
         login_user(patient, remember=form.remember.data)
         session['user_type'] = patient.__class__.__name__
@@ -107,22 +111,26 @@ def process_login(form, staff):
 def register():
     if current_user.is_authenticated:
         return redirect(url_for("patient_bp.dashboard"))
+
     form = RegistrationForm()
-    if form.validate_on_submit():
-        patient_data = {
-            "name": form.name.data,
-            "email": form.email.data,
-            "contact_number": form.contact_number.data,
-            "password": form.password.data,
-            "birth_date": form.birth_date.data,
-            "gender": m.GenderType(form.gender.data),
-            "national_id": form.national_id.data
-        }
-        patient = m.Patient(**patient_data)
-        db.session.add(patient)
-        db.session.commit()
-        flash("Your account has been created! You are now able to log in", "success")
-        return redirect(url_for("auth.login"))
+    if request.method == "POST":
+        if form.validate_on_submit():
+            registration_data = {
+                "name": form.name.data,
+                "email": form.email.data,
+                "contact_number": form.contact_number.data,
+                "password": form.password.data,
+                "birth_date": form.birth_date.data,
+                "gender": m.GenderType(form.gender.data),
+                "national_id": form.national_id.data
+            }
+            patient = m.Patient(**registration_data)
+            db.session.add(patient)
+            db.session.commit()
+            send_admin_review_email(patient)
+            return {'status': 'success', 'message': 'Your registration request has been sent for review.'}
+        else:
+            return {'status': 'error', 'message': 'Invalid data.'}
     return render_template("register.html", title="Register - Raseel", form=form)
 
 
@@ -161,3 +169,17 @@ def reset_password(token):
         flash("Your password has been reset.", "success")
         return redirect(url_for("auth.login"))
     return render_template("reset_password.html", title="Reset Password", heading="Reset Password", form=form)
+
+@bp.route("registration-review/<action>/<token>", methods=["GET"])
+def registration_review(action, token):
+    patient = m.Patient.verify_reset_password_token(token)
+    if not patient:
+        return {'status': 'error', 'message': 'Invalid token.'}
+    if action == 'approve':
+        patient.status = True
+        db.session.commit()
+        return {'status': 'success', 'message': 'Patient registration approved.'}
+    elif action == 'reject':
+        db.session.delete(patient)
+        db.session.commit()
+        return {'status': 'success', 'message': 'Patient registration rejected.'}
