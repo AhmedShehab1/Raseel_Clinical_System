@@ -7,6 +7,7 @@ import sqlalchemy.orm as so
 
 app = create_app()
 
+
 @app.shell_context_processor
 def make_shell_context():
     return {
@@ -23,6 +24,7 @@ def make_shell_context():
         "sa": sa,
         "so": so,
     }
+
 
 if __name__ == "__main__":
     app.run()

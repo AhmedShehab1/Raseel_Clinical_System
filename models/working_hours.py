@@ -4,6 +4,7 @@ import models as m
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
+
 class DayOfWeek(str, Enum):
     SUNDAY = "Sunday"
     MONDAY = "Monday"
@@ -18,8 +19,7 @@ class WorkingHours(BaseModel):
     __tablename__ = "working_hours"
     __table_args__ = (
         sa.PrimaryKeyConstraint("doctor_id", "day"),
-        sa.CheckConstraint("end_time > start_time",
-                           name="check_time_validity")
+        sa.CheckConstraint("end_time > start_time", name="check_time_validity"),
     )
     id = None
 
@@ -27,7 +27,7 @@ class WorkingHours(BaseModel):
         sa.ForeignKey("doctors.id"), index=True, nullable=False
     )
 
-    doctor: so.Mapped["m.Doctor"] = so.relationship (
+    doctor: so.Mapped["m.Doctor"] = so.relationship(
         "Doctor", back_populates="working_hours"
     )
 
@@ -36,7 +36,6 @@ class WorkingHours(BaseModel):
     )
 
     end_time: so.Mapped[sa.Time] = so.mapped_column(sa.Time, index=True, nullable=False)
-
 
     day: so.Mapped[DayOfWeek] = so.mapped_column(
         sa.Enum(DayOfWeek), index=True, nullable=False

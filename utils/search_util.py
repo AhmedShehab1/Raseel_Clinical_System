@@ -2,18 +2,25 @@ from web_flask.search import add_to_index, remove_from_index, query_index
 from web_flask import db
 import sqlalchemy as sa
 
+
 class SearchableMixin:
     @classmethod
     def search(cls, expression, page, per_page, fields=None):
-        if cls.__abstract__: # Check if the class is abstract
+        if cls.__abstract__:  # Check if the class is abstract
             results = []
             for subclass in cls.__subclasses__():
-                ids = query_index(subclass.__tablename__, expression, page, per_page, fields)
+                ids = query_index(
+                    subclass.__tablename__, expression, page, per_page, fields
+                )
                 if len(ids) > 0:
                     when = []
                     for i in range(len(ids)):
                         when.append((ids[i], i))
-                    query = sa.select(subclass).where(subclass.id.in_(ids)).order_by(db.case(*when, value=subclass.id))
+                    query = (
+                        sa.select(subclass)
+                        .where(subclass.id.in_(ids))
+                        .order_by(db.case(*when, value=subclass.id))
+                    )
                     results.extend(db.session.scalars(query))
             return results
 
@@ -23,8 +30,8 @@ class SearchableMixin:
         when = []
         for i in range(len(ids)):
             when.append((ids[i], i))
-        query = sa.select(cls).where(cls.id.in_(ids)).order_by(
-            db.case(*when, value=cls.id)
+        query = (
+            sa.select(cls).where(cls.id.in_(ids)).order_by(db.case(*when, value=cls.id))
         )
         return db.session.scalars(query)
 
@@ -58,6 +65,7 @@ class SearchableMixin:
         else:
             for obj in db.session.scalars(sa.select(cls)):
                 add_to_index(cls.__tablename__, obj)
+
 
 db.event.listen(db.session, "before_commit", SearchableMixin.before_commit)
 db.event.listen(db.session, "after_commit", SearchableMixin.after_commit)

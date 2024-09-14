@@ -2,6 +2,7 @@ import unittest
 from tests import TestConfig
 from web_flask import create_app, db
 
+
 class TestPatient(unittest.TestCase):
     def setUp(self):
         self.app = create_app(TestConfig)

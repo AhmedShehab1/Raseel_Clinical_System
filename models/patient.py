@@ -14,7 +14,6 @@ from datetime import date, datetime
 from flask import current_app
 
 
-
 class GenderType(str, Enum):
     Male = "male"
     Female = "female"
@@ -26,9 +25,10 @@ class Patient(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
     Args:
         BaseModel (): Base model class
     """
+
     __abstract__ = False
     __tablename__ = "patients"
-    __searchable__ = ['name', 'email', 'contact_number', 'national_id']
+    __searchable__ = ["name", "email", "contact_number", "national_id"]
 
     def __init__(self, password: str, **kwargs):
         """
@@ -57,17 +57,14 @@ class Patient(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
     @staticmethod
     def verify_reset_password_token(token):
         try:
-            id = jwt.decode(token, current_app.config["SECRET_KEY"],
-                            algorithms=["HS256"])[
-                "reset_password"
-            ]
+            id = jwt.decode(
+                token, current_app.config["SECRET_KEY"], algorithms=["HS256"]
+            )["reset_password"]
             return db.session.get(Patient, id)
         except Exception:
             return None
 
-    name: so.Mapped[str] = so.mapped_column(sa.String(64),
-                                            index=True,
-                                            nullable=False)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, nullable=False)
 
     email: so.Mapped[str] = so.mapped_column(
         sa.String(120), index=True, unique=True, nullable=False
@@ -79,16 +76,19 @@ class Patient(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
 
     birth_date: so.Mapped[sa.Date] = so.mapped_column(sa.Date)
 
-    password_hash: so.Mapped[str] = so.mapped_column(sa.String(256),
-                                                     nullable=False)
+    password_hash: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=False)
 
     status: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
-    
+
     address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
-    national_id: so.Mapped[str] = so.mapped_column(sa.String(10), unique=True, nullable=False)
+    national_id: so.Mapped[str] = so.mapped_column(
+        sa.String(10), unique=True, nullable=False
+    )
 
-    gender: so.Mapped[GenderType] = so.mapped_column(sa.Enum(GenderType), nullable=False)
+    gender: so.Mapped[GenderType] = so.mapped_column(
+        sa.Enum(GenderType), nullable=False
+    )
 
     medical_history: so.Mapped[Optional[str]] = so.mapped_column(sa.String(400))
 
@@ -110,14 +110,21 @@ class Patient(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
         sa.DateTime, default=gen_datetime
     )
 
+    vitals: so.Mapped[List["m.Vital"]] = so.relationship(
+        "Vital", back_populates="patient"
+    )
 
-    vitals: so.Mapped[List["m.Vital"]] = so.relationship("Vital", back_populates="patient")
+    diagnoses: so.Mapped[List["m.Diagnose"]] = so.relationship(
+        "Diagnose", back_populates="patient"
+    )
 
-    diagnoses: so.Mapped[List["m.Diagnose"]] = so.relationship("Diagnose", back_populates="patient")
+    prescriptions: so.Mapped[List["m.Prescription"]] = so.relationship(
+        "Prescription", back_populates="patient"
+    )
 
-    prescriptions: so.Mapped[List["m.Prescription"]] = so.relationship("Prescription", back_populates="patient")
-
-    allergies: so.Mapped[List["m.Allergy"]] = so.relationship("Allergy", back_populates="patient")
+    allergies: so.Mapped[List["m.Allergy"]] = so.relationship(
+        "Allergy", back_populates="patient"
+    )
 
     @hybrid_property
     def age(self):
@@ -136,35 +143,61 @@ class Vital(BaseModel):
         BaseModel (): Base model class
     """
 
-
     __tablename__ = "vitals"
     patient_id: so.Mapped[str] = so.mapped_column(
         sa.ForeignKey("patients.id"), index=True, nullable=False
     )
-    patient: so.Mapped["m.Patient"] = so.relationship("Patient", back_populates="vitals")
+    patient: so.Mapped["m.Patient"] = so.relationship(
+        "Patient", back_populates="vitals"
+    )
     height: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
     weight: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
     temperature: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
     blood_pressure: so.Mapped[str] = so.mapped_column(sa.String(10), nullable=False)
     pulse: so.Mapped[int] = so.mapped_column(sa.Integer, nullable=False)
-    measured_at: so.Mapped[datetime] = so.mapped_column(sa.DateTime, default=datetime.utcnow)
-
+    measured_at: so.Mapped[datetime] = so.mapped_column(
+        sa.DateTime, default=datetime.utcnow
+    )
 
     @property
     def vitals_list(self):
         return [
             ("Height", self.height, "Normal", "success", "fa-check-circle"),
             ("Weight", self.weight, "Normal", "success", "fa-check-circle"),
-            ("Temperature", self.temperature, self.status_temp, self.status_color_temp, self.status_icon_temp),
-            ("Blood Pressure", self.blood_pressure, self.status_blood_pressure, self.status_color_blood_pressure, self.status_icon_blood_pressure),
-            ("Pulse", self.pulse, self.status_pulse, self.status_color_pulse, self.status_icon_pulse),
-            ("BMI", self.bmi, self.status_bmi, self.status_color_bmi, self.status_icon_bmi),
+            (
+                "Temperature",
+                self.temperature,
+                self.status_temp,
+                self.status_color_temp,
+                self.status_icon_temp,
+            ),
+            (
+                "Blood Pressure",
+                self.blood_pressure,
+                self.status_blood_pressure,
+                self.status_color_blood_pressure,
+                self.status_icon_blood_pressure,
+            ),
+            (
+                "Pulse",
+                self.pulse,
+                self.status_pulse,
+                self.status_color_pulse,
+                self.status_icon_pulse,
+            ),
+            (
+                "BMI",
+                self.bmi,
+                self.status_bmi,
+                self.status_color_bmi,
+                self.status_icon_bmi,
+            ),
         ]
 
     @hybrid_property
     def bmi(self):
         height_in_meters = self.height / 100
-        return round(self.weight / (height_in_meters ** 2), 2)
+        return round(self.weight / (height_in_meters**2), 2)
 
     @hybrid_property
     def status_temp(self):
@@ -178,7 +211,11 @@ class Vital(BaseModel):
 
     @hybrid_property
     def status_icon_temp(self):
-        return "fa-exclamation-triangle" if self.status_temp == "Critical" else "fa-check-circle"
+        return (
+            "fa-exclamation-triangle"
+            if self.status_temp == "Critical"
+            else "fa-check-circle"
+        )
 
     @hybrid_property
     def status_pulse(self):
@@ -188,12 +225,15 @@ class Vital(BaseModel):
 
     @hybrid_property
     def status_icon_pulse(self):
-        return "fa-exclamation-triangle" if self.status_pulse == "Critical" else "fa-check-circle"
+        return (
+            "fa-exclamation-triangle"
+            if self.status_pulse == "Critical"
+            else "fa-check-circle"
+        )
 
     @hybrid_property
     def status_color_pulse(self):
         return "danger" if self.status_pulse == "Critical" else "success"
-
 
     @hybrid_property
     def status_bmi(self):
@@ -207,15 +247,19 @@ class Vital(BaseModel):
 
     @hybrid_property
     def status_icon_bmi(self):
-        return "fa-exclamation-triangle" if self.status_bmi == "Critical" else "fa-check-circle"
+        return (
+            "fa-exclamation-triangle"
+            if self.status_bmi == "Critical"
+            else "fa-check-circle"
+        )
 
     @hybrid_property
     def systolic_bp(self):
-        return int(self.blood_pressure.split('/')[0])
+        return int(self.blood_pressure.split("/")[0])
 
     @hybrid_property
     def diastolic_bp(self):
-        return int(self.blood_pressure.split('/')[1])
+        return int(self.blood_pressure.split("/")[1])
 
     @hybrid_property
     def status_blood_pressure(self):
@@ -229,7 +273,11 @@ class Vital(BaseModel):
 
     @hybrid_property
     def status_icon_blood_pressure(self):
-        return "fa-exclamation-triangle" if self.status_blood_pressure == "Critical" else "fa-check-circle"
+        return (
+            "fa-exclamation-triangle"
+            if self.status_blood_pressure == "Critical"
+            else "fa-check-circle"
+        )
 
 
 class Diagnose(BaseModel):
@@ -238,13 +286,18 @@ class Diagnose(BaseModel):
     Args:
         BaseModel (): Base model class
     """
+
     __tablename__ = "diagnoses"
-    __table_args__ = (sa.UniqueConstraint("patient_id", "diagnose_name", name="uq_patient_diagnose"),)
+    __table_args__ = (
+        sa.UniqueConstraint("patient_id", "diagnose_name", name="uq_patient_diagnose"),
+    )
 
     patient_id: so.Mapped[str] = so.mapped_column(
         sa.ForeignKey("patients.id"), index=True, nullable=False
     )
-    patient: so.Mapped["m.Patient"] = so.relationship("Patient", back_populates="diagnoses")
+    patient: so.Mapped["m.Patient"] = so.relationship(
+        "Patient", back_populates="diagnoses"
+    )
     name: so.Mapped[Optional[str]] = so.mapped_column("diagnose_name", sa.String(256))
 
 
@@ -259,7 +312,9 @@ class Prescription(BaseModel):
     patient_id: so.Mapped[str] = so.mapped_column(
         sa.ForeignKey("patients.id"), index=True, nullable=False
     )
-    patient: so.Mapped["m.Patient"] = so.relationship("Patient", back_populates="prescriptions")
+    patient: so.Mapped["m.Patient"] = so.relationship(
+        "Patient", back_populates="prescriptions"
+    )
     medication: so.Mapped[str] = so.mapped_column(sa.String(50), nullable=True)
     dosage: so.Mapped[str] = so.mapped_column(sa.String(50), nullable=True)
 
@@ -270,12 +325,16 @@ class Allergy(BaseModel):
     Args:
         BaseModel (): Base model class
     """
+
     __tablename__ = "allergies"
-    __table_args__ = (sa.UniqueConstraint("patient_id", "allergen", name="uq_patient_allergy"),)
+    __table_args__ = (
+        sa.UniqueConstraint("patient_id", "allergen", name="uq_patient_allergy"),
+    )
     patient_id: so.Mapped[str] = so.mapped_column(
         sa.ForeignKey("patients.id"), index=True, nullable=False
     )
-    patient: so.Mapped["m.Patient"] = so.relationship("Patient", back_populates="allergies")
+    patient: so.Mapped["m.Patient"] = so.relationship(
+        "Patient", back_populates="allergies"
+    )
     allergen: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=True)
     reaction: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=True)
-

@@ -1,7 +1,8 @@
 from flask import render_template, flash
-from web_flask import  db
+from web_flask import db
 from flask_babel import _
 from web_flask.errors import bp
+
 
 @bp.app_errorhandler(404)
 def page_not_found(error):

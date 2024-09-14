@@ -1,8 +1,9 @@
 from config import Config
 
+
 class TestConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "sqlite://" # In-memory database
+    SQLALCHEMY_DATABASE_URI = "sqlite://"  # In-memory database
     WTF_CSRF_ENABLED = False
     MAIL_SERVER = None
     MAIL_PORT = None

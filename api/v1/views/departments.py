@@ -29,10 +29,8 @@ class listAllObjects:
     def to_dict(self):
         """Return a jsn representation of the class."""
 
-        return {
-            'count': self.count,
-            'results': self.results
-        }
+        return {"count": self.count, "results": self.results}
+
 
 def fetch_department(department_id):
     """Fetch a department from the database
@@ -46,10 +44,12 @@ def fetch_department(department_id):
 
     return db.get_or_404(Department, department_id)
 
+
 def save():
     """Save changes to the database."""
 
     db.session.commit()
+
 
 def update_item(item, data):
     """Update an item with the data provided in the request.
@@ -60,12 +60,13 @@ def update_item(item, data):
     """
 
     for k, v in data.items():
-        if k in ['id', 'created_at', 'updated_at', 'deleted_at']:
+        if k in ["id", "created_at", "updated_at", "deleted_at"]:
             continue
         setattr(item, k, v)
     save()
 
-@bp.get('/departments/<string:department_id>')
+
+@bp.get("/departments/<string:department_id>")
 def get_department(department_id):
     """Get a department by id.
 
@@ -80,7 +81,8 @@ def get_department(department_id):
     department = fetch_department(department_id)
     return department.to_dict(), 200
 
-@bp.get('/departments')
+
+@bp.get("/departments")
 def get_all_departments():
     """Get all departments in the database.
 
@@ -90,12 +92,14 @@ def get_all_departments():
         int: the status code of the response.
     """
 
-    departments_list = db.session.query(Department).options(joinedload(Department.doctors)).all()
+    departments_list = (
+        db.session.query(Department).options(joinedload(Department.doctors)).all()
+    )
     departments = listAllObjects(departments_list)
     if departments.count > 0:
         status_code = 200
     else:
         status_code = 404
-        flash('Failed to load departments, please try again later', 'primary')
+        flash("Failed to load departments, please try again later", "primary")
 
     return departments.to_dict(), status_code

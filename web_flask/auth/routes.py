@@ -1,21 +1,14 @@
 from urllib.parse import urlsplit
 from web_flask.auth import bp
 from web_flask import db
-from flask import (
-    redirect,
-    url_for,
-    render_template,
-    flash,
-    request,
-    session
-    )
+from flask import redirect, url_for, render_template, flash, request, session
 from flask_login import logout_user, current_user, login_user
 from web_flask.auth.forms import (
     LoginForm,
     RegistrationForm,
     ResetPasswordForm,
-    ResetPasswordRequestForm
-    )
+    ResetPasswordRequestForm,
+)
 from web_flask.auth.email import send_password_reset_email
 from functools import wraps
 from web_flask.auth.email import send_admin_review_email
@@ -23,17 +16,18 @@ import sqlalchemy as sa
 import models as m
 
 ROLE_DASHBOARD_MAP = {
-    'Admin': 'admin_bp.admin_dashboard',
-    'Doctor': 'doctor_bp.current_appointments',
-    'Receptionist': 'receptionist_bp.dashboard',
+    "Admin": "admin_bp.admin_dashboard",
+    "Doctor": "doctor_bp.current_appointments",
+    "Receptionist": "receptionist_bp.dashboard",
 }
 
 
 def get_staff_by_email(email: str):
-    result = m.StaffMember.search(email, 1, 1, ['email'])
+    result = m.StaffMember.search(email, 1, 1, ["email"])
     if result and result[0].deleted_at is None:
         return result[0]
     return None
+
 
 def login_handler(func):
     @wraps(func)
@@ -42,11 +36,10 @@ def login_handler(func):
         staff = get_staff_by_email(form.email.data)
         print(staff)
         if staff is None or not staff.check_password(form.password.data):
-            flash("Login Unsuccessful. Please check email and password",
-                  "danger")
-            return redirect(url_for('auth.staff_login'))
+            flash("Login Unsuccessful. Please check email and password", "danger")
+            return redirect(url_for("auth.staff_login"))
         login_user(staff, remember=form.remember.data)
-        session['user_type'] = staff.__class__.__name__
+        session["user_type"] = staff.__class__.__name__
 
         return func(*args, staff=staff, **kwargs)
 
@@ -61,23 +54,24 @@ def logout():
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
-    if request.host == 'staff.ahmedshehab.tech':
-        return redirect(url_for('auth.staff_login'))
+    if request.host == "staff.ahmedshehab.tech":
+        return redirect(url_for("auth.staff_login"))
     if current_user.is_authenticated:
         return redirect(url_for("patient_bp.dashboard"))
     form = LoginForm()
     if form.validate_on_submit():
         patient = db.session.scalar(
-            sa.select(m.Patient).where(m.Patient.email == form.email.data,
-                                       m.Patient.deleted_at == None,
-                                       m.Patient.status == True)
+            sa.select(m.Patient).where(
+                m.Patient.email == form.email.data,
+                m.Patient.deleted_at == None,
+                m.Patient.status == True,
+            )
         )
         if patient is None or not patient.check_password(form.password.data):
-            flash("Login Unsuccessful. Please check email and password",
-                  "danger")
+            flash("Login Unsuccessful. Please check email and password", "danger")
             return redirect(url_for("auth.login"))
         login_user(patient, remember=form.remember.data)
-        session['user_type'] = patient.__class__.__name__
+        session["user_type"] = patient.__class__.__name__
         next_page = request.args.get("next")
         if not next_page or urlsplit(next_page).netloc != "":
             next_page = url_for("patient_bp.dashboard")
@@ -88,7 +82,7 @@ def login():
 @bp.route("/staff/login", methods=["GET", "POST"])
 def staff_login():
     if current_user.is_authenticated:
-        return redirect(url_for(ROLE_DASHBOARD_MAP[session['user_type']]))
+        return redirect(url_for(ROLE_DASHBOARD_MAP[session["user_type"]]))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -96,16 +90,18 @@ def staff_login():
 
     return render_template("login.html", title="Staff Login - Raseel", form=form)
 
+
 @login_handler
 def process_login(form, staff):
     next_page = request.args.get("next")
-    dashboard_route = ROLE_DASHBOARD_MAP.get(session['user_type'])
+    dashboard_route = ROLE_DASHBOARD_MAP.get(session["user_type"])
     if not dashboard_route:
-         flash("Role does not have an assigned dashboard.", "warning")
-         return redirect(url_for("auth.staff_login"))
+        flash("Role does not have an assigned dashboard.", "warning")
+        return redirect(url_for("auth.staff_login"))
     if not next_page or urlsplit(next_page).netloc != "":
         next_page = url_for(dashboard_route)
     return redirect(next_page)
+
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -122,17 +118,19 @@ def register():
                 "password": form.password.data,
                 "birth_date": form.birth_date.data,
                 "gender": m.GenderType(form.gender.data),
-                "national_id": form.national_id.data
+                "national_id": form.national_id.data,
             }
             patient = m.Patient(**registration_data)
             db.session.add(patient)
             db.session.commit()
             send_admin_review_email(patient)
-            return {'status': 'success', 'message': 'Your registration request has been sent for review.'}
+            return {
+                "status": "success",
+                "message": "Your registration request has been sent for review.",
+            }
         else:
-            return {'status': 'error', 'message': 'Invalid data.'}
+            return {"status": "error", "message": "Invalid data."}
     return render_template("register.html", title="Register - Raseel", form=form)
-
 
 
 @bp.route("/reset_password_request", methods=["GET", "POST"])
@@ -147,12 +145,16 @@ def reset_password_request():
         if patient:
             send_password_reset_email(patient)
         flash(
-            ("An email has been sent with instructions to"
-             " reset your password"),
+            ("An email has been sent with instructions to" " reset your password"),
             "info",
         )
         return redirect(url_for("auth.login"))
-    return render_template("reset_password.html", title="Reset Password", heading="Reset Password", form=form)
+    return render_template(
+        "reset_password.html",
+        title="Reset Password",
+        heading="Reset Password",
+        form=form,
+    )
 
 
 @bp.route("/reset_password/<token>", methods=["GET", "POST"])
@@ -168,18 +170,24 @@ def reset_password(token):
         db.session.commit()
         flash("Your password has been reset.", "success")
         return redirect(url_for("auth.login"))
-    return render_template("reset_password.html", title="Reset Password", heading="Reset Password", form=form)
+    return render_template(
+        "reset_password.html",
+        title="Reset Password",
+        heading="Reset Password",
+        form=form,
+    )
+
 
 @bp.route("registration-review/<action>/<token>", methods=["GET"])
 def registration_review(action, token):
     patient = m.Patient.verify_reset_password_token(token)
     if not patient:
-        return {'status': 'error', 'message': 'Invalid token.'}
-    if action == 'approve':
+        return {"status": "error", "message": "Invalid token."}
+    if action == "approve":
         patient.status = True
         db.session.commit()
-        return {'status': 'success', 'message': 'Patient registration approved.'}
-    elif action == 'reject':
+        return {"status": "success", "message": "Patient registration approved."}
+    elif action == "reject":
         db.session.delete(patient)
         db.session.commit()
-        return {'status': 'success', 'message': 'Patient registration rejected.'}
+        return {"status": "success", "message": "Patient registration rejected."}

@@ -4,6 +4,7 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from flask_login import UserMixin
 
+
 class Doctor(m.StaffMember):
     """
     Doctor model class
@@ -14,8 +15,7 @@ class Doctor(m.StaffMember):
 
     __tablename__ = "doctors"
 
-    certificates: so.Mapped[str] = so.mapped_column(sa.String(256),
-                                                    nullable=False)
+    certificates: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=False)
 
     department_id: so.Mapped[str] = so.mapped_column(
         sa.ForeignKey("departments.id"), index=True, nullable=False
@@ -29,6 +29,5 @@ class Doctor(m.StaffMember):
     )
 
     working_hours: so.Mapped[List["m.WorkingHours"]] = so.relationship(
-                                                                       "WorkingHours",
-                                                                       back_populates="doctor"
-                                                                       )
+        "WorkingHours", back_populates="doctor"
+    )

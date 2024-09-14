@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
+
 def gen_datetime():
     """
     Generate the current datetime in UTC timezone
@@ -25,8 +26,7 @@ class BaseModel(db.Model):
 
     __abstract__ = True
     id: so.Mapped[str] = so.mapped_column(
-        sa.String(128), primary_key=True, default=lambda: str(uuid.uuid4()),
-        index=True
+        sa.String(128), primary_key=True, default=lambda: str(uuid.uuid4()), index=True
     )
     created_at: so.Mapped[sa.DateTime] = so.mapped_column(
         sa.DateTime, default=gen_datetime
@@ -46,8 +46,8 @@ class BaseModel(db.Model):
 
     def to_dict(self):
         new_dict = self.__dict__.copy()
-        if 'created_at' in new_dict:
-            new_dict['created_at'] = new_dict['created_at'].strftime(time)
+        if "created_at" in new_dict:
+            new_dict["created_at"] = new_dict["created_at"].strftime(time)
         if "updated_at" in new_dict:
             new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
 
@@ -59,9 +59,13 @@ class BaseModel(db.Model):
         for key, value in new_dict.items():
             if isinstance(value, BaseModel):
                 new_dict[key] = value.to_dict()
-            elif isinstance(value, list) and all(isinstance(i, BaseModel) for i in value):
+            elif isinstance(value, list) and all(
+                isinstance(i, BaseModel) for i in value
+            ):
                 new_dict[key] = [i.to_dict() for i in value]
-            elif isinstance(value, dict) and all(isinstance(i, BaseModel) for i in value.values()):
+            elif isinstance(value, dict) and all(
+                isinstance(i, BaseModel) for i in value.values()
+            ):
                 new_dict[key] = {k: v.to_dict() for k, v in value.items()}
 
         return new_dict

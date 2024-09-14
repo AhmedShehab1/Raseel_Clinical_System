@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 receptionist_bp = Blueprint("receptionist_bp", __name__, url_prefix="/receptionist")
 
+
 @receptionist_bp.route("/book-appointment", methods=["GET", "POST"])
 @login_required
 def book_appointment():
@@ -14,10 +15,15 @@ def book_appointment():
         str: Render the receptionist template for booking an appointiment
     """
 
-    #Search on the patient
+    # Search on the patient
     search_results = table_search()
 
-    return render_template("receptionist/book_appointment.html", title="Book Appointment - Raseel", patients=search_results)
+    return render_template(
+        "receptionist/book_appointment.html",
+        title="Book Appointment - Raseel",
+        patients=search_results,
+    )
+
 
 @receptionist_bp.route("/dashboard", methods=["GET", "POST"])
 @login_required
@@ -31,8 +37,8 @@ def dashboard():
     search_results = table_search()
     current_time_utc = datetime.now(timezone.utc)
     return render_template(
-        'receptionist/dashboard.html',
-        title='Receptionist Dashboard - Raseel',
+        "receptionist/dashboard.html",
+        title="Receptionist Dashboard - Raseel",
         current_time_utc=current_time_utc,
-        results=search_results
+        results=search_results,
     )

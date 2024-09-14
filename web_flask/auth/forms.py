@@ -5,7 +5,7 @@ from wtforms import (
     PasswordField,
     BooleanField,
     DateField,
-    SelectField
+    SelectField,
 )
 
 from wtforms.validators import (
@@ -44,14 +44,17 @@ class RegistrationForm(FlaskForm):
             ),
         ],
     )
-    national_id = StringField("National ID",
-                              validators=[DataRequired(), Length(10,
-                                                                 message="National ID must be 10 digits")
-                                          ])
+    national_id = StringField(
+        "National ID",
+        validators=[
+            DataRequired(),
+            Length(10, message="National ID must be 10 digits"),
+        ],
+    )
     gender = SelectField(
         "Gender",
         choices=[(gender.value, gender.name) for gender in m.GenderType],
-        validators=[DataRequired()]
+        validators=[DataRequired()],
     )
 
     birth_date = DateField("Birth Date", validators=[DataRequired()])

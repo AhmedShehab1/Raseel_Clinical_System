@@ -21,7 +21,6 @@ import models as m
 from flask import request
 
 
-
 class EditProfileInfo(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
@@ -72,33 +71,46 @@ class EditProfileInfo(FlaskForm):
                 raise ValidationError("Please use a different contact number.")
 
 
-
-
 class VisitorForm(FlaskForm):
-    name  = StringField("Name", validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
     contact_number = StringField(
-                                 "Contact Number",
-                                 validators=[DataRequired(),
-                                             Length(10, message="Contact number must be 10 digits"),
-                                             Regexp(r"^05[0-9]{8}$",
-                                             message=("Ensure contact number in the"
-                                                      " following format: 05XXXXXXXX")
-                                             )]
-                                 )
-    message = TextAreaField("Message", validators=[DataRequired(), Length(min=30, max=100,
-                                                                          message=("Message must be between"
-                                                                                   " 30 and 100 characters"))])
-    statement = BooleanField("I allow this website to store my submission so they can respond to my inquiry.",
-                             validators=[DataRequired()])
+        "Contact Number",
+        validators=[
+            DataRequired(),
+            Length(10, message="Contact number must be 10 digits"),
+            Regexp(
+                r"^05[0-9]{8}$",
+                message=(
+                    "Ensure contact number in the" " following format: 05XXXXXXXX"
+                ),
+            ),
+        ],
+    )
+    message = TextAreaField(
+        "Message",
+        validators=[
+            DataRequired(),
+            Length(
+                min=30,
+                max=100,
+                message=("Message must be between" " 30 and 100 characters"),
+            ),
+        ],
+    )
+    statement = BooleanField(
+        "I allow this website to store my submission so they can respond to my inquiry.",
+        validators=[DataRequired()],
+    )
     submit = SubmitField("Submit")
 
 
 class SearchForm(FlaskForm):
     q = StringField("Search", validators=[DataRequired()])
+
     def __init__(self, *args, **kwargs):
-        if 'formdata' not in kwargs:
-            kwargs['formdata'] = request.args
-        if 'meta' not in kwargs:
-            kwargs['meta'] = {'csrf': False}
+        if "formdata" not in kwargs:
+            kwargs["formdata"] = request.args
+        if "meta" not in kwargs:
+            kwargs["meta"] = {"csrf": False}
         super(SearchForm, self).__init__(*args, **kwargs)

@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, ".env"))
 
+
 class Config:
     SECRET_KEY = (
         os.environ.get("SECRET_KEY")
@@ -21,4 +22,4 @@ class Config:
     MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
     ADMINS = ["ahmedshehab2006a@gmail.com", "mazenatef5510@gmail.com"]
     LANGUAGES = ["en", "ar"]
-    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
+    ELASTICSEARCH_URL = os.environ.get("ELASTICSEARCH_URL")
