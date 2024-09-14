@@ -1,0 +1,138 @@
+<div class="modal fade" id="view-modal-{{appointment.id}}" tabindex="-1" aria-labelledby="modal-title-{{appointment.id}}"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-scrollable modal-lg">
+<div class="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title text-info" id="modal-title-{{appointment.id}}">Appointment Report</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+        aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <h5>Time: {{ moment(appointment.appointment_time).format('LLLL', refresh=True) }}</h5>
+        <hr>
+        <div class="text-center" id="doctor-detailes">
+            <h5>Doctor Section</h5>
+            <div class="d-flex justify-content-around">
+                <p class="lead">Doctor Name: {{appointment.doctor.name}}</p>
+                <p>Department Name: {{appointment.doctor.department.name}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="text-center" id="patient-detailes">
+            <h5>Patient Section</h5>
+            <div class="d-flex justify-content-around">
+                <p class="lead">Patient Name: {{appointment.patient.name}}</p>
+                <p>Age: {{appointment.patient.age}} year(s)</p>
+                <p>Gender: {{appointment.patient.gender.value}}</p>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class='col-md-6'>
+                        <h6 class="text-primary">Diagnosis</h6>
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                {% if appointment.patient.diagnoses %}
+                                    {% for diagnosis in appointment.patient.diagnoses %}
+                                    <tr><td>{{ diagnosis.name }}</td></tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr><td>No diagnoses recorded.</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class='col-md-6'>
+                        <h6 class="text-primary">Prescribed Medications</h6>
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                {% if appointment.patient.prescriptions %}
+                                    {% for prescription in appointment.patient.prescriptions %}
+                                        <tr><td>{{ prescription.medication }}</td><td>{{ prescription.dosage }}</td></tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr><td>No prescriptions recorded.</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class='col-12'>
+                        <h6 class="text-primary">Vitals</h6>
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Vital</th>
+                                    <th>Value</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if appointment.patient.vitals %}
+                                    {% for vital in appointment.patient.vitals %}
+                                        {% for vital_name, vital_value, vital_status, vital_color, vital_icon in vital.vitals_list %}
+                                            <tr class="table-{{ vital_color }}">
+                                                <td>{{ moment(vital.measured_at).format('LLLL') }}</td>
+                                                <td>{{ vital_name }}</td>
+                                                <td>{{ vital_value }}</td>
+                                                <td>{{ vital_status }} <i class="fa {{vital_icon}}"></td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% else %}
+                                    <tr><td colspan="4">No vitals recorded.</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-4'>
+                        <h6 class="text-primary">Allergies</h6>
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                {% if appointment.patient.allergies %}
+                                    {% for allergy in appointment.patient.allergies %}
+                                        <tr><td>{{ allergy.allergen }}</td><td>{{ allergy.reaction }}</td></tr>
+                                    {% endfor %}
+                                {% else %}
+                                <tr><td colspan="2">No allergies recorded.</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class='col-md-8'>
+                        <h6 class="text-primary">Visits</h6>
+                        <table class="table table-bordered table-sm">
+                            <tbody>
+                                {% set past_visits = [] %}
+                                {% for visit in appointment.patient.appointments %}
+                                    {% if visit.appointment_time < current_time_utc.replace(tzinfo=None) %}
+                                        {% set past_visits = past_visits.append(visit) %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if past_visits %}
+                                    {% for visit in past_visits %}
+                                        <tr>
+                                            <td>{{ _('%(datetime)s', datetime=moment(visit.appointment_time).format('LLLL')) }}</td>
+                                            <td><span class="badge bg-success">{{ visit.doctor.department.name }}</span></td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr><td>No visits recorded.</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+</div>
+</div>
+</div>

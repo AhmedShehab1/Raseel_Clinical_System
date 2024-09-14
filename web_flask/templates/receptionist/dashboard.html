@@ -48,42 +48,46 @@
         <input type="button" class="btn btn-primary book-appointment" value="Book New Appointment">
     </header>
     <hr>
-    <table class="table table-striped" style="height:360px">
-        <thead>
-            <tr>
-                <th scope="col">Patient Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Contact Number</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="table_body">
-            {% for result in results|selectattr("deleted_at", "none")|list %}
-                <tr class="member-item">
-                    <td>{{ result.name }}</td>
-                    <td>{{ result.email }}</td>
-                    <td>{{ result.contact_number }}</td>
-                    <td>
-                        <a class="btn btn-warning edit-member" data-bs-toggle="modal" data-bs-target="#editModal-{{result.id}}" data-id={{ result.id }}>Appointments</a>
-                    </td>
+    <div class="w-75 container my-5 overflow-auto" style="height:400px; margin-bottom:0  !important;">
+        <table class="text-center table-bordered table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Patient Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Contact Number</th>
+                    <th scope="col">Actions</th>
                 </tr>
-                <div class="modal fade" id="editModal-{{result.id}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel">Appointments</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </thead>
+            <tbody class="table_body">
+                {% for result in results|selectattr("deleted_at", "none")|list %}
+                    <tr class="member-item">
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ result.name }}</td>
+                        <td>{{ result.email }}</td>
+                        <td>{{ result.contact_number }}</td>
+                        <td>
+                            <a class="btn btn-warning edit-member" data-bs-toggle="modal" data-bs-target="#editModal-{{result.id}}" data-id={{ result.id }}>Appointments</a>
+                        </td>
+                    </tr>
+                    <div class="modal fade" id="editModal-{{result.id}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">Appointments</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <ul>
+                                    {% for appointment in result.appointments %}
+                                        <li>{{ appointment.appointment_time }}</li>
+                                    {% endfor %}
+                                </ul>
                             </div>
-                            <ul>
-                                {% for appointment in result.appointments %}
-                                    <li>{{ appointment.appointment_time }}</li>
-                                {% endfor %}
-                            </ul>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </tbody>
-    </table>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {{ moment.include_moment() }}
 {% endblock content %}

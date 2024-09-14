@@ -34,30 +34,147 @@
     <h2 class="fw-bold text-center mt-3">{{current_user.name}}'s Dashboard</h2>
     <p class="ms-3 fw-bold lead text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
     <header class="d-flex align-items-end justify-content-around">
-        <p class="fw-bold text-center mt-3" style="font-size:25px">Appointments Table</p>
-        <div></div>
+        <p class="fw-bold text-center" style="font-size:25px">Appointments Table</p>
+        <div class="d-flex align-items-center">
+            <label for="appointment-status" class="form-label text-nowrap me-2 mb-0">Filter by Status:</label>
+            <select class="form-select" id="appointment-status" aria-label="Default select example">
+                <option value="scheduled">Scheduled</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled" >Cancelled</option>
+            </select>
+        </div>
         <input type="button" class="btn btn-primary book-appointment" value="Book New Appointment">
     </header>
     <hr>
-    <table class="text-center table table-striped" style="height:360px">
-        <thead>
-            <tr>
-                <th scope="col">Index</th>
-                <th scope="col">Day</th>
-                <th scope="col">Date</th>
-                <th scope="col">Time</th>
-            </tr>
-        </thead>
-        <tbody class="table_body">
-            {% for result in results|selectattr("deleted_at", "none")|list %}
-                <tr class="member-item">
-                    <td>{{ loop.index }}</td>
-                    <td>{{ moment(result.appointment_time).format('dddd') }}</td>
-                    <td>{{ moment(result.appointment_time).format('LL') }}</td>
-                    <td>{{ moment(result.appointment_time).fromNow() }}</td>
+    <div id="appointments" class="w-75 container my-5" style="height:400px; margin-bottom:0;">
+        <table class="text-center table-bordered table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Day</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time Left</th>
+                    <th scope="col">Actions</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="scheduled-table-body" class="table_body">
+                {% for appointment in appointments|selectattr("status", "eq", "scheduled")|sort(attribute="appointment_time") %}
+                    <tr class="appointment-item">
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ appointment.status.value.upper() }}</td>
+                        <td>{{ moment(appointment.appointment_time).format('dddd') }}</td>
+                        <td>{{ moment(appointment.appointment_time).format('LL') }}</td>
+                        <td>{{ moment(appointment.appointment_time).fromNow() }}</td>
+                        <td>
+                            {% include 'patient/view-modal.html' %}
+                            <div class="modal fade" id="update-modal-{{appointment.id}}"  tabindex="-1" aria-labelledby="modal-title-{{appointment.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modal-title-{{appointment.id}}">Update Patient Info</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <section class="Diagnosis">
+                                                <p class="lead">Diagnosis</p>
+                                            <div class="align-items-center justify-content-center">
+                                                <div class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px" data-bs-theme="light">
+                                                    <form class="p-2 mb-2 bg-body-tertiary border-bottom">
+                                                        <input type="search" class="form-control diagnosis-search" attribute='name' autocomplete="false" placeholder="Search Common Diagnosis">
+                                                    </form>
+                                                    <ul class="list-unstyled mb-0 diagnosis-list">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            </section>
+                                            <hr>
+                                            <section class="Medication">
+                                                <p class="lead">Medication  </p>
+                                                <div class="container-xxl">
+                                                    <div class="row justify-content-between align-items-center">
+                                                        <div class="col-12 col-md-5">
+                                                            <div class="dropdown-menu d-block position-static pt-0 rounded-3 shadow overflow-hidden w-280px" data-bs-theme="light">
+                                                                <form class="p-2 mb-2 bg-body-tertiary border-bottom">
+                                                                    <input type="search" class="form-control drug-search" attribute="medication" autocomplete="false" placeholder="Search Common Drugs">
+                                                                </form>
+                                                                <ul class="list-unstyled mb-0 medications-list">
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-5">
+                                                            <p class="fw-bold">Dosage</p>
+                                                            <select class="form-select mb-5" aria-label="Drug Frequency" attribute="dosage">
+                                                                <option selected>Once Daily</option>
+                                                                <option value="Every Two Hours">Every Two Hours</option>
+                                                                <option value="Twice daily">Twice daily</option>
+                                                                <option value="Thrice daily">Thrice daily</option>
+                                                                <option value="Every four hours">Every four hours</option>
+                                                                <option value="Every six hours">Every six hours</option>
+                                                                <option value="Every three hours">Every three hours</option>
+                                                                <option value="Every twelve hours">Every twelve hours</option>
+                                                                <option value="Every hour">Every hour</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <hr>
+                                            <section class="General">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">General Notes</span>
+                                                    <textarea class="form-control general-notes-textarea" rows="5" attribute="notes" aria-label="General Notes"></textarea>
+                                                </div>
+                                            </section>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary submit-button" >Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
+                            <a class="btn btn-warning update" data-bs-toggle="modal" data-bs-target="#update-modal-{{appointment.id}}"
+                                data-appointment-id="{{ appointment.id }}" data-patient-id="{{ appointment.patient.id }}">Update</a>
+                            <a class="btn btn-danger delete_appointment" data-id="{{ appointment.id }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tbody id="completed-table-body" class="table_body" style="display:none">
+                {% for appointment in appointments|selectattr("status", "eq", "completed")|sort(attribute="appointment_time") %}
+                    <tr class="appointment-item">
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ appointment.status.value.upper() }}</td>
+                        <td>{{ moment(appointment.appointment_time).format('dddd') }}</td>
+                        <td>{{ moment(appointment.appointment_time).format('LL') }}</td>
+                        <td>{{ moment(appointment.appointment_time).fromNow() }}</td>
+                        <td>
+                            {% include 'patient/view-modal.html' %}
+                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tbody id="cancelled-table-body" class="table_body" style="display:none">
+                {% for appointment in appointments|selectattr("status", "eq", "cancelled") %}
+                    <tr class="appointment-item">
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ appointment.status.value.upper() }}</td>
+                        <td>{{ moment(appointment.appointment_time).format('dddd') }}</td>
+                        <td>{{ moment(appointment.appointment_time).format('LL') }}</td>
+                        <td>__</td>
+                        <td>
+                            {% include 'patient/view-modal.html' %}
+                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
+                            <a class="btn btn-secondary restore-appointment" data-id="{{ appointment.id }}">Restore</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {{ moment.include_moment() }}
 {% endblock content %}

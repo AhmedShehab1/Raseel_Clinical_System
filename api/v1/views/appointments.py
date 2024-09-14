@@ -1,7 +1,7 @@
 from api.v1.errors import bad_request
 from web_flask import db
 from api.v1.views import bp,  get_from_db
-from models import Appointment
+from models import Appointment, AppointmentStatus
 from flask import request, flash
 from datetime import datetime
 import sqlalchemy as sa
@@ -31,6 +31,7 @@ def delete_appointment(appointment_id):
     app = get_from_db(appointment_id, Appointment)
 
     app.deleted_at = datetime.utcnow()
+    app.status = AppointmentStatus.CANCELLED
     save()
 
     return {}, 200

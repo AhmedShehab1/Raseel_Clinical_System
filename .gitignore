@@ -8,3 +8,4 @@ deploy.sh
 app.db
 data_generator.py
 Raseel_dump.sql
+delete_mazen_appointments.sql
