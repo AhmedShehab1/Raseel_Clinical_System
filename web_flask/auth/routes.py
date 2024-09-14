@@ -180,5 +180,6 @@ def registration_review(action, token):
         db.session.commit()
         return {'status': 'success', 'message': 'Patient registration approved.'}
     elif action == 'reject':
-        patient.status = False
+        db.session.delete(patient)
+        db.session.commit()
         return {'status': 'success', 'message': 'Patient registration rejected.'}
