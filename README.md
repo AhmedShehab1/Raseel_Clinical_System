@@ -155,12 +155,6 @@ DATABASE_URL=mysql+mysqldb://raseel:password@localhost:3306/Raseel_db
 - **Patient**: Access the system via the public domain (e.g., raseel.com).
 - **Staff (Doctors, Admin, Receptionist)**: Access the system through a dedicated subdomain (e.g., staff.raseel.com).
 
-#### Sample Login Credentials:
-- **Doctor**: mohammed_adam@raseel.sa | Password: mohammed_adam
-- **Admin**: naif@raseel.sa | Password: naif
-- **Receptionist**: khouloud_abdullah@raseel.sa | Password: khouloud
-- **Patient**: السيد.صائب.بقشان@example.com | Password: السيد
-
 ## System Architecture
 
 This project adheres to an MVC/MVT (Model-View-Template) architecture utilizing Flask, with RESTful APIs facilitating communication between the frontend and backend components. The database schema, detailed in the Entity-Relationship Diagram (ERD) below, is crucial for understanding the relationships and interactions between the system's various entities like patients, doctors, and appointments.
@@ -205,6 +199,7 @@ The Doctor's dashboard allows quick access to patient information, appointment s
 ![Doctor Interface](images/doctor_interface.png)
 ![Doctor Interface (Patient Modal)](images/doctor_dashboard_patient_modal.png)
 ![Doctor Interface (Patient Modal)](images/doctor_dashboard_patient_modal_1.png)
+
 
 ### Appointment Scheduling
 The scheduling feature for doctors and receptionists helps manage appointments and avoid conflicts.
