@@ -10,10 +10,10 @@ $(document).ready(function () {
         contentType: 'application/json',
         success: function () {
           button.closest('.appointment-item').remove();
-          alert('Appointment deleted successfully.');
+          swal('Appointment deleted successfully.', '', 'success');
         },
         error: function () {
-          alert('Failed to delete the appointment, Please try again.');
+          swal('Failed to delete the appointment, Please try again.', '', 'error');
         }
       });
     }
@@ -46,7 +46,7 @@ $(document).ready(function () {
   $('.submit-button').click(function () {
       const medicationData = {};
       const diagnosisData = {};
-      
+
       $('.modal-body').find('input, select').each(function () {
         const val = $(this).val();
         const attribute = $(this).attr('attribute');
@@ -83,20 +83,20 @@ $(document).ready(function () {
             contentType: 'application/json',
             data: JSON.stringify({ notes: generalNote }),
             success: function () {
-              alert('All updates were successful');
+              swal('All updates were successful', '', 'success');
               $(`#update-modal-${appointmentId}`).modal('hide');
             },
             error: function () {
-              alert('Failed to update appointment note.');
+              swal('Failed to update appointment note.', '', 'error');
             }
 
           });
         } else {
-          alert('All updates were successful');
+          swal('All updates were successful', '', 'success');
           $(`#update-modal-${appointmentId}`).modal('hide');
         }
       }).fail(function () {
-        alert('Failed to update patient data.');
+        swal('Failed to update patient data.', '', 'error');
       });
     });
 
