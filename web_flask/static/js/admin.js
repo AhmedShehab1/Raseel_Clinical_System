@@ -6,6 +6,7 @@ $(document).ready(function () {
 
 
     swal('Are you sure you want to delete this member?', {
+        dangerMode: true,
         buttons: {
             cancel: true,
             confirm: true

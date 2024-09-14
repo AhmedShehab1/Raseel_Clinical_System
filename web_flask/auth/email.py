@@ -51,3 +51,18 @@ def send_password_reset_email(user):
         text_body=render_template("email/reset_password.txt", user=user, token=token),
         html_body=render_template("email/reset_password.html", user=user, token=token),
     )
+
+def send_admin_review_email(user):
+    """
+    Send admin review email
+    Args:
+        data: Registration data
+    """
+    token = user.get_approve_request_token()
+    send_email(
+        "[Raseel Medical Center] Account Review",
+        sender=current_app.config["MAIL_DEFAULT_SENDER"],
+        recipients=current_app.config["ADMINS"],
+        text_body=render_template("email/admin_review.txt", data=user, token=token),
+        html_body=render_template("email/admin_review.html", data=user, token=token),
+    )
