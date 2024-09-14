@@ -19,4 +19,5 @@ from api.v1.views.departments import *
 from api.v1.errors import *
 from api.v1.views.patients import *
 from api.v1.views.members import *
+from api.v1.views.email import *
 

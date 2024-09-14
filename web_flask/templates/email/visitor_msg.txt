@@ -1,0 +1,6 @@
+Visitor Information:
+    Name: {{ data.name }},
+    Email: {{ data.email }},
+    Phone: {{ data.phone }}
+Visitor Message:
+    Msg: {{ data.msg }}
