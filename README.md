@@ -160,9 +160,33 @@ DATABASE_URL=mysql+mysqldb://raseel:password@localhost:3306/Raseel_db
 - **Receptionist**: khouloud_abdullah@raseel.sa | Password: khouloud
 - **Patient**: السيد.صائب.بقشان@example.com | Password: السيد
 
-## Architecture
+## System Architecture
 
-The project follows an **MVC/MVT** architecture (Model-View-Template) using Flask, with RESTful APIs providing communication between the frontend and backend. The use of **Jinja2 templates** allows dynamic content rendering on the frontend, while **Elasticsearch** serves as the search engine for fast and efficient querying.
+This project adheres to an MVC/MVT (Model-View-Template) architecture utilizing Flask, with RESTful APIs facilitating communication between the frontend and backend components. The database schema, detailed in the Entity-Relationship Diagram (ERD) below, is crucial for understanding the relationships and interactions between the system's various entities like patients, doctors, and appointments.
+
+## Database Design
+
+![MySQL ERD](images/sql_ERD.png)
+
+Figure 1: ERD of the MySQL Database used in the project.
+
+The database is designed to optimize the management and querying of medical data. Here are a few highlights and rationales for the design choices:
+
+**Normalization**: The database schema is normalized to reduce redundancy and improve data integrity. For example, the separation of patients, doctors, and appointments into distinct tables prevents data duplication and facilitates easier updates.
+
+**Foreign Key Relationships**: Relationships are established using foreign keys which ensure referential integrity across the database. For instance, doctor_id in the appointments table links an appointment to a specific doctor.
+
+**Indexing**: Key columns such as email in the doctors table and patient_id in the appointments table are indexed to speed up query performance, crucial for features like searching and reporting.
+
+**Constraints**: Data integrity is enforced through various constraints. For instance, the email fields in patients and doctors tables are set to be unique to prevent duplicate records.
+
+***Integration with Frontend***
+
+Jinja2 templates are used for dynamic content rendering on the frontend, enhancing the responsiveness of the user interface to different user actions. The database design supports the application's functionality by ensuring efficient data storage and retrieval, which is essential for features such as appointment scheduling and management.
+
+***Search Functionality***
+
+Elasticsearch is integrated into the backend to provide advanced search capabilities. This allows for fast and efficient querying of large datasets, which is particularly beneficial for features like searching patient records or past appointments based on various criteria.
 
 ## Screenshots and Media
 Below are some visual representations of the Raseel Clinical System interfaces for different roles and key features:
@@ -187,7 +211,9 @@ The scheduling feature for doctors and receptionists helps manage appointments a
 ### Search Functionality
 Raseel's integrated search engine enables efficient searches for patients, doctors, and staff members using Elasticsearch.
 
+- Searching Patient By Phone Number
 ![Doctor Interface (Search Patient by phone)](images\doctor_dashboard_patient_search_by_phone.png)
+- Searching Staff Members by Name
 ![Admin Interface](images\admin_dashboard_search_by_name.png)
 
 ### Patient Portal
