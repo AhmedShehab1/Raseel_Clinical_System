@@ -42,5 +42,5 @@ def dashboard():
         "patient/dashboard.html",
         title="Dashboard - Raseel",
         current_time_utc=current_time_utc,
-        results=current_user.appointments,
+        appointments=current_user.appointments,
     )
