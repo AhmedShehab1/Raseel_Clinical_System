@@ -34,7 +34,7 @@ def current_appointments():
     appointments = db.session.scalars(
         sa.select(m.Appointment).where(
             current_user.id == m.Appointment.doctor_id,
-            sa.func.date(m.Appointment.appointment_time) == datetime.now().date(),
+            sa.func.date(m.Appointment.appointment_time) == datetime.now(timezone.utc).date(),
             m.Appointment.deleted_at == None
             )
     )
@@ -48,7 +48,7 @@ def current_appointments():
 @doctor_bp.route("/appointments/upcoming")
 @login_required
 def upcoming_appointments():
-    tomorrow = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+    tomorrow = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
     appointments = db.session.scalars(
         sa.select(m.Appointment).where(
             current_user.id == m.Appointment.doctor_id,

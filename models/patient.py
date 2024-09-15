@@ -12,6 +12,7 @@ from web_flask import db
 from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import date, datetime
 from flask import current_app
+from datetime import timezone
 
 
 
@@ -98,7 +99,7 @@ class Patient(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
     )
 
     last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
-        sa.DateTime, default=gen_datetime
+        sa.DateTime(timezone=True), default=gen_datetime
     )
 
 
@@ -138,7 +139,7 @@ class Vital(BaseModel):
     temperature: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
     blood_pressure: so.Mapped[str] = so.mapped_column(sa.String(10), nullable=False)
     pulse: so.Mapped[int] = so.mapped_column(sa.Integer, nullable=False)
-    measured_at: so.Mapped[datetime] = so.mapped_column(sa.DateTime, default=datetime.utcnow)
+    measured_at: so.Mapped[sa.DateTime] = so.mapped_column(sa.DateTime(timezone=True), default=datetime.now(timezone.utc))
 
 
     @property
@@ -269,4 +270,3 @@ class Allergy(BaseModel):
     patient: so.Mapped["m.Patient"] = so.relationship("Patient", back_populates="allergies")
     allergen: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=True)
     reaction: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=True)
-

@@ -8,7 +8,7 @@ aria-hidden="true">
         aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <h5>Time: {{ moment(appointment.appointment_time).format('LLLL', refresh=True) }}</h5>
+        <h5>Time: {{ moment(appointment.appointment_time - tz_delta).format('LLLL', refresh=True) }}</h5>
         <hr>
         <div class="text-center" id="doctor-detailes">
             <h5>Doctor Section</h5>

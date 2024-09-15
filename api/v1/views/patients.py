@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from api.v1.errors import bad_request
 from api.v1.views import bp, get_from_db
 from web_flask import db
@@ -39,7 +39,7 @@ def get_patient(patient_id):
 def delete_patient(patient_id):
     patient = get_from_db(patient_id, Patient)
 
-    patient.deleted_at = datetime.utcnow()
+    patient.deleted_at = datetime.now(timezone.utc)
     save()
 
     return {}, 200

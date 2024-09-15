@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request
 from flask_login import login_required
 from web_flask.table_search import table_search
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 receptionist_bp = Blueprint("receptionist_bp", __name__, url_prefix="/receptionist")
 
@@ -30,9 +30,11 @@ def dashboard():
 
     search_results = table_search()
     current_time_utc = datetime.now(timezone.utc)
+    tz = timedelta(hours=3)
     return render_template(
         'receptionist/dashboard.html',
         title='Receptionist Dashboard - Raseel',
         current_time_utc=current_time_utc,
-        results=search_results
+        results=search_results,
+        tz_delta=tz
     )

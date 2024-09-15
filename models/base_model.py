@@ -29,13 +29,13 @@ class BaseModel(db.Model):
         index=True
     )
     created_at: so.Mapped[sa.DateTime] = so.mapped_column(
-        sa.DateTime, default=gen_datetime
+        sa.DateTime(timezone=True), default=gen_datetime
     )
     updated_at: so.Mapped[sa.DateTime] = so.mapped_column(
-        sa.DateTime, default=gen_datetime, onupdate=gen_datetime
+        sa.DateTime(timezone=True), default=gen_datetime, onupdate=gen_datetime
     )
     deleted_at: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(
-        sa.DateTime, nullable=True
+        sa.DateTime(timezone=True), nullable=True
     )
 
     def __str__(self):

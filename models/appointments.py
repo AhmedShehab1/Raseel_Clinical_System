@@ -25,7 +25,7 @@ class Appointment(BaseModel):
         sa.ForeignKey("doctors.id"), index=True
     )
     appointment_time: so.Mapped[sa.DateTime] = so.mapped_column(
-        sa.DateTime, index=True, nullable=False
+        sa.DateTime(timezone=True), index=True, nullable=False
     )
     status: so.Mapped[AppointmentStatus] = so.mapped_column(
         sa.Enum(AppointmentStatus), index=True, nullable=False
