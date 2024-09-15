@@ -23,7 +23,7 @@ def get_search_results(results):
 def admin_dashboard():
     results = []
     get_search_results(results)
-    current_time_utc = datetime.now(timezone.utc)
+    current_time_utc = datetime.utcnow()
     return render_template(
         "admin_base.html",
         title="Admin Dashboard",

@@ -32,10 +32,10 @@
 
 {% block content %}
     <h2 class="fw-bold text-center mt-3">Receptionist's Dashboard</h2>
-    <p class="ms-3 fw-bold lead text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
+    <p class="ms-3 fw-bold lead text-body-tertiary text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
     <header class="d-flex align-items-center justify-content-around">
         <p class="fw-bold text-center mt-3" style="font-size:25px">Patients Table</p>
-        <div>
+        <div class="d-flex justify-content-center">
             {% if g.search_form %}
                 <form class='d-flex align-items-center navbar-form navbar-center w-75' role='search' method='GET' action="{{ url_for(session['previous_endpoint']) }}">
                     <div class='form-group'>
@@ -48,7 +48,7 @@
         <input type="button" class="btn btn-primary book-appointment" value="Book New Appointment">
     </header>
     <hr>
-    <div class="w-75 container my-5 overflow-auto" style="height:400px; margin-bottom:0  !important;">
+    <div class="w-75 container my-5 overflow-auto" style="height:450px; margin-bottom:0 !important;">
         <table class="text-center table-bordered table table-striped">
             <thead class="table-dark">
                 <tr>

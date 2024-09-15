@@ -64,7 +64,7 @@ def login():
             sa.select(m.Patient).where(
                 m.Patient.email == form.email.data,
                 m.Patient.deleted_at == None,
-                m.Patient.status == True,
+                # m.Patient.status == True,
             )
         )
         if patient is None or not patient.check_password(form.password.data):
@@ -184,7 +184,7 @@ def registration_review(action, token):
     if not patient:
         return {"status": "error", "message": "Invalid token."}
     if action == "approve":
-        patient.status = True
+        # patient.status = True
         db.session.commit()
         return {"status": "success", "message": "Patient registration approved."}
     elif action == "reject":

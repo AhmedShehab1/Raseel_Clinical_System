@@ -64,7 +64,7 @@ def get_patient(patient_id):
 def delete_patient(patient_id):
     patient = get_from_db(patient_id, Patient)
 
-    patient.deleted_at = datetime.now(timezone.utc)
+    patient.deleted_at = datetime.utcnow()
     save()
 
     return {}, 200

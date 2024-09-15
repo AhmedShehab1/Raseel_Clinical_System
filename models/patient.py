@@ -78,7 +78,7 @@ class Patient(BaseModel, PasswordMixin, SearchableMixin, UserMixin):
 
     password_hash: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=False)
 
-    status: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
+    # status: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
 
     address: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 

@@ -15,14 +15,14 @@
 {% block nav_pills %}
 
     <li class="nav-item">
-        <a href="{{ url_for('receptionist_bp.dashboard')}}" class="nav-link my-nav-pill active" aria-current="page">
+        <a href="{{ url_for('patient_bp.dashboard')}}" class="nav-link my-nav-pill active" aria-current="page">
             <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>
             Dashboard
         </a>
     </li>
 
     <li>
-        <a href="{{ url_for('receptionist_bp.book_appointment')}}" class="nav-link link-body-emphasis my-nav-pill">
+        <a href="{{ url_for('patient_bp.patient_book_appointment')}}" class="nav-link link-body-emphasis my-nav-pill">
             <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
             Book Appointment
         </a>
@@ -32,7 +32,7 @@
 
 {% block content %}
     <h2 class="fw-bold text-center mt-3">{{current_user.name}}'s Dashboard</h2>
-    <p class="ms-3 fw-bold lead text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
+    <p class="ms-3 fw-bold text-body-tertiary lead text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
     <header class="d-flex align-items-end justify-content-around">
         <p class="fw-bold text-center" style="font-size:25px">Appointments Table</p>
         <div class="d-flex align-items-center">
@@ -46,7 +46,7 @@
         <input type="button" class="btn btn-primary book-appointment" value="Book New Appointment">
     </header>
     <hr>
-    <div id="appointments" class="w-75 container my-5" style="height:400px; margin-bottom:0;">
+    <div id="appointments" class="w-75 container my-5 overflow-auto" style="height:450px; margin-bottom:0 !important;">
         <table class="text-center table-bordered table table-striped">
             <thead class="table-dark">
                 <tr>

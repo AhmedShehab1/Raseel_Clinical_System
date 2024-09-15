@@ -40,7 +40,7 @@ def update_item(item, data):
 @bp.delete("/staff-members/<string:member_id>")
 def delete_member(member_id):
     member = get_from_db(member_id, Doctor, Admin, Receptionist)
-    member.deleted_at = datetime.now(timezone.utc)
+    member.deleted_at = datetime.utcnow()
     save()
     return {}, 200
 

@@ -57,10 +57,10 @@ def get_appointment(appointment_id):
 def delete_appointment(appointment_id):
     app = get_from_db(appointment_id, Appointment)
 
-    app.deleted_at = datetime.now(timezone.utc)
+    app.deleted_at = datetime.utcnow()
     app.status = AppointmentStatus.CANCELLED
     save()
-
+    flash('Appointment deleted successfully', 'success')
     return {}, 200
 
 
@@ -84,13 +84,14 @@ def update_app(appointment_id):
     app = get_from_db(appointment_id, Appointment)
     data = request.get_json()
     update_item(app, data)
+    flash('Appointment updated successfully', 'success')
     return app.to_dict(), 200
 
 @bp.put('/appointments/2/<string:appointment_id>')
 def restore_app(appointment_id):
     app = get_app_from_db(appointment_id, Appointment)
 
-    if app.appointment_time < datetime.now(timezone.utc):
+    if app.appointment_time < datetime.utcnow():
         flash('Cannot restore past appointments', 'danger')
         return {}, 400
 

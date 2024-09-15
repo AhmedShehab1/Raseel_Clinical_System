@@ -29,7 +29,7 @@ def dashboard():
     """
 
     search_results = table_search()
-    current_time_utc = datetime.now(timezone.utc)
+    current_time_utc = datetime.utcnow()
     tz = timedelta(hours=3)
     return render_template(
         'receptionist/dashboard.html',

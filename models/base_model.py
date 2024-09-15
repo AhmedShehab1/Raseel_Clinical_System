@@ -14,7 +14,7 @@ def gen_datetime():
     Returns:
         datetime: current datetime in UTC timezone
     """
-    return datetime.now(timezone.utc)
+    return datetime.utcnow()
 
 
 class BaseModel(db.Model):

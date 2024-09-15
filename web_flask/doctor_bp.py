@@ -39,7 +39,7 @@ def current_appointments():
         )
     )
     filtered_appointments = get_filtered_appointments(appointments)
-    current_time_utc = datetime.now(timezone.utc)
+    current_time_utc = datetime.utcnow()
     return render_template(
         "doctor/current.html",
         appointments=filtered_appointments,
@@ -63,7 +63,7 @@ def upcoming_appointments():
         )
     )
     filtered_appointments = get_filtered_appointments(appointments)
-    current_time_utc = datetime.now(timezone.utc)
+    current_time_utc = datetime.utcnow()
     return render_template(
         "doctor/upcoming.html",
         appointments=filtered_appointments,

@@ -30,7 +30,7 @@ def dashboard():
         str: Render the patient dashboard template
     """
 
-    current_time_utc = datetime.now(timezone.utc)
+    current_time_utc = datetime.utcnow()
     tz = timedelta(hours=3)
     return render_template(
         'patient/dashboard.html',

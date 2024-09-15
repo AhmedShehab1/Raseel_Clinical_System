@@ -16,11 +16,9 @@ $(document).ready(function () {
                 type: 'DELETE',
                 contentType: 'application/json',
                 success: function () {
-                    alert('Appointment deleted successfully.');
                     window.location.reload();
                 },
                 error: function () {
-                    alert('Failed to delete the appointment, Please try again.');
                     window.location.reload();
                 }
             });
