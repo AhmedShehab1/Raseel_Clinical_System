@@ -27,20 +27,18 @@ $(document).ready(function () {
         }
     });
 
-    $('restore-appointment').click(function () {
+    $('.restore-appointment').click(function () {
         const appointmentId = $(this).attr('data-id');
 
         if (confirm('Are you sure you want to delete this appointment?')) {
             $.ajax({
-                url: `/api/v1/appointments/${appointmentId}`,
+                url: `/api/v1/appointments/2/${appointmentId}`,
                 type: 'PUT',
                 contentType: 'application/json',
                 success: function () {
-                    alert('Appointment restored successfully.');
                     window.location.reload();
                 },
                 error: function () {
-                    alert('Failed to delete the appointment, Please try again.');
                     window.location.reload();
                 }
             });

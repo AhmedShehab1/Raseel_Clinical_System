@@ -1,11 +1,10 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template,request
 from flask_login import current_user, login_required
 from web_flask.table_search import table_search
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 
 patient_bp = Blueprint("patient_bp", __name__, url_prefix="/patient")
-
 
 @patient_bp.route("/book-appointment", methods=["GET", "POST"])
 @login_required
@@ -17,16 +16,10 @@ def patient_book_appointment():
         str: Render the patient template for booking an appointiment
     """
 
-    # Search on the patient
+    #Search on the patient
     search_results = table_search()
 
-    return render_template(
-        "patient/book_appointment.html",
-        title="Book Appointment - Raseel",
-        patients=search_results,
-        current_user=current_user,
-    )
-
+    return render_template("patient/book_appointment.html", title="Book Appointment - Raseel", patients=search_results, current_user=current_user)
 
 @patient_bp.route("/dashboard", methods=["GET", "POST"])
 @login_required
@@ -38,9 +31,11 @@ def dashboard():
     """
 
     current_time_utc = datetime.now(timezone.utc)
+    tz = timedelta(hours=3)
     return render_template(
-        "patient/dashboard.html",
-        title="Dashboard - Raseel",
+        'patient/dashboard.html',
+        title='Dashboard - Raseel',
         current_time_utc=current_time_utc,
         appointments=current_user.appointments,
+        tz_delta=tz
     )

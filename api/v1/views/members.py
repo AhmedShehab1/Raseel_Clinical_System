@@ -3,7 +3,7 @@ from web_flask import db
 from api.v1.views import bp, get_from_db
 from models import Doctor, Admin, Department, Receptionist
 from flask import request
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import wraps
 import sqlalchemy as sa
 
@@ -40,7 +40,7 @@ def update_item(item, data):
 @bp.delete("/staff-members/<string:member_id>")
 def delete_member(member_id):
     member = get_from_db(member_id, Doctor, Admin, Receptionist)
-    member.deleted_at = datetime.utcnow()
+    member.deleted_at = datetime.now(timezone.utc)
     save()
     return {}, 200
 

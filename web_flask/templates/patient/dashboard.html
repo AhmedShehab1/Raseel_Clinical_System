@@ -63,9 +63,9 @@
                     <tr class="appointment-item">
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ appointment.status.value.upper() }}</td>
-                        <td>{{ moment(appointment.appointment_time).format('dddd') }}</td>
-                        <td>{{ moment(appointment.appointment_time).format('LL') }}</td>
-                        <td>{{ moment(appointment.appointment_time).fromNow() }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd') }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL') }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).fromNow() }}</td>
                         <td>
                             {% include 'patient/view-modal.html' %}
                             <div class="modal fade" id="update-modal-{{appointment.id}}"  tabindex="-1" aria-labelledby="modal-title-{{appointment.id}}" aria-hidden="true">
@@ -148,9 +148,9 @@
                     <tr class="appointment-item">
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ appointment.status.value.upper() }}</td>
-                        <td>{{ moment(appointment.appointment_time).format('dddd') }}</td>
-                        <td>{{ moment(appointment.appointment_time).format('LL') }}</td>
-                        <td>{{ moment(appointment.appointment_time).fromNow() }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd') }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL') }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).fromNow() }}</td>
                         <td>
                             {% include 'patient/view-modal.html' %}
                             <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
@@ -159,12 +159,12 @@
                 {% endfor %}
             </tbody>
             <tbody id="cancelled-table-body" class="table_body" style="display:none">
-                {% for appointment in appointments|selectattr("status", "eq", "cancelled") %}
+                {% for appointment in appointments|selectattr("status", "eq", "cancelled")|sort(attribute="deleted_at", reverse = True) %}
                     <tr class="appointment-item">
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ appointment.status.value.upper() }}</td>
-                        <td>{{ moment(appointment.appointment_time).format('dddd') }}</td>
-                        <td>{{ moment(appointment.appointment_time).format('LL') }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd') }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL') }}</td>
                         <td>__</td>
                         <td>
                             {% include 'patient/view-modal.html' %}
