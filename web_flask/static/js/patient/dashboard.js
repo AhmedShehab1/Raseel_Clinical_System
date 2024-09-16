@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    const appointments = document.getElementById('appointments');
     const appointmentStatus = document.getElementById('appointment-status');
     checkAppointmentsCount($('.table_body')[0].childElementCount);
 
@@ -57,38 +56,39 @@ $(document).ready(function () {
             }
         });
     });
-
-    function checkAppointmentsCount(no_of_appointment) {
-        const appointmentsTable = $('.table')[0];
-        const noAppointmentsDiv = document.getElementById('no-appointments-found');
-        const noAppointmentsLabel = document.getElementById('no-appointments-found-label');
-
-        if (no_of_appointment === 0) {
-            if (!noAppointmentsDiv && !noAppointmentsLabel) {
-                const noAppointmentsLabel = document.createElement('p');
-                const noAppointmentsDiv = document.createElement('div');
-                const noAppointmentsImage = document.createElement('img');
-
-                appointmentsTable.style = "display:none;";
-
-                noAppointmentsLabel.className = 'text-center';
-                noAppointmentsLabel.style = "font-size:20px; font-weight:bold;";
-                noAppointmentsLabel.innerHTML = 'You have no appointments currently.';
-                noAppointmentsLabel.id = 'no-appointments-found-label';
-                appointments.appendChild(noAppointmentsLabel);
-
-                noAppointmentsImage.src = '../static/images/search_no_results.png';
-                noAppointmentsImage.width = '400';
-                noAppointmentsDiv.appendChild(noAppointmentsImage);
-
-                noAppointmentsDiv.id = 'no-appointments-found';
-                noAppointmentsDiv.className = 'd-flex justify-content-center';
-                appointments.appendChild(noAppointmentsDiv);
-            }
-        } else {
-            appointmentsTable.style = "";
-            if (noAppointmentsLabel) {appointments.removeChild(noAppointmentsLabel);}
-            if (noAppointmentsDiv) {appointments.removeChild(noAppointmentsDiv);}
-        }
-    }
 });
+
+function checkAppointmentsCount(no_of_appointment) {
+    const appointments = document.getElementById('appointments');
+    const appointmentsTable = $('.table')[0];
+    const noAppointmentsDiv = document.getElementById('no-appointments-found');
+    const noAppointmentsLabel = document.getElementById('no-appointments-found-label');
+
+    if (no_of_appointment === 0) {
+        if (!noAppointmentsDiv && !noAppointmentsLabel) {
+            const noAppointmentsLabel = document.createElement('p');
+            const noAppointmentsDiv = document.createElement('div');
+            const noAppointmentsImage = document.createElement('img');
+
+            appointmentsTable.style = "display:none;";
+
+            noAppointmentsLabel.className = 'text-center';
+            noAppointmentsLabel.style = "font-size:20px; font-weight:bold;";
+            noAppointmentsLabel.innerHTML = 'You have no appointments currently.';
+            noAppointmentsLabel.id = 'no-appointments-found-label';
+            appointments.appendChild(noAppointmentsLabel);
+
+            noAppointmentsImage.src = '../static/images/search_no_results.png';
+            noAppointmentsImage.width = '400';
+            noAppointmentsDiv.appendChild(noAppointmentsImage);
+
+            noAppointmentsDiv.id = 'no-appointments-found';
+            noAppointmentsDiv.className = 'd-flex justify-content-center';
+            appointments.appendChild(noAppointmentsDiv);
+        }
+    } else {
+        appointmentsTable.style = "";
+        if (noAppointmentsLabel) {appointments.removeChild(noAppointmentsLabel);}
+        if (noAppointmentsDiv) {appointments.removeChild(noAppointmentsDiv);}
+    }
+}

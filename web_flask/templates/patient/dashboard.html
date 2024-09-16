@@ -2,6 +2,7 @@
 
 {% block head_links %}
 
+    <script src="../static/js/base_dashboard.js"></script>
     <script src="../static/js/patient/dashboard.js"></script>
     <style>
         .table-lable {
@@ -32,7 +33,7 @@
 
 {% block content %}
     <h2 class="fw-bold text-center mt-3">{{current_user.name}}'s Dashboard</h2>
-    <p class="ms-3 fw-bold text-body-tertiary lead text-center">{{ moment(current_time_utc).format('LLLL', refresh=True) }}</p>
+    <p class="ms-3 fw-bold text-body-tertiary lead text-center">{{ moment().format('LLLL', refresh = True) }}</p>
     <header class="d-flex align-items-end justify-content-around">
         <p class="fw-bold text-center" style="font-size:25px">Appointments Table</p>
         <div class="d-flex align-items-center">
@@ -63,81 +64,12 @@
                     <tr class="appointment-item">
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ appointment.status.value.upper() }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd') }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL') }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).fromNow() }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd', refresh = True) }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL', refresh = True) }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).fromNow(refresh = True) }}</td>
                         <td>
                             {% include 'patient/view-modal.html' %}
-                            <div class="modal fade" id="update-modal-{{appointment.id}}"  tabindex="-1" aria-labelledby="modal-title-{{appointment.id}}" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modal-title-{{appointment.id}}">Update Patient Info</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-
-                                        <div class="modal-body">
-                                            <section class="Diagnosis">
-                                                <p class="lead">Diagnosis</p>
-                                            <div class="align-items-center justify-content-center">
-                                                <div class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px" data-bs-theme="light">
-                                                    <form class="p-2 mb-2 bg-body-tertiary border-bottom">
-                                                        <input type="search" class="form-control diagnosis-search" attribute='name' autocomplete="false" placeholder="Search Common Diagnosis">
-                                                    </form>
-                                                    <ul class="list-unstyled mb-0 diagnosis-list">
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            </section>
-                                            <hr>
-                                            <section class="Medication">
-                                                <p class="lead">Medication  </p>
-                                                <div class="container-xxl">
-                                                    <div class="row justify-content-between align-items-center">
-                                                        <div class="col-12 col-md-5">
-                                                            <div class="dropdown-menu d-block position-static pt-0 rounded-3 shadow overflow-hidden w-280px" data-bs-theme="light">
-                                                                <form class="p-2 mb-2 bg-body-tertiary border-bottom">
-                                                                    <input type="search" class="form-control drug-search" attribute="medication" autocomplete="false" placeholder="Search Common Drugs">
-                                                                </form>
-                                                                <ul class="list-unstyled mb-0 medications-list">
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-md-5">
-                                                            <p class="fw-bold">Dosage</p>
-                                                            <select class="form-select mb-5" aria-label="Drug Frequency" attribute="dosage">
-                                                                <option selected>Once Daily</option>
-                                                                <option value="Every Two Hours">Every Two Hours</option>
-                                                                <option value="Twice daily">Twice daily</option>
-                                                                <option value="Thrice daily">Thrice daily</option>
-                                                                <option value="Every four hours">Every four hours</option>
-                                                                <option value="Every six hours">Every six hours</option>
-                                                                <option value="Every three hours">Every three hours</option>
-                                                                <option value="Every twelve hours">Every twelve hours</option>
-                                                                <option value="Every hour">Every hour</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                            <hr>
-                                            <section class="General">
-                                                <div class="input-group">
-                                                    <span class="input-group-text">General Notes</span>
-                                                    <textarea class="form-control general-notes-textarea" rows="5" attribute="notes" aria-label="General Notes"></textarea>
-                                                </div>
-                                            </section>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary submit-button" >Submit</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
-                            <a class="btn btn-warning update" data-bs-toggle="modal" data-bs-target="#update-modal-{{appointment.id}}"
-                                data-appointment-id="{{ appointment.id }}" data-patient-id="{{ appointment.patient.id }}">Update</a>
                             <a class="btn btn-danger delete_appointment" data-id="{{ appointment.id }}">Delete</a>
                         </td>
                     </tr>
@@ -148,9 +80,9 @@
                     <tr class="appointment-item">
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ appointment.status.value.upper() }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd') }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL') }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).fromNow() }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd, refresh = True') }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL', refresh = True) }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).fromNow(refresh = True) }}</td>
                         <td>
                             {% include 'patient/view-modal.html' %}
                             <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
@@ -163,8 +95,8 @@
                     <tr class="appointment-item">
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ appointment.status.value.upper() }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd') }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL') }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd', refresh = True) }}</td>
+                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL', refresh = True) }}</td>
                         <td>__</td>
                         <td>
                             {% include 'patient/view-modal.html' %}
@@ -176,5 +108,4 @@
             </tbody>
         </table>
     </div>
-    {{ moment.include_moment() }}
 {% endblock content %}

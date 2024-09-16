@@ -109,7 +109,7 @@ aria-hidden="true">
                             <tbody>
                                 {% set past_visits = [] %}
                                 {% for visit in appointment.patient.appointments %}
-                                    {% if visit.appointment_time < current_time_utc.replace(tzinfo=None) %}
+                                    {% if visit.appointment_time < current_time_utc().replace(tzinfo=None) %}
                                         {% set past_visits = past_visits.append(visit) %}
                                     {% endif %}
                                 {% endfor %}
