@@ -25,14 +25,50 @@ function flask_moment_render_all() {
         flask_moment_render(moment);
         const interval = moment.dataset.refresh;
         if (interval && interval > 0) {
+
             setInterval((momentElement) => {
-                const timestamp = new Date(momentElement.dataset.timestamp);
-                timestamp.setMinutes(timestamp.getMinutes() + 1);
-                momentElement.dataset.timestamp = timestamp.toISOString();
+                if (momentElement.parentElement.id === "current-time") {
+                    const timestamp = new Date();
+                    momentElement.dataset.timestamp = timestamp.toISOString();
+                }
                 flask_moment_render(momentElement);
-            }, interval, arg0=moment);
+            }, 1000, arg0=moment);
         }
     })
 }
 
 document.addEventListener("DOMContentLoaded", flask_moment_render_all);
+
+function checkMembersCount(membersTable, no_of_members) {
+    const members = document.getElementById('members');
+    const noMembersDiv = document.getElementById('no-members-found');
+    const noMembersLabel = document.getElementById('no-members-found-label');
+
+    if (no_of_members === 0) {
+        if (!noMembersDiv && !noMembersLabel) {
+            const noMembersLabel = document.createElement('p');
+            const noMembersDiv = document.createElement('div');
+            const noMembersImage = document.createElement('img');
+
+            membersTable.style = "display:none;";
+
+            noMembersLabel.className = 'text-center';
+            noMembersLabel.style = "font-size:20px; font-weight:bold;";
+            noMembersLabel.innerHTML = 'No results.';
+            noMembersLabel.id = 'no-members-found-label';
+            members.appendChild(noMembersLabel);
+
+            noMembersImage.src = '../static/images/search_no_results.png';
+            noMembersImage.width = '400';
+            noMembersDiv.appendChild(noMembersImage);
+
+            noMembersDiv.id = 'no-members-found';
+            noMembersDiv.className = 'd-flex justify-content-center';
+            members.appendChild(noMembersDiv);
+        }
+    } else {
+        membersTable.style = "";
+        if (noMembersLabel) {members.removeChild(noMembersLabel);}
+        if (noMembersDiv) {members.removeChild(noMembersDiv);}
+    }
+}

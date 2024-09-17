@@ -1,9 +1,21 @@
-from flask import Blueprint, render_template, request
+import models as m
+from web_flask import db
+from flask import Blueprint, render_template, request, session
 from flask_login import login_required
 from web_flask.table_search import table_search
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
+import sqlalchemy as sa
 
 receptionist_bp = Blueprint("receptionist_bp", __name__, url_prefix="/receptionist")
+
+def get_filtered_list_by_patients(list, patients):
+    if patients:
+        filtered_list = []
+        for patient in patients:
+            for appointment in patient.appointments:
+                filtered_list.append(appointment)
+        return [appointment for appointment in list if appointment in filtered_list]
+    return list
 
 @receptionist_bp.route("/book-appointment", methods=["GET", "POST"])
 @login_required
@@ -27,14 +39,38 @@ def dashboard():
     Returns:
         str: Render the receptionist dashboard template
     """
+    nextWeek = datetime.utcnow().replace(
+        hour=0, minute=0, second=0, microsecond=0
+    ) + timedelta(days=7)
 
-    search_results = table_search()
+    patients_search = table_search()
+
+    today_appointments = db.session.scalars(
+        sa.select(m.Appointment).where(
+            sa.func.date(m.Appointment.appointment_time) == datetime.utcnow().date(),
+            m.Appointment.deleted_at == None,
+        )
+    )
+    today_appointments_filtered = get_filtered_list_by_patients(today_appointments, patients_search)
+
+    upcoming_appointments = db.session.scalars(
+        sa.select(m.Appointment).where(
+            sa.func.date(m.Appointment.appointment_time) > datetime.utcnow().date(),
+            sa.func.date(m.Appointment.appointment_time) < nextWeek,
+            m.Appointment.deleted_at == None,
+        )
+    )
+    upcoming_appointments_filtered = get_filtered_list_by_patients(upcoming_appointments, patients_search)
+
     current_time_utc = datetime.utcnow
     tz = timedelta(hours=3)
+
     return render_template(
         'receptionist/dashboard.html',
         title='Receptionist Dashboard - Raseel',
         current_time_utc=current_time_utc,
-        results=search_results,
+        patients=patients_search,
+        today_appointments=today_appointments_filtered,
+        upcoming_appointments=upcoming_appointments_filtered,
         tz_delta=tz
     )

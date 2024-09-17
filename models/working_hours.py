@@ -1,6 +1,5 @@
 from enum import Enum
 from .base_model import BaseModel
-import models as m
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 

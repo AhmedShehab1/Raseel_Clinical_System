@@ -2,7 +2,6 @@ from typing import Optional
 from utils import PasswordMixin, SearchableMixin
 import sqlalchemy.orm as so
 import sqlalchemy as sa
-import models as m
 from .base_model import BaseModel, gen_datetime
 from flask_login import UserMixin
 

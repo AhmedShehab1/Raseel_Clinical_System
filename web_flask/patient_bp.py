@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template,request
+from flask import Blueprint, render_template
 from flask_login import current_user, login_required
 from web_flask.table_search import table_search
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 
 
 patient_bp = Blueprint("patient_bp", __name__, url_prefix="/patient")

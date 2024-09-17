@@ -3,7 +3,7 @@ from web_flask import db
 from api.v1.views import bp, get_from_db
 from models import Doctor, Admin, Department, Receptionist
 from flask import request
-from datetime import datetime, timezone
+from datetime import datetime
 from functools import wraps
 import sqlalchemy as sa
 

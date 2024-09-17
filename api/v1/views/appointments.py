@@ -3,7 +3,7 @@ from web_flask import db
 from api.v1.views import bp,  get_from_db
 from models import Appointment, AppointmentStatus
 from flask import request, flash, abort
-from datetime import datetime, timezone
+from datetime import datetime
 import sqlalchemy as sa
 
 

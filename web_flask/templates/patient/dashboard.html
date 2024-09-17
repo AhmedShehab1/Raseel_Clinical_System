@@ -33,7 +33,7 @@
 
 {% block content %}
     <h2 class="fw-bold text-center mt-3">{{current_user.name}}'s Dashboard</h2>
-    <p class="ms-3 fw-bold text-body-tertiary lead text-center">{{ moment().format('LLLL', refresh = True) }}</p>
+    <p class="ms-3 fw-bold text-body-tertiary lead text-center" id="current-time">{{ moment().format('LLLL', refresh = True) }}</p>
     <header class="d-flex align-items-end justify-content-around">
         <p class="fw-bold text-center" style="font-size:25px">Appointments Table</p>
         <div class="d-flex align-items-center">
@@ -47,9 +47,9 @@
         <input type="button" class="btn btn-primary book-appointment" value="Book New Appointment">
     </header>
     <hr>
-    <div id="appointments" class="w-75 container my-5 overflow-auto" style="height:450px; margin-bottom:0 !important;">
-        <table class="text-center table-bordered table table-striped">
-            <thead class="table-dark">
+    <div id="members" class="w-75 container my-5 overflow-auto" style="height:446px; margin-bottom:0 !important;">
+        <table class="text-center p-3 w-100 table-bordered table table-striped">
+            <thead class="table-dark p-3 w-100">
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Status</th>
@@ -59,7 +59,7 @@
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
-            <tbody id="scheduled-table-body" class="table_body">
+            <tbody id="scheduled-table-body" class="table_body p-3 w-100">
                 {% for appointment in appointments|selectattr("status", "eq", "scheduled")|sort(attribute="appointment_time") %}
                     <tr class="appointment-item">
                         <th scope="row">{{ loop.index }}</th>
@@ -75,7 +75,7 @@
                     </tr>
                 {% endfor %}
             </tbody>
-            <tbody id="completed-table-body" class="table_body" style="display:none">
+            <tbody id="completed-table-body" class="table_body p-3 w-100" style="display:none">
                 {% for appointment in appointments|selectattr("status", "eq", "completed")|sort(attribute="appointment_time") %}
                     <tr class="appointment-item">
                         <th scope="row">{{ loop.index }}</th>
@@ -90,7 +90,7 @@
                     </tr>
                 {% endfor %}
             </tbody>
-            <tbody id="cancelled-table-body" class="table_body" style="display:none">
+            <tbody id="cancelled-table-body" class="table_body p-3 w-100" style="display:none">
                 {% for appointment in appointments|selectattr("status", "eq", "cancelled")|sort(attribute="deleted_at", reverse = True) %}
                     <tr class="appointment-item">
                         <th scope="row">{{ loop.index }}</th>

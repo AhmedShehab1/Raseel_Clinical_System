@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from api.v1.errors import bad_request
 from api.v1.views import bp, get_from_db
 from web_flask import db

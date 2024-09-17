@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, g, current_app, session
 from flask_login import current_user, login_required
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import sqlalchemy as sa
 import uuid
 

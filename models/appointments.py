@@ -1,5 +1,4 @@
 from typing import Optional
-import models as m
 from .base_model import BaseModel
 import sqlalchemy as sa
 import sqlalchemy.orm as so
