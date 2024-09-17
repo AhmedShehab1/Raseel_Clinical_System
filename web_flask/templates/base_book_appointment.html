@@ -41,7 +41,7 @@
             {% else %}
               <ul class="list-group" id="patients-list" style="width:400px">
                 {% for patient in current_patients %}
-                  <li class="list-group-item">
+                  <li class="list-group-item list-group-item-secondary">
                     <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="{{ patient.id }}" id="{{ patient.id }}">
                     <label class="form-check-label" for="{{ patient.id }}">{{ patient.name }}</label>
                   </li>
