@@ -1,17 +1,8 @@
-{% extends 'logged_in_base.html' %}
+{% extends 'base_dashboard/base.html' %}
 
-{% block head_links %}
-
-    <script src="../static/js/base_dashboard.js"></script>
+{% block head_links_extra %}
     <script src="../static/js/patient/dashboard.js"></script>
-    <style>
-        .table-lable {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-    </style>
-
-{% endblock head_links %}
+{% endblock head_links_extra %}
 
 {% block nav_pills %}
 
@@ -61,18 +52,10 @@
             </thead>
             <tbody id="scheduled-table-body" class="table_body p-3 w-100">
                 {% for appointment in appointments|selectattr("status", "eq", "scheduled")|sort(attribute="appointment_time") %}
-                    <tr class="appointment-item">
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{{ appointment.status.value.upper() }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd', refresh = True) }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL', refresh = True) }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).fromNow(refresh = True) }}</td>
-                        <td>
-                            {% include 'patient/view-modal.html' %}
-                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
-                            <a class="btn btn-danger delete_appointment" data-id="{{ appointment.id }}">Delete</a>
-                        </td>
-                    </tr>
+                    {% with %}
+                        {% set index = loop.index %}
+                        {% include 'base_dashboard/scheduled_appointment_item.html' %}
+                    {% endwith %}
                 {% endfor %}
             </tbody>
             <tbody id="completed-table-body" class="table_body p-3 w-100" style="display:none">
@@ -84,7 +67,7 @@
                         <td>{{ moment(appointment.appointment_time - tz_delta).format('LL', refresh = True) }}</td>
                         <td>{{ moment(appointment.appointment_time - tz_delta).fromNow(refresh = True) }}</td>
                         <td>
-                            {% include 'patient/view-modal.html' %}
+                            {% include 'base_dashboard/view-modal.html' %}
                             <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
                         </td>
                     </tr>
@@ -99,7 +82,7 @@
                         <td>{{ moment(appointment.appointment_time - tz_delta).format('LL', refresh = True) }}</td>
                         <td>__</td>
                         <td>
-                            {% include 'patient/view-modal.html' %}
+                            {% include 'base_dashboard/view-modal.html' %}
                             <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
                             <a class="btn btn-secondary restore-appointment" data-id="{{ appointment.id }}">Restore</a>
                         </td>

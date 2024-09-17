@@ -72,3 +72,36 @@ function checkMembersCount(membersTable, no_of_members) {
         if (noMembersDiv) {members.removeChild(noMembersDiv);}
     }
 }
+
+function deleteAppointment(appointmentId) {
+    if (confirm('Are you sure you want to delete this appointment?')) {
+        $.ajax({
+            url: `/api/v1/appointments/${appointmentId}`,
+            type: 'DELETE',
+            contentType: 'application/json',
+            success: function () {
+                window.location.reload();
+            },
+            error: function () {
+                window.location.reload();
+            }
+        });
+    }
+}
+
+function getSelectedBody(bodiesList, selectedId) {
+    var selectedBody;
+
+    bodiesList.forEach(body => {
+        if (String(body.id) === selectedId) {
+            selectedBody = body;
+            body.style = "";
+        }
+        else {
+            body.parentElement.style = "display:none;";
+            body.style = "display:none;";
+        }
+    });
+
+    return selectedBody;
+}

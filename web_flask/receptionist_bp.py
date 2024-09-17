@@ -1,6 +1,6 @@
 import models as m
 from web_flask import db
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template
 from flask_login import login_required
 from web_flask.table_search import table_search
 from datetime import datetime, timedelta
@@ -8,14 +8,16 @@ import sqlalchemy as sa
 
 receptionist_bp = Blueprint("receptionist_bp", __name__, url_prefix="/receptionist")
 
-def get_filtered_list_by_patients(list, patients):
-    if patients:
-        filtered_list = []
-        for patient in patients:
-            for appointment in patient.appointments:
-                filtered_list.append(appointment)
-        return [appointment for appointment in list if appointment in filtered_list]
-    return list
+def get_filtered_appointments_by_patients(appointments_list, patients_appointments):
+    if patients_appointments and patients_appointments.keys().__len__() > 0:
+        appointments_id = []
+        for appointment in appointments_list:
+            appointments_id.append(appointment.id)
+
+        common_appointments_id = list(set(patients_appointments.keys()) & set(appointments_id))
+        return [appointment for appointment in patients_appointments.values() if appointment.id in common_appointments_id]
+
+    return appointments_list
 
 @receptionist_bp.route("/book-appointment", methods=["GET", "POST"])
 @login_required
@@ -44,6 +46,13 @@ def dashboard():
     ) + timedelta(days=7)
 
     patients_search = table_search()
+    patients_appointments = {}
+    if patients_search:
+        for patient in patients_search:
+            for appointment in patient.appointments:
+                patients_appointments[appointment.id] = appointment
+    else:
+        patients_appointments = None
 
     today_appointments = db.session.scalars(
         sa.select(m.Appointment).where(
@@ -51,7 +60,7 @@ def dashboard():
             m.Appointment.deleted_at == None,
         )
     )
-    today_appointments_filtered = get_filtered_list_by_patients(today_appointments, patients_search)
+    today_appointments_filtered = get_filtered_appointments_by_patients(today_appointments.all(), patients_appointments)
 
     upcoming_appointments = db.session.scalars(
         sa.select(m.Appointment).where(
@@ -60,7 +69,7 @@ def dashboard():
             m.Appointment.deleted_at == None,
         )
     )
-    upcoming_appointments_filtered = get_filtered_list_by_patients(upcoming_appointments, patients_search)
+    upcoming_appointments_filtered = get_filtered_appointments_by_patients(upcoming_appointments.all(), patients_appointments)
 
     current_time_utc = datetime.utcnow
     tz = timedelta(hours=3)

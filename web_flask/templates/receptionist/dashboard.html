@@ -1,17 +1,8 @@
-{% extends 'logged_in_base.html' %}
+{% extends 'base_dashboard/base.html' %}
 
-{% block head_links %}
-
-    <script src="../static/js/base_dashboard.js"></script>
+{% block head_links_extra %}
     <script src="../static/js/receptionist/dashboard.js"></script>
-    <style>
-        .table-lable {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-    </style>
-
-{% endblock head_links %}
+{% endblock head_links_extra %}
 
 {% block nav_pills %}
 
@@ -71,34 +62,18 @@
             </thead>
             <tbody class="table_body p-3 w-100" id="today-appointments">
                 {% for appointment in today_appointments|sort(attribute="appointment_time") %}
-                    <tr class="appointment-item">
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{{ appointment.status.value.upper() }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd', refresh = True) }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL', refresh = True) }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).fromNow(refresh = True) }}</td>
-                        <td>
-                            {% include 'patient/view-modal.html' %}
-                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
-                            <a class="btn btn-danger delete_appointment" data-id="{{ appointment.id }}">Delete</a>
-                        </td>
-                    </tr>
+                    {% with %}
+                        {% set index = loop.index %}
+                        {% include 'base_dashboard/scheduled_appointment_item.html' %}
+                    {% endwith %}
                 {% endfor %}
             </tbody>
             <tbody class="table_body p-3 w-100" id="next-week-appointments" style="display:none;">
                 {% for appointment in upcoming_appointments|sort(attribute="appointment_time") %}
-                    <tr class="appointment-item">
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{{ appointment.status.value.upper() }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd', refresh = True) }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).format('LL', refresh = True) }}</td>
-                        <td>{{ moment(appointment.appointment_time - tz_delta).fromNow(refresh = True) }}</td>
-                        <td>
-                            {% include 'patient/view-modal.html' %}
-                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
-                            <a class="btn btn-danger delete_appointment" data-id="{{ appointment.id }}">Delete</a>
-                        </td>
-                    </tr>
+                    {% with %}
+                        {% set index = loop.index %}
+                        {% include 'base_dashboard/scheduled_appointment_item.html' %}
+                    {% endwith %}
                 {% endfor %}
             </tbody>
         </table>
@@ -127,7 +102,7 @@
                                         <div class="modal-dialog modal-dialog-scrollable modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="viewLabel-{{patient.id}}">Patient Report</h5>
+                                                    <h5 class="modal-title text-info" id="viewLabel-{{patient.id}}">Patient Report</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
@@ -255,7 +230,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#view-{{patient.id}}" data-id="{{patient.id}}">View</a>
+                                    <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-{{patient.id}}" data-id="{{patient.id}}">View</a>
                                 </td>
                             </tr>
                         {% endfor %}
