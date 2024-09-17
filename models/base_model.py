@@ -3,7 +3,7 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from web_flask import db
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
@@ -14,7 +14,7 @@ def gen_datetime():
     Returns:
         datetime: current datetime in UTC timezone
     """
-    return datetime.now(timezone.utc)
+    return datetime.utcnow()
 
 
 class BaseModel(db.Model):

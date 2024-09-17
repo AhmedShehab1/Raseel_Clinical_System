@@ -2,7 +2,6 @@ from typing import List
 import models as m
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from flask_login import UserMixin
 
 
 class Doctor(m.StaffMember):

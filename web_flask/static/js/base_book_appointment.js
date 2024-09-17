@@ -66,10 +66,9 @@ $(document).ready(function(){
             event.preventDefault();
             event.stopPropagation();
             return;
-        } else {
-            Object.assign(fieldsetData, fieldsValue);
         }
-
+        
+        Object.assign(fieldsetData, fieldsValue);
         const date = fieldsetData['appointment_time'].split('T')[0];
         const time = fieldsetData['appointment_time'].split('T')[1];
         const hour = time.split(':')[0];

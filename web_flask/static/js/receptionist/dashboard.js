@@ -1,57 +1,33 @@
 $(document).ready(function () {
+    const tableType = document.getElementById('table-type');
+
+    if(typeof localStorage.getItem('tableSelected') === 'undefined' || localStorage.getItem('tableSelected') === null) {
+        localStorage.setItem('tableSelected', 'today-appointments');
+    } else {
+        tableType.value = localStorage.getItem('tableSelected');
+        tableTypeChanged(tableType);
+    }
+
+    tableType.addEventListener('change', () => {tableTypeChanged(tableType);});
 
     $('.book-appointment').click(function () {
         window.location.href = '/receptionist/book-appointment';
     });
 
-    console.log($('.member-item'));
-    if ($('.member-item').length === 0) {
-        const tableBody = $('.table_body')[0];
-        const tableType = document.getElementById('inputSearchType');
-
-        $.ajax({
-            url: '/api/v1/patients',
-            method: 'GET',
-            type: 'GET',
-            contentType: 'application/json',
-            success: function (data) {
-                const patients = data.results; // data.results is a list of objects containing all patients
-                let count = 1;
-                for (let patient of patients) {
-                    if (count > 10) {break;}
-                    let tr = document.createElement('tr');
-                    tr.className = 'member-item';
-
-                    let td1 = document.createElement('td');
-                    td1.innerHTML = String(patient.name);
-                    tr.appendChild(td1);
-
-                    let td2 = document.createElement('td');
-                    td2.innerHTML = String(patient.email);
-                    tr.appendChild(td2);
-
-                    let td3 = document.createElement('td');
-                    td3.innerHTML = String(patient.contact_number);
-                    tr.appendChild(td3);
-
-                    let td4 = document.createElement('td');
-                    let btn = document.createElement('a');
-                    btn.className = 'btn btn-warning edit-member';
-                    btn.setAttribute('data-bs-toggle', 'modal');
-                    btn.setAttribute('data-bs-target', '#editModal'+String(patient.id));
-                    btn.setAttribute('data-id', String(patient.id));
-                    btn.innerHTML = 'Appointments';
-                    td4.appendChild(btn);
-                    tr.appendChild(td4);
-
-                    tableBody.appendChild(tr);
-                    count += 1;
-                }
-            },
-            error: function(error) {
-                const response = error.responseJSON;
-                if (response) {alert(response.message);}
-            }
-        });
-    }
+    $('.delete_appointment').click((event) => {
+        const appointmentId = $(event.target).attr('data-id');
+        deleteAppointment(appointmentId);
+    });
 });
+
+function tableTypeChanged(tableTypeElement) {
+    const tableSelected = String(tableTypeElement.value);
+    const tableBodiesList = $('.table_body').toArray();
+
+    localStorage.setItem('tableSelected', tableSelected);
+
+    const selectedBody = getSelectedBody(tableBodiesList, tableSelected);
+    const tableElement = selectedBody.parentElement;
+
+    checkMembersCount(tableElement, $(selectedBody)[0].childElementCount);
+}

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, g, current_app, session
 from flask_login import current_user, login_required
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import sqlalchemy as sa
 import uuid
 
@@ -39,7 +39,7 @@ def current_appointments():
         )
     )
     filtered_appointments = get_filtered_appointments(appointments)
-    current_time_utc = datetime.now(timezone.utc)
+    current_time_utc = datetime.utcnow()
     return render_template(
         "doctor/current.html",
         appointments=filtered_appointments,
@@ -63,7 +63,7 @@ def upcoming_appointments():
         )
     )
     filtered_appointments = get_filtered_appointments(appointments)
-    current_time_utc = datetime.now(timezone.utc)
+    current_time_utc = datetime.utcnow()
     return render_template(
         "doctor/upcoming.html",
         appointments=filtered_appointments,

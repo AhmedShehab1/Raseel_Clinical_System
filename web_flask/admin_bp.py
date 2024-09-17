@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, session, g, current_app
 from flask_login import login_required
-from datetime import datetime, timezone
+from datetime import datetime
 from models import StaffMember
 
 bp = Blueprint("admin_bp", __name__, url_prefix="/admin")
@@ -23,7 +23,7 @@ def get_search_results(results):
 def admin_dashboard():
     results = []
     get_search_results(results)
-    current_time_utc = datetime.now(timezone.utc)
+    current_time_utc = datetime.utcnow()
     return render_template(
         "admin_base.html",
         title="Admin Dashboard",

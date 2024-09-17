@@ -1,0 +1,12 @@
+<tr class="appointment-item">
+    <th scope="row">{{ index }}</th>
+    <td>{{ appointment.status.value.upper() }}</td>
+    <td>{{ moment(appointment.appointment_time - tz_delta).format('dddd', refresh = True) }}</td>
+    <td>{{ moment(appointment.appointment_time - tz_delta).format('LL', refresh = True) }}</td>
+    <td>{{ moment(appointment.appointment_time - tz_delta).fromNow(refresh = True) }}</td>
+    <td>
+        {% include 'base_dashboard/view-modal.html' %}
+        <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#view-modal-{{appointment.id}}">View</a>
+        <a class="btn btn-danger delete_appointment" data-id="{{ appointment.id }}">Delete</a>
+    </td>
+</tr>
