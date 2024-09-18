@@ -74,19 +74,44 @@ function checkMembersCount(membersTable, no_of_members) {
 }
 
 function deleteAppointment(appointmentId) {
-    if (confirm('Are you sure you want to delete this appointment?')) {
-        $.ajax({
-            url: `/api/v1/appointments/${appointmentId}`,
-            type: 'DELETE',
-            contentType: 'application/json',
-            success: function () {
-                window.location.reload();
-            },
-            error: function () {
-                window.location.reload();
-            }
-        });
-    }
+    swal({
+        title: "Are you sure?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                url: `/api/v1/appointments/${appointmentId}`,
+                type: 'DELETE',
+                contentType: 'application/json',
+                success: function () {
+                    swal({
+                        title: 'Done',
+                        text: 'Appointment deleted successfully.',
+                        icon: 'success',
+                        button: 'Ok',
+                    }).then((value) => {
+                        if (value) {
+                            window.location.reload();
+                        }
+                    });
+                },
+                error: function (err) {
+                    swal({
+                        title: 'Error',
+                        text: err.responseJSON.message,
+                        icon: 'error',
+                        button: 'Ok',
+                    }).then((value) => {
+                        if (value) {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
+        }
+    });
 }
 
 function getSelectedBody(bodiesList, selectedId) {

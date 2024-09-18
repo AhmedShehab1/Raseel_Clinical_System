@@ -35,10 +35,14 @@ function nextClicked(event) {
                     success: function(data) {
                         fieldsetData['patient_id'] = data['id'];
                         Object.assign(formData, fieldsetData);
-
                     },
-                    error: function() {
-                        window.location.reload();
+                    error: function (err) {
+                        swal({
+                            title: 'Error',
+                            text: err.responseJSON.message,
+                            icon: 'error',
+                            button: 'Ok',
+                        });
                     }
                 });
             }
@@ -64,7 +68,7 @@ function submitForm(data) {
         dataType: 'json',
         data: JSON.stringify(data),
         success: function() {
-            window.location.href = '/receptionist/dashboard'
+            window.location.href = '/receptionist/dashboard';
         },
         error: function() {
             window.location.reload();

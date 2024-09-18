@@ -14,19 +14,44 @@ $(document).ready(function () {
     $('.restore-appointment').click(function () {
         const appointmentId = $(this).attr('data-id');
 
-        if (confirm('Are you sure you want to delete this appointment?')) {
-            $.ajax({
-                url: `/api/v1/appointments/2/${appointmentId}`,
-                type: 'PUT',
-                contentType: 'application/json',
-                success: function () {
-                    window.location.reload();
-                },
-                error: function () {
-                    window.location.reload();
-                }
-            });
-        }
+        swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: `/api/v1/appointments/2/${appointmentId}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    success: function () {
+                        swal({
+                            title: 'Get well soon',
+                            text: 'Appointment restored successfully.',
+                            icon: 'success',
+                            button: 'Ok',
+                        }).then((value) => {
+                            if (value) {
+                            window.location.reload();
+                        }
+                        });
+                    },
+                    error: function () {
+                        swal({
+                            title: 'Error',
+                            text: 'Failed to restore the appointment, Please try again.',
+                            icon: 'error',
+                            button: 'Ok',
+                        }).then((value) => {
+                            if (value) {
+                            window.location.reload();
+                        }
+                        });
+                    }
+                });
+            }
+        });
     });
 
     appointmentStatus.addEventListener('change', function () {
