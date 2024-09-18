@@ -14,7 +14,7 @@ def appointment_available(doctor_id, patient_id, appointment_time):
         Appointment.status == AppointmentStatus.SCHEDULED
         )):
         flash('Doctor already has an appointment at that time', 'danger')
-        return False
+        return False, 'Doctor already has an appointment at that time'
 
     if db.session.scalar(sa.select(Appointment).where(
         Appointment.appointment_time == appointment_time,
@@ -22,8 +22,8 @@ def appointment_available(doctor_id, patient_id, appointment_time):
         Appointment.status == AppointmentStatus.SCHEDULED
         )):
         flash('Patient already has an appointment at that time', 'danger')
-        return False
-    return True
+        return False, 'Patient already has an appointment at that time'
+    return True, 'Appointment available'
 
 def get_app_from_db(id, *models):
     for model in models:
@@ -71,8 +71,9 @@ def add_appointment():
         flash('Missing required fields', 'danger')
         return bad_request('Missing required fields')
 
-    if not appointment_available(data['doctor_id'], data['patient_id'], data['appointment_time']):
-        return {}, 400
+    status, message = appointment_available(data['doctor_id'], data['patient_id'], data['appointment_time'])
+    if not status:
+        return bad_request(message)
 
     app = Appointment(**data)
     save(app)
@@ -92,14 +93,13 @@ def restore_app(appointment_id):
     app = get_app_from_db(appointment_id, Appointment)
 
     if app.appointment_time < datetime.utcnow():
-        flash('Cannot restore past appointments', 'danger')
-        return {}, 400
+        return bad_request('Cannot restore past appointments')
 
-    if not appointment_available(app.doctor_id, app.patient_id, app.appointment_time):
-        return {}, 400
+    status, message = appointment_available(app.doctor_id, app.patient_id, app.appointment_time)
+    if not status:
+        return bad_request(message)
 
     app.deleted_at = None
     app.status = AppointmentStatus.SCHEDULED
-    flash('Appointment restored successfully', 'success')
     save()
     return app.to_dict(), 200

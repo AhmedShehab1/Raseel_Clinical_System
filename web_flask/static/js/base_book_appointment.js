@@ -291,8 +291,13 @@ function loadDepartments() {
                 all_doctors[String(department.id)] = department.doctors; // department.doctors is a list of objects containing all doctors in the department
             });
         },
-        error: function() {
-            window.location.reload();
+        error: function (err) {
+            swal({
+                title: 'Error',
+                text: err.responseJSON.message,
+                icon: 'error',
+                button: 'Ok',
+            });
         }
     });
 

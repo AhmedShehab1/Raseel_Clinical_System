@@ -82,24 +82,20 @@ def add_patient():
         or "national_id" not in data
         or "gender" not in data
     ):
-        flash("Missing required fields", "danger")
         return bad_request("Missing required fields")
     if db.session.scalar(sa.select(Patient).where(Patient.email == data["email"])):
-        flash("Email already exists", "danger")
         return bad_request("Email already exists")
     if db.session.scalar(
         sa.select(Patient).where(Patient.contact_number == data["contact_number"])
     ):
-        flash("Contact number already exists", "danger")
         return bad_request("Contact number already exists")
     if db.session.scalar(
         sa.select(Patient).where(Patient.national_id == data["national_id"])
     ):
-        flash("National ID already exists", "danger")
         return bad_request("National ID already exists")
     patient = Patient(**data)
     save(patient)
-    flash("Account added successfully", "success")
+    flash("A new Account was Created for the last appointment", "success")
     return patient.to_dict(), 201
 
 
