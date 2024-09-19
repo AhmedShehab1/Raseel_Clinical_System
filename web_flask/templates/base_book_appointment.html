@@ -12,10 +12,11 @@
 {% block content %}
   <div class="col-md-10 mx-auto col-lg-5 p-4 p-md-5 border rounded-3 bg-body-tertiary">
       <ul class="d-flex align-items-center justify-content-center" id="progressbar" style="padding: 0 0">
-          <li class="active" id="account_search"><p class="step-name text-break">Account Search</p></li>
+          <li class="text-center active" id="account_search"><p class="step-name text-break">Account Search</p></li>
           {% block progressbar_li_extra %}{% endblock progressbar_li_extra %}
-          <li id="symptoms"><p class="step-name text-break">Symptoms</p></li>
-          <li id="appointment_info"><p class="step-name text-break">Appointment Info</p></li>
+          <li class="text-center" id="vitals"><p class="step-name text-break">Vitals</p></li>
+          <li class="text-center" id="allergies"><p class="step-name text-break">Allergies</p></li>
+          <li class="text-center" id="appointment_info"><p class="step-name text-break">Appointment Info</p></li>
       </ul>
 
       <fieldset id='fieldset_0' class="search-form" style="display:block">
@@ -61,10 +62,89 @@
 
         {% block fieldsets_extra %}{% endblock fieldsets_extra %}
 
-        <fieldset id='fieldset_3'>
+        <fieldset id='fieldset_3' class="needs-validation">
+            <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
+              <p class='fieldset-title text-center'>{{_('Vitals')}}</p>
+
+              <div class="col-md-12">
+                <label class="form-label">{{_('Height')}}</label>
+                <div class="d-flex align-items-center">
+                  <input name="height" type="tel" class="form-control" id="inputHeightCM" style="width: 50%" min="0" max="300" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label" for="inputHeightCM" style="margin: 0 10px">cm</label>
+                  <input name="height_in" type="tel" class="form-control" id="inputHeightIn" style="width: 50%" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label" for="inputHeightIn" style="margin: 0 10px">in</label>
+                </div>
+                <label class="visually-hidden format-label form-label" id="input-Height" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
+              </div>
+
+              <div class="col-md-12">
+                <label class="form-label">{{_('Weight')}}</label>
+                <div class="d-flex align-items-center">
+                  <input name="weight" type="tel" class="form-control" id="inputWeightKg" style="width: 50%" min="0" max="999" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label" for="inputWeightKg" style="margin: 0 7px">kg</label>
+                  <input name="weight_lbs" type="tel" class="form-control" id="inputWeightLBS" style="width: 50%" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label" for="inputHeightLBS" style="margin: 0 7px">lbs</label>
+                </div>
+                <label class="visually-hidden format-label form-label" id="input-Weight" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
+              </div>
+
+              <div class="col-md-12 d-flex align-items-end">
+                <div class="col-md-5">
+                  <label class="form-label" for="inputTemperature">{{_('Temperature')}}</label>
+                  <input name="temperature" type="tel" class="form-control" id="inputTemperature" min="20" max="40" pattern="^[0-9]{1,2}$">
+                  <label class="visually-hidden format-label form-label" for="inputTemperature">Please, enter a valid number.</label>
+                </div>
+
+                <div class="col-md-1">
+                  <label class="form-label" for="inputTemperature" style="margin: 0 7px">C</label>
+                </div>
+
+                <div class="col-md-5">
+                  <label class="form-label" for="inputBloodPressure">{{_('Blood Pressure')}}</label>
+                  <input name="blood_pressure" type="tel" class="form-control" id="inputBloodPressure" pattern="^[0-9]{1,3}\/[0-9]{1,3}$">
+                  <label class="visually-hidden format-label form-label" for="inputBloodPressure">Please, enter the value in the format of "systolic/diastolic".</label>
+                </div>
+
+                <div class="col-md-1">
+                  <label class="form-label" for="inputBloodPressure" style="margin: 0 7px">mmHg</label>
+                </div>
+              </div>
+
+              <div class="col-md-12 d-flex align-items-end">
+                <div class="col-md-6">
+                  <label class="form-label" for="inputPulse">{{_('Pulses')}}</label>
+                  <input name="pulse" type="tel" class="form-control" id="inputPule" min="20" max="200" pattern="^[0-9]{1,3}$">
+                  <label class="visually-hidden format-label form-label" for="inputPulse">Please, enter a valid number".</label>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" for="inputPulse" style="margin: 0 7px">pulse(s) per minute</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
+              <input type="button" name="previous" class="previous btn" value="Previous">
+              <input type="button" name="skip" class="skip btn btn-outline-dark" value="Skip">
+              <input type="button" name="next" class="next btn btn-primary" value="Next">
+            </div>
+        </fieldset>
+
+        <fieldset id='fieldset_4'>
           <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
-            <p class='fieldset-title text-center'>{{_('Symptoms')}}</p>
+              <p class='fieldset-title text-center'>{{_('Allergies')}}</p>
+
+              <div class="col-md-12">
+                  <label for="inputAllergen" class="form-label">{{_('Allergen')}}</label>
+                  <input type="text" name="allergen" class="form-control" id="inputAllergen">
+              </div>
+
+              <div class="col-md-12">
+                  <label class="form-label" for="inputReaction">{{_('Reaction')}}</label>
+                  <input class="form-control" name="reaction" id="inputReaction" type="text">
+              </div>
           </div>
+
           <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
             <input type="button" name="previous" class="previous btn" value="Previous">
             <input type="button" name="skip" class="skip btn btn-outline-dark" value="Skip">
@@ -72,7 +152,7 @@
           </div>
         </fieldset>
 
-        <fieldset id='fieldset_4' class="needs-validation"
+        <fieldset id='fieldset_5' class="needs-validation"
                   oninput='inputDateTime.setCustomValidity(new Date(inputDateTime.value) < new Date() ? "Appointment date cannot be in the past." : "")'>
             <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
               <p class='fieldset-title text-center'>{{_('Appointment Information')}}</p>

@@ -1,7 +1,12 @@
-#progressbar #symptoms:before {
+
+#progressbar #vitals:before {
     content: "2";
 }
 
-#progressbar #appointment_info:before {
+#progressbar #allergies:before {
     content: "3";
+}
+
+#progressbar #appointment_info:before {
+    content: "4";
 }

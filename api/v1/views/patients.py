@@ -5,6 +5,8 @@ from web_flask import db
 from models import Patient
 from models import Prescription
 from models import Diagnose
+from models import Vital
+from models import Allergy
 import sqlalchemy as sa
 from flask import request, flash
 from api.v1.views.departments import listAllObjects as AllPatients
@@ -118,6 +120,41 @@ def add_medication(patient_id):
     )
     save(prescription)
     return {"message": "Medication added successfully"}, 201
+
+
+@bp.post("/patients/<string:patient_id>/vitals")
+def add_vitals(patient_id):
+    _ = get_from_db(patient_id, Patient)
+    data = request.get_json()
+    print(data)
+    if "height" not in data or "weight" not in data or "temperature" not in data or "blood_pressure" not in data or "pulse" not in data:
+        return bad_request("Missing required fields")
+    vital = Vital(
+        patient_id=patient_id,
+        height=data["height"],
+        weight=data["weight"],
+        temperature=data["temperature"],
+        blood_pressure=data["blood_pressure"],
+        pulse=data["pulse"]
+    )
+    save(vital)
+    return {'vitals_list': vital.vitals_list}, 201
+
+
+@bp.post("/patients/<string:patient_id>/allergies")
+def add_allergies(patient_id):
+    _ = get_from_db(patient_id, Patient)
+    data = request.get_json()
+    allergies = []
+    for allergy_dict in data.values():
+        if "allergen" not in allergy_dict or "reaction" not in allergy_dict:
+            return bad_request("Missing required fields")
+        allergy = Allergy(
+            patient_id=patient_id, allergen=allergy_dict["allergen"], reaction=allergy_dict["reaction"]
+        )
+        save(allergy)
+        allergies.append(allergy)
+    return {'allergies_list': allergies}, 201
 
 
 @bp.post("/patients/<string:patient_id>/diagnosises")

@@ -24,7 +24,11 @@
     content: "1";
 }
 
-#progressbar #symptoms:before {
+#progressbar #vitals:before {
+    font-family: Arial;
+}
+
+#progressbar #allergies:before {
     font-family: Arial;
 }
 
@@ -53,10 +57,11 @@
 
 .step-name {
     font-size: 14px;
-    width: 100%;
+    width: 96%;
     height: 50px;
     color: black;
     text-align: center;
+    margin: 0 auto 10px auto;
 }
 
 fieldset .form-card {

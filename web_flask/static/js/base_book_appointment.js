@@ -1,11 +1,12 @@
 const formData = new Object();
 var fieldsets;
 var current_fs, previous_fs, next_fs; //fieldsets indexes
-var create_account_index, personal_info_index, appointment_info_index;
+var create_account_index, personal_info_index, appointment_info_index, vitals_index, allergies_index;
 var opacity;
 var all_doctors_working_hours = new Object();
 const all_doctors = new Object();
 const appointmentAttributes = ['doctor_id', 'patient_id', 'appointment_time', 'reason'];
+var skipClicked = false;
 
 $(document).ready(function(){
     fieldsets = $("fieldset");
@@ -13,6 +14,8 @@ $(document).ready(function(){
     create_account_index = $('#progressbar li').index($('#create_account'));
     personal_info_index = $('#progressbar li').index($('#personal_info'));
     appointment_info_index = $('#progressbar li').index($('#appointment_info'));
+    vitals_index = $('#progressbar li').index($('#vitals'));
+    allergies_index = $('#progressbar li').index($('#allergies'));
 
     $("form").bind("keypress", function (event) {
         if (event.keyCode === 13) {
@@ -53,7 +56,8 @@ $(document).ready(function(){
             }
             field.value = "";
         });
-        $(this).parent().find('input[name="next"]').click();
+        skipClicked = true;
+        displayNextStep();
     });
 
     $(".submit").click(function(event){
@@ -151,6 +155,50 @@ $(document).ready(function(){
         });
     });
 
+    $("#inputHeightCM")[0].addEventListener("input", function() {
+        const heightCM = parseFloat($(this).val());
+        if (isNaN(heightCM)) {
+            return;
+        }
+        const heightIn = heightCM / 2.54;
+        const heightInField = $('#inputHeightIn')[0];
+
+        heightInField.value = heightIn.toFixed(2);
+    });
+
+    $("#inputWeightKg")[0].addEventListener("input", function() {
+        const weightKg = parseFloat($(this).val());
+        if (isNaN(weightKg)) {
+            return;
+        }
+        const weightLBS = parseFloat(weightKg / 2.204623);
+        const weightLBSField = $('#inputWeightLBS')[0];
+
+        weightLBSField.value = weightLBS.toFixed(2);
+    });
+
+    $("#inputHeightIn")[0].addEventListener("input", function() {
+        const heightIn = parseFloat($(this).val());
+        if (isNaN(heightIn)) {
+            return;
+        }
+        const heightCM = heightIn * 2.54;
+        const heightCMField = $('#inputHeightCM')[0];
+
+        heightCMField.value = heightCM.toFixed(2);
+    });
+
+    $("#inputWeightLBS")[0].addEventListener("input", function() {
+        const weightLBS = parseFloat($(this).val());
+        if (isNaN(weightLBS)) {
+            return;
+        }
+        const weightKg = parseFloat(weightLBS / 2.204623);
+        const weightKgField = $('#inputWeightKg')[0];
+
+        weightKgField.value = weightKg.toFixed(2);
+    });
+
     $(".next").click((event) => nextClicked(event));
 
     $(".continue").click((event) => continueClicked(event));
@@ -172,26 +220,51 @@ function getPatientID(patientsList) {
 function removeFeedback(field) {
     field.classList.remove('is-invalid');
     field.classList.remove('is-valid');
-    const inputFormat = $(field).parent()[0].querySelector('#input-format');
+    var inputFormat;
+
+
+    if (field.id == 'inputHeightCM' || field.id == 'inputHeightIn') {
+        inputFormat = document.getElementById('input-Height');
+    } else if (field.id == 'inputWeightKg' || field.id == 'inputWeightLBS') {
+        inputFormat = document.getElementById('input-Weight');
+    } else {
+        inputFormat = $(field).parent()[0].querySelector('#input-format');
+    }
+
     if (inputFormat !== null) {
         inputFormat.classList.add('visually-hidden');
     }
     const feedback = field.parentNode.querySelector('.invalid-feedback');
-    if (feedback !== null) {
+    if (feedback !== null && typeof feedback !== 'undefined') {
         feedback.remove();
     }
 }
 
 function createInvalidFeedback(field, message) {
     field.classList.add('is-invalid');
-    const inputFormat = $(field).parent()[0].querySelector('#input-format');
+    var inputFormat;
+    var appendServerFeedback = true;
+
+    if (field.id == 'inputHeightCM' || field.id == 'inputHeightIn') {
+        inputFormat = document.getElementById('input-Height');
+        appendServerFeedback = false;
+    } else if (field.id == 'inputWeightKg' || field.id == 'inputWeightLBS') {
+        inputFormat = document.getElementById('input-Weight');
+        appendServerFeedback = false;
+    } else {
+        inputFormat = $(field).parent()[0].querySelector('#input-format');
+    }
+
     if (inputFormat !== null) {
         inputFormat.classList.remove('visually-hidden');
     }
-    const feedback = document.createElement('div');
-    feedback.classList.add('invalid-feedback');
-    feedback.innerHTML = message;
-    field.parentNode.appendChild(feedback);
+
+    if (appendServerFeedback) {
+        const feedback = document.createElement('div');
+        feedback.classList.add('invalid-feedback');
+        feedback.innerHTML = message;
+        field.parentNode.appendChild(feedback);
+    }
 }
 
 function createValidFeedback(field) {
@@ -212,8 +285,10 @@ function getFieldsValue(fields, attr=[]) {
             valid = false;
         } else {
             createValidFeedback(field);
-            if (attr.length === 0 ||
-                attr.includes(field.name)
+            if ((attr.length === 0 ||
+                attr.includes(field.name)) &&
+                field.id != 'inputHeightIn' &&
+                field.id != 'inputWeightLBS'
             ) {
                 fieldsValue[field.name] = field.value;
             }
