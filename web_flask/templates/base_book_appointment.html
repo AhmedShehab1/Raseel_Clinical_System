@@ -62,53 +62,68 @@
 
         {% block fieldsets_extra %}{% endblock fieldsets_extra %}
 
-        <fieldset id='fieldset_3' class="needs-validation">
+        <fieldset id='fieldset_3' class="needs-validation"
+              oninput='inputPulse.setCustomValidity((inputPulse.value < 0 || inputPulse.value > 250) ? "please, enter a valid number." : "");
+                      inputTemperature.setCustomValidity((inputTemperature.value < 20 || inputTemperature.value > 49) ? "please, enter a valid number." : "");'>
             <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
               <p class='fieldset-title text-center'>{{_('Vitals')}}</p>
 
               <div class="col-md-12">
-                <label class="form-label">{{_('Height')}}</label>
+                <label class="form-label">
+                  {{_('Height')}}
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
                 <div class="d-flex align-items-center">
-                  <input name="height" type="tel" class="form-control" id="inputHeightCM" style="width: 100%" min="0" max="300" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
-                  <label class="form-label" for="inputHeightCM" style="margin: 0 10px">cm</label>
-                  <input name="height_in" type="tel" class="form-control" id="inputHeightIn" style="width: 100%" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
-                  <label class="form-label" for="inputHeightIn" style="margin: 0 10px">in</label>
+                  <input name="height" type="tel" class="form-control" id="inputHeightCM" style="width: 100%" min="0" max="300" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label fst-italic" for="inputHeightCM" style="margin: 0 10px">cm</label>
+                  <input name="height_in" type="tel" class="form-control" id="inputHeightIn" style="width: 100%" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label fst-italic" for="inputHeightIn" style="margin: 0 10px">in</label>
                 </div>
                 <label class="visually-hidden format-label form-label" id="input-Height" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
               </div>
 
               <div class="col-md-12">
-                <label class="form-label">{{_('Weight')}}</label>
+                <label class="form-label">
+                  {{_('Weight')}}
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
                 <div class="d-flex align-items-center">
-                  <input name="weight" type="tel" class="form-control" id="inputWeightKg" style="width: 100%" min="0" max="999" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
-                  <label class="form-label" for="inputWeightKg" style="margin: 0 10px">kg</label>
-                  <input name="weight_lbs" type="tel" class="form-control" id="inputWeightLBS" style="width: 100%" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
-                  <label class="form-label" for="inputHeightLBS" style="margin: 0 10px">lbs</label>
+                  <input name="weight" type="tel" class="form-control" id="inputWeightKg" style="width: 100%" min="0" max="999" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label fst-italic" for="inputWeightKg" style="margin: 0 10px">kg</label>
+                  <input name="weight_lbs" type="tel" class="form-control" id="inputWeightLBS" style="width: 100%" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label fst-italic" for="inputHeightLBS" style="margin: 0 10px">lbs</label>
                 </div>
                 <label class="visually-hidden format-label form-label" id="input-Weight" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
               </div>
 
               <div class="col-md-6">
-                <label class="form-label text-break" for="inputTemperature">{{_('Temperature(°C)')}}</label>
-                <input name="temperature" type="tel" class="form-control" id="inputTemperature" min="20" max="40" pattern="^[0-9]{1,2}$">
-                <label class="visually-hidden format-label form-label" for="inputTemperature">Please, enter a valid number.</label>
+                <label class="form-label text-nowrap" for="inputTemperature">
+                  {{_('Temperature')}}<span class="fst-italic" style="font-size:12px">(°C)</span>
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
+                <input name="temperature" type="tel" class="form-control" id="inputTemperature" min="20" max="49" required pattern="^[0-9]{1,2}$">
               </div>
 
               <div class="col-md-6">
-                <label class="form-label text-break" for="inputBloodPressure">{{_('Blood Pressure(mmHg)')}}</label>
-                <input name="blood_pressure" type="tel" class="form-control" id="inputBloodPressure" pattern="^[0-9]{1,3}\/[0-9]{1,3}$">
-                <label class="visually-hidden format-label form-label" for="inputBloodPressure">Please, enter the value in the format of "systolic/diastolic".</label>
+                <label class="form-label text-nowrap" for="inputBloodPressure">
+                  {{_('Blood Pressure')}}<span class="fst-italic" style="font-size:12px">(mmHg)</span>
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
+                <input name="blood_pressure" type="tel" class="form-control" id="inputBloodPressure" required pattern="^[0-9]{1,3}\/[0-9]{1,3}$">
+                <label class="visually-hidden format-label form-label" id="input-format" for="inputBloodPressure">Please, enter the value in the format of "systolic/diastolic".</label>
               </div>
 
-              <div class="col-md-12 d-flex align-items-end">
+              <div class="col-md-12 d-flex align-items-center">
                 <div class="col-md-5">
-                  <label class="form-label" for="inputPulse">{{_('Pulses')}}</label>
-                  <input name="pulse" type="tel" class="form-control" id="inputPule" min="20" max="200" pattern="^[0-9]{1,3}$">
-                  <label class="visually-hidden format-label form-label" for="inputPulse">Please, enter a valid number".</label>
+                  <label class="form-label" for="inputPulse">
+                    {{_('Pulses')}}
+                    <span class="required-field-sign">{{_('*')}}</span>
+                  </label>
+                  <input name="pulse" type="tel" class="form-control" id="inputPulse" min="20" max="300" required pattern="^[0-9]{1,3}$">
                 </div>
 
                 <div class="col-md-7">
-                  <label class="form-label text-nowrap" for="inputPulse" style="margin: 0 20px">pulse(s) per minute</label>
+                  <label class="form-label fst-italic text-nowrap" for="inputPulse" style="margin: 0 20px">pulse(s) per minute</label>
                 </div>
               </div>
             </div>
@@ -130,13 +145,19 @@
 
               <div class="col-md-12 d-flex align-items-end justify-content-between" id="allergy_1">
                 <div class="col-md-5">
-                    <label for="allergen_1" class="form-label">Allergen</label>
-                    <input type="text" name="allergen_1" class="form-control" id="allergen_1">
+                    <label for="allergen_1" class="form-label">
+                      {{_('Allergen')}}
+                      <span class="required-field-sign">{{_('*')}}</span>
+                    </label>
+                    <input type="text" name="allergen" class="form-control" id="allergen_1" required>
                 </div>
 
                 <div class="col-md-5">
-                    <label class="form-label" for="reaction_1">Reaction</label>
-                    <input class="form-control" name="reaction_1" id="reaction_1" type="text">
+                    <label class="form-label" for="reaction_1">
+                      {{_('Reaction')}}
+                      <span class="required-field-sign">{{_('*')}}</span>
+                    </label>
+                    <input class="form-control" name="reaction" id="reaction_1" type="text" required>
                 </div>
               </div>
           </div>

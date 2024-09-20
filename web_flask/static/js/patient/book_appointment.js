@@ -41,8 +41,7 @@ function nextClicked(event) {
                 }
             });
         } else if (current_fs === allergies_index) {
-            const allergiesData = new Object();
-            Object.assign(allergiesData, fieldsValue);
+            const allergiesData = arrangeAllergies(fieldsValue);
             $.ajax({
                 type: 'POST',
                 url: `/api/v1/patients/${formData['patient_id']}/allergies`,

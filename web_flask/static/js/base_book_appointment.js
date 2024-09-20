@@ -317,7 +317,11 @@ function getFieldsValue(fields, attr=[]) {
                 field.id != 'inputHeightIn' &&
                 field.id != 'inputWeightLBS'
             ) {
-                fieldsValue[field.name] = field.value;
+                if (current_fs === allergies_index) {
+                    fieldsValue[field.id] = field.value;
+                } else {
+                    fieldsValue[field.name] = field.value;
+                }
             }
         }
     });
@@ -453,9 +457,39 @@ function createField(label, inputType, index) {
     const fieldInput = document.createElement('input');
     fieldInput.className = 'form-control';
     fieldInput.setAttribute('type', inputType);
-    fieldInput.setAttribute('name', fieldId);
+    fieldInput.setAttribute('name', label.toLowerCase());
     fieldInput.setAttribute('id', fieldId);
     field.appendChild(fieldInput);
 
     return field;
+}
+
+/**
+ * arrangeAllergies - Arrange allergies data in an objects of allergy objects
+ * 
+ * @param {Object} data - Allergies data to be arranged
+ * 
+ * @returns {Object} - Object of allergy objects
+ * 
+ * @example arrangeAllergies(data) -> {
+                                        1: {allergen: 'allergen_1', reaction: 'reaction_1'},
+                                        2: {allergen: 'allergen_2', reaction: 'reaction_2'}
+                                    }
+ */
+function arrangeAllergies(data) {
+    const allergiesData = new Object();
+
+    for (const fieldId of Object.keys(data)) {
+        const allergyData = new Object();
+        const fieldName = fieldId.split('_')[0];    // e.g fieldId=allergen_1 => fieldName = 'allergen'
+        const fieldIndex = fieldId.split('_')[1];   // e.g fieldId=allergen_1 => fieldIndex = '1'
+
+        if (typeof allergiesData[fieldIndex] === 'undefined') {
+            allergiesData[fieldIndex] = new Object();   // this allergy does not exist => make a new object
+        }
+
+        allergyData[fieldName] = data[fieldId];
+        Object.assign(allergiesData[fieldIndex], allergyData);
+    }
+    return allergiesData;
 }
