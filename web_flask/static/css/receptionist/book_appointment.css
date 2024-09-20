@@ -8,10 +8,14 @@
     content: "3";
 }
 
-#progressbar #symptoms:before {
+#progressbar #vitals:before {
     content: "4";
 }
 
-#progressbar #appointment_info:before {
+#progressbar #allergies:before {
     content: "5";
+}
+
+#progressbar #appointment_info:before {
+    content: "6";
 }

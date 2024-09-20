@@ -1,4 +1,4 @@
-const patientAttributes = ['name', 'password', 'email', 'contact_number', 'gender', 'national_id', 'birth_date'];
+const patientAttributes = ['name', 'password', 'email', 'contact_number', 'gender', 'national_id', 'birth_date', 'height', 'weight', 'blood_pressure', 'temperature', 'pulse', 'allergen', 'reaction'];
 const newPatientData = new Object();
 
 function nextClicked(event) {
@@ -46,6 +46,43 @@ function nextClicked(event) {
                     }
                 });
             }
+        } else if (current_fs === vitals_index) {
+                const vitalsData = new Object();
+                Object.assign(vitalsData, fieldsValue);
+                $.ajax({
+                    type: 'POST',
+                    url: `/api/v1/patients/${formData['patient_id']}/vitals`,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify(vitalsData),
+                    error: function (err) {
+                        swal({
+                            title: 'Warning',
+                            text: err.responseJSON.message + '. This step will be skipped.',
+                            icon: 'warning',
+                            buttons: 'Ok',
+                            dangerMode: true,
+                        });
+                    }
+                });
+        } else if (current_fs === allergies_index) {
+            const allergiesData = arrangeAllergies(fieldsValue);
+            $.ajax({
+                type: 'POST',
+                url: `/api/v1/patients/${formData['patient_id']}/allergies`,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(allergiesData),
+                error: function (err) {
+                    swal({
+                        title: 'Warning',
+                        text: err.responseJSON.message + '. This step will be skipped.',
+                        icon: 'warning',
+                        buttons: 'Ok',
+                        dangerMode: true,
+                    });
+                }
+            });
         } else {
             Object.assign(fieldsetData, fieldsValue);
         }

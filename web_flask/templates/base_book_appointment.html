@@ -12,10 +12,11 @@
 {% block content %}
   <div class="col-md-10 mx-auto col-lg-5 p-4 p-md-5 border rounded-3 bg-body-tertiary">
       <ul class="d-flex align-items-center justify-content-center" id="progressbar" style="padding: 0 0">
-          <li class="active" id="account_search"><p class="step-name text-break">Account Search</p></li>
+          <li class="text-center active" id="account_search"><p class="step-name text-break">Account Search</p></li>
           {% block progressbar_li_extra %}{% endblock progressbar_li_extra %}
-          <li id="symptoms"><p class="step-name text-break">Symptoms</p></li>
-          <li id="appointment_info"><p class="step-name text-break">Appointment Info</p></li>
+          <li class="text-center" id="vitals"><p class="step-name text-break">Vitals</p></li>
+          <li class="text-center" id="allergies"><p class="step-name text-break">Allergies</p></li>
+          <li class="text-center" id="appointment_info"><p class="step-name text-break">Appointment Info</p></li>
       </ul>
 
       <fieldset id='fieldset_0' class="search-form" style="display:block">
@@ -61,10 +62,106 @@
 
         {% block fieldsets_extra %}{% endblock fieldsets_extra %}
 
-        <fieldset id='fieldset_3'>
-          <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
-            <p class='fieldset-title text-center'>{{_('Symptoms')}}</p>
+        <fieldset id='fieldset_3' class="needs-validation"
+              oninput='inputPulse.setCustomValidity((inputPulse.value < 0 || inputPulse.value > 250) ? "please, enter a valid number." : "");
+                      inputTemperature.setCustomValidity((inputTemperature.value < 20 || inputTemperature.value > 49) ? "please, enter a valid number." : "");'>
+            <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
+              <p class='fieldset-title text-center'>{{_('Vitals')}}</p>
+
+              <div class="col-md-12">
+                <label class="form-label">
+                  {{_('Height')}}
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
+                <div class="d-flex align-items-center">
+                  <input name="height" type="tel" class="form-control" id="inputHeightCM" style="width: 100%" min="0" max="300" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label fst-italic" for="inputHeightCM" style="margin: 0 10px">cm</label>
+                  <input name="height_in" type="tel" class="form-control" id="inputHeightIn" style="width: 100%" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label fst-italic" for="inputHeightIn" style="margin: 0 10px">in</label>
+                </div>
+                <label class="visually-hidden format-label form-label" id="input-Height" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
+              </div>
+
+              <div class="col-md-12">
+                <label class="form-label">
+                  {{_('Weight')}}
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
+                <div class="d-flex align-items-center">
+                  <input name="weight" type="tel" class="form-control" id="inputWeightKg" style="width: 100%" min="0" max="999" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label fst-italic" for="inputWeightKg" style="margin: 0 10px">kg</label>
+                  <input name="weight_lbs" type="tel" class="form-control" id="inputWeightLBS" style="width: 100%" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label fst-italic" for="inputHeightLBS" style="margin: 0 10px">lbs</label>
+                </div>
+                <label class="visually-hidden format-label form-label" id="input-Weight" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-nowrap" for="inputTemperature">
+                  {{_('Temperature')}}<span class="fst-italic" style="font-size:12px">(°C)</span>
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
+                <input name="temperature" type="tel" class="form-control" id="inputTemperature" min="20" max="49" required pattern="^[0-9]{1,2}$">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-nowrap" for="inputBloodPressure">
+                  {{_('Blood Pressure')}}<span class="fst-italic" style="font-size:12px">(mmHg)</span>
+                  <span class="required-field-sign">{{_('*')}}</span>
+                </label>
+                <input name="blood_pressure" type="tel" class="form-control" id="inputBloodPressure" required pattern="^[0-9]{1,3}\/[0-9]{1,3}$">
+                <label class="visually-hidden format-label form-label" id="input-format" for="inputBloodPressure">Please, enter the value in the format of "systolic/diastolic".</label>
+              </div>
+
+              <div class="col-md-12 d-flex align-items-center">
+                <div class="col-md-5">
+                  <label class="form-label" for="inputPulse">
+                    {{_('Pulses')}}
+                    <span class="required-field-sign">{{_('*')}}</span>
+                  </label>
+                  <input name="pulse" type="tel" class="form-control" id="inputPulse" min="20" max="300" required pattern="^[0-9]{1,3}$">
+                </div>
+
+                <div class="col-md-7">
+                  <label class="form-label fst-italic text-nowrap" for="inputPulse" style="margin: 0 20px">pulse(s) per minute</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
+              <input type="button" name="previous" class="previous btn" value="Previous">
+              <input type="button" name="skip" class="skip btn btn-outline-dark" value="Skip">
+              <input type="button" name="next" class="next btn btn-primary" value="Next">
+            </div>
+        </fieldset>
+
+        <fieldset id='fieldset_4'>
+          <div class="row g-3" id="allergies_group" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
+              <p class='fieldset-title text-center'>{{_('Allergies')}}</p>
+              <div class="d-flex align-items-center justify-content-end">
+                  <input type="button" class="btn btn-outline-secondary btn-sm" name="add" id="add_allergy" value="Add" style="margin-right:10px">
+                  <input class="btn btn-danger btn-sm" type="button" name="remove" id="remove_allergy" value="Remove">
+              </div>
+
+              <div class="col-md-12 d-flex align-items-end justify-content-between" id="allergy_1">
+                <div class="col-md-5">
+                    <label for="allergen_1" class="form-label">
+                      {{_('Allergen')}}
+                      <span class="required-field-sign">{{_('*')}}</span>
+                    </label>
+                    <input type="text" name="allergen" class="form-control" id="allergen_1" required>
+                </div>
+
+                <div class="col-md-5">
+                    <label class="form-label" for="reaction_1">
+                      {{_('Reaction')}}
+                      <span class="required-field-sign">{{_('*')}}</span>
+                    </label>
+                    <input class="form-control" name="reaction" id="reaction_1" type="text" required>
+                </div>
+              </div>
           </div>
+
           <div class="d-flex align-items-center justify-content-between" style="margin: 30px 30px">
             <input type="button" name="previous" class="previous btn" value="Previous">
             <input type="button" name="skip" class="skip btn btn-outline-dark" value="Skip">
@@ -72,7 +169,7 @@
           </div>
         </fieldset>
 
-        <fieldset id='fieldset_4' class="needs-validation"
+        <fieldset id='fieldset_5' class="needs-validation"
                   oninput='inputDateTime.setCustomValidity(new Date(inputDateTime.value) < new Date() ? "Appointment date cannot be in the past." : "")'>
             <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
               <p class='fieldset-title text-center'>{{_('Appointment Information')}}</p>
@@ -105,9 +202,9 @@
                 </label>
                 <input name="appointment_time" type="datetime-local" class="form-control" required id="inputDateTime">
                 <label class="format-label form-label" id="input-note" for="inputDateTime" style="margin-top: 10px">
-                  - If the number of minites is less than 30, it will be considered as 0.
+                  - If the number of minutes is less than 30, it will be considered as 0.
                   <br>
-                  - If the number of minites is equal to or more than 30, it will be considered as 30.
+                  - If the number of minutes is equal to or more than 30, it will be considered as 30.
                 </label>
               </div>
 

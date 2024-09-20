@@ -1,7 +1,7 @@
 const formData = new Object();
 var fieldsets;
 var current_fs, previous_fs, next_fs; //fieldsets indexes
-var create_account_index, personal_info_index, appointment_info_index;
+var create_account_index, personal_info_index, appointment_info_index, vitals_index, allergies_index;
 var opacity;
 var all_doctors_working_hours = new Object();
 const all_doctors = new Object();
@@ -13,6 +13,9 @@ $(document).ready(function(){
     create_account_index = $('#progressbar li').index($('#create_account'));
     personal_info_index = $('#progressbar li').index($('#personal_info'));
     appointment_info_index = $('#progressbar li').index($('#appointment_info'));
+    vitals_index = $('#progressbar li').index($('#vitals'));
+    allergies_index = $('#progressbar li').index($('#allergies'));
+    localStorage.setItem('allergy_count', 1);
 
     $("form").bind("keypress", function (event) {
         if (event.keyCode === 13) {
@@ -53,7 +56,7 @@ $(document).ready(function(){
             }
             field.value = "";
         });
-        $(this).parent().find('input[name="next"]').click();
+        displayNextStep();
     });
 
     $(".submit").click(function(event){
@@ -72,8 +75,8 @@ $(document).ready(function(){
         const date = fieldsetData['appointment_time'].split('T')[0];
         const time = fieldsetData['appointment_time'].split('T')[1];
         const hour = time.split(':')[0];
-        const miniutes = time.split(':')[1];
-        if (parseInt(miniutes) < 30) {
+        const minutes = time.split(':')[1];
+        if (parseInt(minutes) < 30) {
             fieldsetData['appointment_time'] = date + 'T' + hour + ':' + '00';
         } else {
             fieldsetData['appointment_time'] = date + 'T' + hour + ':' + '30';
@@ -94,7 +97,7 @@ $(document).ready(function(){
                     const endHour = parseInt(workingHour['end_hour'].split(':')[0]);
                     const endMinutes = parseInt(workingHour['end_hour'].split(':')[1]) + (endHour * 60);
 
-                    const appointmentMinutes = parseInt(hour) * 60 + parseInt(miniutes);
+                    const appointmentMinutes = parseInt(hour) * 60 + parseInt(minutes);
                     if (appointmentMinutes < startMinutes || appointmentMinutes > endMinutes) {
                         const dateTimeField = $('input[name=appointment_time]')[0];
                         createInvalidFeedback(dateTimeField, 'Doctor is not available at this time.');
@@ -151,6 +154,78 @@ $(document).ready(function(){
         });
     });
 
+    $("#inputHeightCM")[0].addEventListener("input", function() {
+        const heightCM = parseFloat($(this).val());
+        if (isNaN(heightCM)) {
+            return;
+        }
+        const heightIn = heightCM / 2.54;
+        const heightInField = $('#inputHeightIn')[0];
+
+        heightInField.value = heightIn.toFixed(2);
+    });
+
+    $("#inputWeightKg")[0].addEventListener("input", function() {
+        const weightKg = parseFloat($(this).val());
+        if (isNaN(weightKg)) {
+            return;
+        }
+        const weightLBS = parseFloat(weightKg / 2.204623);
+        const weightLBSField = $('#inputWeightLBS')[0];
+
+        weightLBSField.value = weightLBS.toFixed(2);
+    });
+
+    $("#inputHeightIn")[0].addEventListener("input", function() {
+        const heightIn = parseFloat($(this).val());
+        if (isNaN(heightIn)) {
+            return;
+        }
+        const heightCM = heightIn * 2.54;
+        const heightCMField = $('#inputHeightCM')[0];
+
+        heightCMField.value = heightCM.toFixed(2);
+    });
+
+    $("#inputWeightLBS")[0].addEventListener("input", function() {
+        const weightLBS = parseFloat($(this).val());
+        if (isNaN(weightLBS)) {
+            return;
+        }
+        const weightKg = parseFloat(weightLBS / 2.204623);
+        const weightKgField = $('#inputWeightKg')[0];
+
+        weightKgField.value = weightKg.toFixed(2);
+    });
+
+    $("#add_allergy").click(function() {
+        localStorage.setItem('allergy_count', parseInt(localStorage.getItem('allergy_count')) + 1);
+
+        const newAllergy = document.createElement('div');
+        newAllergy.className = 'col-md-12 d-flex align-items-end justify-content-between';
+        newAllergy_number = localStorage.getItem('allergy_count');
+        newAllergy.id = `allergy_${newAllergy_number}`;
+
+        const allergen_field = createField('Allergen', 'text', newAllergy_number);
+        newAllergy.appendChild(allergen_field);
+
+        const reaction_field = createField('Reaction', 'text', newAllergy_number);
+        newAllergy.appendChild(reaction_field);
+
+        $('#allergies_group').append(newAllergy);
+    });
+
+    $("#remove_allergy").click(function() {
+        const allergyNumber = parseInt(localStorage.getItem('allergy_count'));
+        if (allergyNumber === 1) {
+            swal('You cannot remove the last allergy fields.');
+            return;
+        }
+        const allergyToRemove = document.getElementById(`allergy_${allergyNumber}`);
+        allergyToRemove.remove();
+        localStorage.setItem('allergy_count', allergyNumber - 1);
+    });
+
     $(".next").click((event) => nextClicked(event));
 
     $(".continue").click((event) => continueClicked(event));
@@ -172,26 +247,51 @@ function getPatientID(patientsList) {
 function removeFeedback(field) {
     field.classList.remove('is-invalid');
     field.classList.remove('is-valid');
-    const inputFormat = $(field).parent()[0].querySelector('#input-format');
+    var inputFormat;
+
+
+    if (field.id == 'inputHeightCM' || field.id == 'inputHeightIn') {
+        inputFormat = document.getElementById('input-Height');
+    } else if (field.id == 'inputWeightKg' || field.id == 'inputWeightLBS') {
+        inputFormat = document.getElementById('input-Weight');
+    } else {
+        inputFormat = $(field).parent()[0].querySelector('#input-format');
+    }
+
     if (inputFormat !== null) {
         inputFormat.classList.add('visually-hidden');
     }
     const feedback = field.parentNode.querySelector('.invalid-feedback');
-    if (feedback !== null) {
+    if (feedback !== null && typeof feedback !== 'undefined') {
         feedback.remove();
     }
 }
 
 function createInvalidFeedback(field, message) {
     field.classList.add('is-invalid');
-    const inputFormat = $(field).parent()[0].querySelector('#input-format');
+    var inputFormat;
+    var appendServerFeedback = true;
+
+    if (field.id == 'inputHeightCM' || field.id == 'inputHeightIn') {
+        inputFormat = document.getElementById('input-Height');
+        appendServerFeedback = false;
+    } else if (field.id == 'inputWeightKg' || field.id == 'inputWeightLBS') {
+        inputFormat = document.getElementById('input-Weight');
+        appendServerFeedback = false;
+    } else {
+        inputFormat = $(field).parent()[0].querySelector('#input-format');
+    }
+
     if (inputFormat !== null) {
         inputFormat.classList.remove('visually-hidden');
     }
-    const feedback = document.createElement('div');
-    feedback.classList.add('invalid-feedback');
-    feedback.innerHTML = message;
-    field.parentNode.appendChild(feedback);
+
+    if (appendServerFeedback) {
+        const feedback = document.createElement('div');
+        feedback.classList.add('invalid-feedback');
+        feedback.innerHTML = message;
+        field.parentNode.appendChild(feedback);
+    }
 }
 
 function createValidFeedback(field) {
@@ -212,10 +312,16 @@ function getFieldsValue(fields, attr=[]) {
             valid = false;
         } else {
             createValidFeedback(field);
-            if (attr.length === 0 ||
-                attr.includes(field.name)
+            if ((attr.length === 0 ||
+                attr.includes(field.name)) &&
+                field.id != 'inputHeightIn' &&
+                field.id != 'inputWeightLBS'
             ) {
-                fieldsValue[field.name] = field.value;
+                if (current_fs === allergies_index) {
+                    fieldsValue[field.id] = field.value;
+                } else {
+                    fieldsValue[field.name] = field.value;
+                }
             }
         }
     });
@@ -336,4 +442,54 @@ function resetDoctorOptions(doctorSelectElement) {
     option.setAttribute('label', "Choose a doctor");
     doctorSelectElement.appendChild(option);
     doctorSelectElement.value = '';
+}
+
+function createField(label, inputType, index) {
+    const field = document.createElement('div');
+    const fieldId = label.toLowerCase() + '_' + index;
+    field.className = 'col-md-5';
+    const fieldLabel = document.createElement('label');
+    fieldLabel.className = 'form-label';
+    fieldLabel.setAttribute('for', fieldId);
+    fieldLabel.innerHTML = label + ' ' + index;
+    field.appendChild(fieldLabel);
+
+    const fieldInput = document.createElement('input');
+    fieldInput.className = 'form-control';
+    fieldInput.setAttribute('type', inputType);
+    fieldInput.setAttribute('name', label.toLowerCase());
+    fieldInput.setAttribute('id', fieldId);
+    field.appendChild(fieldInput);
+
+    return field;
+}
+
+/**
+ * arrangeAllergies - Arrange allergies data in an objects of allergy objects
+ * 
+ * @param {Object} data - Allergies data to be arranged
+ * 
+ * @returns {Object} - Object of allergy objects
+ * 
+ * @example arrangeAllergies(data) -> {
+                                        1: {allergen: 'allergen_1', reaction: 'reaction_1'},
+                                        2: {allergen: 'allergen_2', reaction: 'reaction_2'}
+                                    }
+ */
+function arrangeAllergies(data) {
+    const allergiesData = new Object();
+
+    for (const fieldId of Object.keys(data)) {
+        const allergyData = new Object();
+        const fieldName = fieldId.split('_')[0];    // e.g fieldId=allergen_1 => fieldName = 'allergen'
+        const fieldIndex = fieldId.split('_')[1];   // e.g fieldId=allergen_1 => fieldIndex = '1'
+
+        if (typeof allergiesData[fieldIndex] === 'undefined') {
+            allergiesData[fieldIndex] = new Object();   // this allergy does not exist => make a new object
+        }
+
+        allergyData[fieldName] = data[fieldId];
+        Object.assign(allergiesData[fieldIndex], allergyData);
+    }
+    return allergiesData;
 }
