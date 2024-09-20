@@ -131,3 +131,8 @@ fieldset .form-card {
     font-size: 16px;
     color: rgb(185, 185, 185);
 }
+
+#remove_allergy:hover {
+    background: none;
+    color: rgb(220, 53, 69);
+}

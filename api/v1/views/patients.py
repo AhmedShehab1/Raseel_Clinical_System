@@ -126,8 +126,11 @@ def add_medication(patient_id):
 def add_vitals(patient_id):
     _ = get_from_db(patient_id, Patient)
     data = request.get_json()
-    print(data)
-    if "height" not in data or "weight" not in data or "temperature" not in data or "blood_pressure" not in data or "pulse" not in data:
+    if "height" not in data or data["height"] == ''\
+        or "weight" not in data or data["weight"] == ''\
+        or "temperature" not in data or data["temperature"] == ''\
+        or "blood_pressure" not in data or data["blood_pressure"] == ''\
+        or "pulse" not in data or data["pulse"] == '':
         return bad_request("Missing required fields")
     vital = Vital(
         patient_id=patient_id,
@@ -147,7 +150,8 @@ def add_allergies(patient_id):
     data = request.get_json()
     allergies = []
     for allergy_dict in data.values():
-        if "allergen" not in allergy_dict or "reaction" not in allergy_dict:
+        if "allergen" not in allergy_dict or allergy_dict["allergen"] == ''\
+            or "reaction" not in allergy_dict or allergy_dict["reaction"] == '':
             return bad_request("Missing required fields")
         allergy = Allergy(
             patient_id=patient_id, allergen=allergy_dict["allergen"], reaction=allergy_dict["reaction"]

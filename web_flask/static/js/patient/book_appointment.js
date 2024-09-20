@@ -32,10 +32,11 @@ function nextClicked(event) {
                 data: JSON.stringify(vitalsData),
                 error: function (err) {
                     swal({
-                        title: 'Error',
+                        title: 'Warning',
                         text: err.responseJSON.message + '. This step will be skipped.',
-                        icon: 'error',
-                        button: 'Ok',
+                        icon: 'warning',
+                        buttons: 'Ok',
+                        dangerMode: true,
                     });
                 }
             });
@@ -50,10 +51,11 @@ function nextClicked(event) {
                 data: JSON.stringify(allergiesData),
                 error: function (err) {
                     swal({
-                        title: 'Error',
+                        title: 'Warning',
                         text: err.responseJSON.message + '. This step will be skipped.',
-                        icon: 'error',
-                        button: 'Ok',
+                        icon: 'warning',
+                        buttons: 'Ok',
+                        dangerMode: true,
                     });
                 }
             });

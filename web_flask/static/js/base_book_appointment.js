@@ -6,7 +6,6 @@ var opacity;
 var all_doctors_working_hours = new Object();
 const all_doctors = new Object();
 const appointmentAttributes = ['doctor_id', 'patient_id', 'appointment_time', 'reason'];
-var skipClicked = false;
 
 $(document).ready(function(){
     fieldsets = $("fieldset");
@@ -16,6 +15,7 @@ $(document).ready(function(){
     appointment_info_index = $('#progressbar li').index($('#appointment_info'));
     vitals_index = $('#progressbar li').index($('#vitals'));
     allergies_index = $('#progressbar li').index($('#allergies'));
+    localStorage.setItem('allergy_count', 1);
 
     $("form").bind("keypress", function (event) {
         if (event.keyCode === 13) {
@@ -56,7 +56,6 @@ $(document).ready(function(){
             }
             field.value = "";
         });
-        skipClicked = true;
         displayNextStep();
     });
 
@@ -76,8 +75,8 @@ $(document).ready(function(){
         const date = fieldsetData['appointment_time'].split('T')[0];
         const time = fieldsetData['appointment_time'].split('T')[1];
         const hour = time.split(':')[0];
-        const miniutes = time.split(':')[1];
-        if (parseInt(miniutes) < 30) {
+        const minutes = time.split(':')[1];
+        if (parseInt(minutes) < 30) {
             fieldsetData['appointment_time'] = date + 'T' + hour + ':' + '00';
         } else {
             fieldsetData['appointment_time'] = date + 'T' + hour + ':' + '30';
@@ -98,7 +97,7 @@ $(document).ready(function(){
                     const endHour = parseInt(workingHour['end_hour'].split(':')[0]);
                     const endMinutes = parseInt(workingHour['end_hour'].split(':')[1]) + (endHour * 60);
 
-                    const appointmentMinutes = parseInt(hour) * 60 + parseInt(miniutes);
+                    const appointmentMinutes = parseInt(hour) * 60 + parseInt(minutes);
                     if (appointmentMinutes < startMinutes || appointmentMinutes > endMinutes) {
                         const dateTimeField = $('input[name=appointment_time]')[0];
                         createInvalidFeedback(dateTimeField, 'Doctor is not available at this time.');
@@ -197,6 +196,34 @@ $(document).ready(function(){
         const weightKgField = $('#inputWeightKg')[0];
 
         weightKgField.value = weightKg.toFixed(2);
+    });
+
+    $("#add_allergy").click(function() {
+        localStorage.setItem('allergy_count', parseInt(localStorage.getItem('allergy_count')) + 1);
+
+        const newAllergy = document.createElement('div');
+        newAllergy.className = 'col-md-12 d-flex align-items-end justify-content-between';
+        newAllergy_number = localStorage.getItem('allergy_count');
+        newAllergy.id = `allergy_${newAllergy_number}`;
+
+        const allergen_field = createField('Allergen', 'text', newAllergy_number);
+        newAllergy.appendChild(allergen_field);
+
+        const reaction_field = createField('Reaction', 'text', newAllergy_number);
+        newAllergy.appendChild(reaction_field);
+
+        $('#allergies_group').append(newAllergy);
+    });
+
+    $("#remove_allergy").click(function() {
+        const allergyNumber = parseInt(localStorage.getItem('allergy_count'));
+        if (allergyNumber === 1) {
+            swal('You cannot remove the last allergy fields.');
+            return;
+        }
+        const allergyToRemove = document.getElementById(`allergy_${allergyNumber}`);
+        allergyToRemove.remove();
+        localStorage.setItem('allergy_count', allergyNumber - 1);
     });
 
     $(".next").click((event) => nextClicked(event));
@@ -411,4 +438,24 @@ function resetDoctorOptions(doctorSelectElement) {
     option.setAttribute('label', "Choose a doctor");
     doctorSelectElement.appendChild(option);
     doctorSelectElement.value = '';
+}
+
+function createField(label, inputType, index) {
+    const field = document.createElement('div');
+    const fieldId = label.toLowerCase() + '_' + index;
+    field.className = 'col-md-5';
+    const fieldLabel = document.createElement('label');
+    fieldLabel.className = 'form-label';
+    fieldLabel.setAttribute('for', fieldId);
+    fieldLabel.innerHTML = label + ' ' + index;
+    field.appendChild(fieldLabel);
+
+    const fieldInput = document.createElement('input');
+    fieldInput.className = 'form-control';
+    fieldInput.setAttribute('type', inputType);
+    fieldInput.setAttribute('name', fieldId);
+    fieldInput.setAttribute('id', fieldId);
+    field.appendChild(fieldInput);
+
+    return field;
 }

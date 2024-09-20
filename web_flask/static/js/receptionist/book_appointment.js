@@ -48,7 +48,6 @@ function nextClicked(event) {
             }
         } else if (current_fs === vitals_index) {
                 const vitalsData = new Object();
-                console.log(fieldsValue)
                 Object.assign(vitalsData, fieldsValue);
                 $.ajax({
                     type: 'POST',
@@ -58,16 +57,16 @@ function nextClicked(event) {
                     data: JSON.stringify(vitalsData),
                     error: function (err) {
                         swal({
-                            title: 'Error',
-                            text: err.responseJSON.message,
-                            icon: 'error',
-                            button: 'Ok',
+                            title: 'Warning',
+                            text: err.responseJSON.message + '. This step will be skipped.',
+                            icon: 'warning',
+                            buttons: 'Ok',
+                            dangerMode: true,
                         });
                     }
                 });
         } else if (current_fs === allergies_index) {
-            const allergiesData = new Object();
-            Object.assign(allergiesData, fieldsValue);
+            const allergiesData = arrangeAllergies(fieldsValue);
             $.ajax({
                 type: 'POST',
                 url: `/api/v1/patients/${formData['patient_id']}/allergies`,
@@ -76,10 +75,11 @@ function nextClicked(event) {
                 data: JSON.stringify(allergiesData),
                 error: function (err) {
                     swal({
-                        title: 'Error',
-                        text: err.responseJSON.message,
-                        icon: 'error',
-                        button: 'Ok',
+                        title: 'Warning',
+                        text: err.responseJSON.message + '. This step will be skipped.',
+                        icon: 'warning',
+                        buttons: 'Ok',
+                        dangerMode: true,
                     });
                 }
             });

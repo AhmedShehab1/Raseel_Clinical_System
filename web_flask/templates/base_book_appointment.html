@@ -69,9 +69,9 @@
               <div class="col-md-12">
                 <label class="form-label">{{_('Height')}}</label>
                 <div class="d-flex align-items-center">
-                  <input name="height" type="tel" class="form-control" id="inputHeightCM" style="width: 50%" min="0" max="300" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <input name="height" type="tel" class="form-control" id="inputHeightCM" style="width: 100%" min="0" max="300" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
                   <label class="form-label" for="inputHeightCM" style="margin: 0 10px">cm</label>
-                  <input name="height_in" type="tel" class="form-control" id="inputHeightIn" style="width: 50%" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <input name="height_in" type="tel" class="form-control" id="inputHeightIn" style="width: 100%" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
                   <label class="form-label" for="inputHeightIn" style="margin: 0 10px">in</label>
                 </div>
                 <label class="visually-hidden format-label form-label" id="input-Height" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
@@ -80,45 +80,35 @@
               <div class="col-md-12">
                 <label class="form-label">{{_('Weight')}}</label>
                 <div class="d-flex align-items-center">
-                  <input name="weight" type="tel" class="form-control" id="inputWeightKg" style="width: 50%" min="0" max="999" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
-                  <label class="form-label" for="inputWeightKg" style="margin: 0 7px">kg</label>
-                  <input name="weight_lbs" type="tel" class="form-control" id="inputWeightLBS" style="width: 50%" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
-                  <label class="form-label" for="inputHeightLBS" style="margin: 0 7px">lbs</label>
+                  <input name="weight" type="tel" class="form-control" id="inputWeightKg" style="width: 100%" min="0" max="999" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label" for="inputWeightKg" style="margin: 0 10px">kg</label>
+                  <input name="weight_lbs" type="tel" class="form-control" id="inputWeightLBS" style="width: 100%" pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <label class="form-label" for="inputHeightLBS" style="margin: 0 10px">lbs</label>
                 </div>
                 <label class="visually-hidden format-label form-label" id="input-Weight" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
               </div>
 
-              <div class="col-md-12 d-flex align-items-end">
-                <div class="col-md-5">
-                  <label class="form-label" for="inputTemperature">{{_('Temperature')}}</label>
-                  <input name="temperature" type="tel" class="form-control" id="inputTemperature" min="20" max="40" pattern="^[0-9]{1,2}$">
-                  <label class="visually-hidden format-label form-label" for="inputTemperature">Please, enter a valid number.</label>
-                </div>
+              <div class="col-md-6">
+                <label class="form-label text-break" for="inputTemperature">{{_('Temperature(°C)')}}</label>
+                <input name="temperature" type="tel" class="form-control" id="inputTemperature" min="20" max="40" pattern="^[0-9]{1,2}$">
+                <label class="visually-hidden format-label form-label" for="inputTemperature">Please, enter a valid number.</label>
+              </div>
 
-                <div class="col-md-1">
-                  <label class="form-label" for="inputTemperature" style="margin: 0 7px">C</label>
-                </div>
-
-                <div class="col-md-5">
-                  <label class="form-label" for="inputBloodPressure">{{_('Blood Pressure')}}</label>
-                  <input name="blood_pressure" type="tel" class="form-control" id="inputBloodPressure" pattern="^[0-9]{1,3}\/[0-9]{1,3}$">
-                  <label class="visually-hidden format-label form-label" for="inputBloodPressure">Please, enter the value in the format of "systolic/diastolic".</label>
-                </div>
-
-                <div class="col-md-1">
-                  <label class="form-label" for="inputBloodPressure" style="margin: 0 7px">mmHg</label>
-                </div>
+              <div class="col-md-6">
+                <label class="form-label text-break" for="inputBloodPressure">{{_('Blood Pressure(mmHg)')}}</label>
+                <input name="blood_pressure" type="tel" class="form-control" id="inputBloodPressure" pattern="^[0-9]{1,3}\/[0-9]{1,3}$">
+                <label class="visually-hidden format-label form-label" for="inputBloodPressure">Please, enter the value in the format of "systolic/diastolic".</label>
               </div>
 
               <div class="col-md-12 d-flex align-items-end">
-                <div class="col-md-6">
+                <div class="col-md-5">
                   <label class="form-label" for="inputPulse">{{_('Pulses')}}</label>
                   <input name="pulse" type="tel" class="form-control" id="inputPule" min="20" max="200" pattern="^[0-9]{1,3}$">
                   <label class="visually-hidden format-label form-label" for="inputPulse">Please, enter a valid number".</label>
                 </div>
 
-                <div class="col-md-6">
-                  <label class="form-label" for="inputPulse" style="margin: 0 7px">pulse(s) per minute</label>
+                <div class="col-md-7">
+                  <label class="form-label text-nowrap" for="inputPulse" style="margin: 0 20px">pulse(s) per minute</label>
                 </div>
               </div>
             </div>
@@ -131,17 +121,23 @@
         </fieldset>
 
         <fieldset id='fieldset_4'>
-          <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
+          <div class="row g-3" id="allergies_group" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
               <p class='fieldset-title text-center'>{{_('Allergies')}}</p>
-
-              <div class="col-md-12">
-                  <label for="inputAllergen" class="form-label">{{_('Allergen')}}</label>
-                  <input type="text" name="allergen" class="form-control" id="inputAllergen">
+              <div class="d-flex align-items-center justify-content-end">
+                  <input type="button" class="btn btn-outline-secondary btn-sm" name="add" id="add_allergy" value="Add" style="margin-right:10px">
+                  <input class="btn btn-danger btn-sm" type="button" name="remove" id="remove_allergy" value="Remove">
               </div>
 
-              <div class="col-md-12">
-                  <label class="form-label" for="inputReaction">{{_('Reaction')}}</label>
-                  <input class="form-control" name="reaction" id="inputReaction" type="text">
+              <div class="col-md-12 d-flex align-items-end justify-content-between" id="allergy_1">
+                <div class="col-md-5">
+                    <label for="allergen_1" class="form-label">Allergen</label>
+                    <input type="text" name="allergen_1" class="form-control" id="allergen_1">
+                </div>
+
+                <div class="col-md-5">
+                    <label class="form-label" for="reaction_1">Reaction</label>
+                    <input class="form-control" name="reaction_1" id="reaction_1" type="text">
+                </div>
               </div>
           </div>
 
@@ -185,9 +181,9 @@
                 </label>
                 <input name="appointment_time" type="datetime-local" class="form-control" required id="inputDateTime">
                 <label class="format-label form-label" id="input-note" for="inputDateTime" style="margin-top: 10px">
-                  - If the number of minites is less than 30, it will be considered as 0.
+                  - If the number of minutes is less than 30, it will be considered as 0.
                   <br>
-                  - If the number of minites is equal to or more than 30, it will be considered as 30.
+                  - If the number of minutes is equal to or more than 30, it will be considered as 30.
                 </label>
               </div>
 
