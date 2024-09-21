@@ -206,10 +206,10 @@ $(document).ready(function(){
         newAllergy_number = localStorage.getItem('allergy_count');
         newAllergy.id = `allergy_${newAllergy_number}`;
 
-        const allergen_field = createField('Allergen', 'text', newAllergy_number);
+        const allergen_field = createField('Allergen', 'text', newAllergy_number, required=true);
         newAllergy.appendChild(allergen_field);
 
-        const reaction_field = createField('Reaction', 'text', newAllergy_number);
+        const reaction_field = createField('Reaction', 'text', newAllergy_number, required=true);
         newAllergy.appendChild(reaction_field);
 
         $('#allergies_group').append(newAllergy);
@@ -444,7 +444,7 @@ function resetDoctorOptions(doctorSelectElement) {
     doctorSelectElement.value = '';
 }
 
-function createField(label, inputType, index) {
+function createField(label, inputType, index, required=false) {
     const field = document.createElement('div');
     const fieldId = label.toLowerCase() + '_' + index;
     field.className = 'col-md-5';
@@ -459,6 +459,9 @@ function createField(label, inputType, index) {
     fieldInput.setAttribute('type', inputType);
     fieldInput.setAttribute('name', label.toLowerCase());
     fieldInput.setAttribute('id', fieldId);
+    if (required) {
+        fieldInput.setAttribute('required', "");
+    }
     field.appendChild(fieldInput);
 
     return field;

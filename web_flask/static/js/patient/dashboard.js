@@ -1,6 +1,6 @@
 $(document).ready(function () {
     const appointmentStatus = document.getElementById('appointment-status');
-    checkMembersCount($('.table_body')[0].childElementCount);
+    checkMembersCount($('.table_body')[0].parentElement, $('.table_body')[0].childElementCount);
 
     $('.book-appointment').click(function () {
         window.location.href = '/patient/book-appointment';
@@ -37,10 +37,10 @@ $(document).ready(function () {
                         }
                         });
                     },
-                    error: function () {
+                    error: function (err) {
                         swal({
                             title: 'Error',
-                            text: 'Failed to restore the appointment, Please try again.',
+                            text: err.responseJSON.message,
                             icon: 'error',
                             button: 'Ok',
                         }).then((value) => {

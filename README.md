@@ -3,6 +3,7 @@
 **Raseel Clinical System** is a web-based platform designed to enhance the quality of care for clinic staff and patients. By integrating modern technologies, the system streamlines processes like appointment scheduling, patient management, and staff organization, providing a reliable and efficient solution for medical care environments.
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
@@ -10,6 +11,7 @@
 - [Usage](#usage)
 - [Architecture](#system-architecture)
 - [Database Design](#database-design)
+- [Screenshots and Media](#screenshots-and-media)
 - [Challenges](#challenges)
 - [Learning Outcomes](#learning-outcomes)
 - [Future Improvements](#future-improvements)
@@ -35,6 +37,7 @@ As biomedical engineers, we were inspired by the vision of leveraging technology
 ## Technologies Used
 
 **Backend:**
+
 - Flask (Python framework)
 - Nginx & Gunicorn (Web server and WSGI server)
 - HAProxy (Load balancer)
@@ -42,10 +45,12 @@ As biomedical engineers, we were inspired by the vision of leveraging technology
 - RESTful APIs
 
 **Frontend:**
+
 - JavaScript, HTML, CSS
 - Bootstrap, jQuery
 
 **Other Tools and Libraries:**
+
 - Elasticsearch (Full-text search engine)
 - Flask Extensions (e.g., Flask-Babel, Flask-Moment, Flask-Login)
 - Docker (For containerized deployment)
@@ -55,29 +60,35 @@ As biomedical engineers, we were inspired by the vision of leveraging technology
 To set up the project locally, follow these steps:
 
 ### Prerequisites
+
 - Python 3.8+
 - MySQL
 - Docker
 
-### Steps:
+### Steps
+
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/AhmedShehab1/Raseel_Clinical_System.git
    cd Raseel_Clinical_System
    ```
 
 2. **Create and activate a virtual environment**:
+
    ```bash
    python -m venv venv
    source venv/bin/activate
    ```
 
 3. **Install dependencies**:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Set up the MySQL database**:
+
    ```sql
    CREATE DATABASE Raseel_db CHARACTER SET utf8 COLLATE utf8_bin;
    CREATE USER 'raseel'@'localhost' IDENTIFIED BY 'password';
@@ -86,72 +97,84 @@ To set up the project locally, follow these steps:
    ```
 
 5. **Run database migrations**:
+
    ```bash
    flask db upgrade
    ```
 
 6. **Populate the database** using `data_only_generator.sql`.
+
    ```bash
    mysqldump -u raseel -p  Raseel_db < data_only_generator.sql
    ```
 
 7. **Run Elasticsearch** using Docker:
+
    ```bash
    docker run --name elasticsearch -d --rm -p 9200:9200 --memory="2GB" -e discovery.type=single-node -e xpack.security.enabled=false -t docker.elastic.co/elasticsearch/elasticsearch:8.11.1
    ```
 
 8. **Reindex Documents for ElasticSearch Functionality**
+
     ```bash
     # Enter Flask shell to execute reindexing commands
     flask shell
     ```
+
     Inside the shell, execute the following commands:
+
     ```python
     >>> Patient.reindex()
     >>> StaffMember.reindex()
     ```
-This will ensure your ElasticSearch indices are populated correctly and ready for searching.
 
- 9. **Environment Setup**
+   This will ensure your ElasticSearch indices are populated correctly and ready for searching.
 
-You need to create two environment configuration files: `.flaskenv` and `.env` in the root directory of your project.
+9. **Environment Setup**
 
-#### **.flaskenv**
-```ini
-FLASK_APP=web_flask.clinical_system
-FLASK_DEBUG=1
-FLASK_ENV=development
+   You need to create two environment configuration files: `.flaskenv` and `.env` in the root directory of your project.
 
-# Mail server settings (for features like resetting user passwords)
-MAIL_SERVER=us2.smtp.mailhostbox.com
-MAIL_PORT=587
-MAIL_USE_TLS=1
-```
-#### **.env**
-```ini
-# ElasticSearch URL (comment this line if you're not using ElasticSearch)
-ELASTICSEARCH_URL='http://localhost:9200'
+   #### **.flaskenv**
 
-# Email functionality support
-MAIL_USERNAME=your-email@example.com
-MAIL_PASSWORD=your-email-password
-MAIL_DEFAULT_SENDER=your-email@example.com
+   ```ini
+   FLASK_APP=web_flask.clinical_system
+   FLASK_DEBUG=1
+   FLASK_ENV=development
 
-# Flask secret key
-SECRET_KEY='try_to_guess_me'
+   # Mail server settings (for features like resetting user passwords)
+   MAIL_SERVER=us2.smtp.mailhostbox.com
+   MAIL_PORT=587
+   MAIL_USE_TLS=1
+   ```
 
-# MySQL Database connection URL
-DATABASE_URL=mysql+mysqldb://raseel:password@localhost:3306/Raseel_db
-```
+   #### **.env**
+
+   ```ini
+   # ElasticSearch URL (comment this line if you're not using ElasticSearch)
+   ELASTICSEARCH_URL='http://localhost:9200'
+
+   # Email functionality support
+   MAIL_USERNAME=your-email@example.com
+   MAIL_PASSWORD=your-email-password
+   MAIL_DEFAULT_SENDER=your-email@example.com
+
+   # Flask secret key
+   SECRET_KEY='try_to_guess_me'
+
+   # MySQL Database connection URL
+   DATABASE_URL=mysql+mysqldb://raseel:password@localhost:3306/Raseel_db
+   ```
 
 10. **Run the Flask application**:
+
    ```bash
    flask run
    ```
 
 ## Usage
 
-### Roles:
+### Roles
+
 - **Patient**: Access the system via the public domain (e.g., raseel.com).
 - **Staff (Doctors, Admin, Receptionist)**: Access the system through a dedicated subdomain (e.g., staff.raseel.com).
 
@@ -161,7 +184,7 @@ This project adheres to an MVC/MVT (Model-View-Template) architecture utilizing 
 
 ## Database Design
 
-![MySQL ERD](images/sql_ERD.png)
+![MySQL ERD](deliverables\images\sql_ERD.png)
 
 Figure 1: ERD of the MySQL Database used in the project.
 
@@ -184,36 +207,101 @@ Jinja2 templates are used for dynamic content rendering on the frontend, enhanci
 Elasticsearch is integrated into the backend to provide advanced search capabilities. This allows for fast and efficient querying of large datasets, which is particularly beneficial for features like searching patient records or past appointments based on various criteria.
 
 ## Screenshots and Media
+
 Below are some visual representations of the Raseel Clinical System interfaces for different roles and key features:
 
 ### Admin Dashboard
+
 The Admin dashboard provides a comprehensive view of the clinic's operations, including staff management, patient records, and more.
 
-![Admin Interface](images/dashboard_admin.png)
-![Admin Interface (edit member)](images\admin_dashboard_edit_member.png)
-![Admin Interface edit member on success](images/admin_interface_update_member_on_success.png)
+![Admin Interface](deliverables\images\dashboard_admin.png)
+![Admin Interface (edit member)](deliverables\images\admin_dashboard_edit_member.png)
+![Admin Interface edit member on success](deliverables\images\admin_interface_update_member_on_success.png)
 
 ### Doctor Interface
+
 The Doctor's dashboard allows quick access to patient information, appointment scheduling, and clinical records. Here’s an example of the doctor interface while viewing a patient's record:
 
-![Doctor Interface](images/doctor_interface.png)
-![Doctor Interface (Patient Modal)](images/doctor_dashboard_patient_modal.png)
-![Doctor Interface (Patient Modal)](images/doctor_dashboard_patient_modal_1.png)
+![Doctor Interface](deliverables\images\doctor_interface.png)
+![Doctor Interface (Patient Modal)](deliverables\images\doctor_dashboard_patient_modal.png)
+![Doctor Interface (Patient Modal)](deliverables\images\doctor_dashboard_patient_modal_1.png)
 
+### Receptionist Interface
+
+Receptionists can view and delete appointments over a week for patients or certain patient that they search for him/her.
+
+- Search for Patient
+![Search Patient](deliverables\images\receptionist\search_patient.png)
+- View Patient Modal
+![Patient Modal](deliverables\images\receptionist\patient_modal.png)
+- Today Appointments Table
+![Today Appointments](deliverables\images\receptionist\today_appointments.png)
+- This week Appointments Table
+![This week Appointments](deliverables\images\receptionist\this_week_appointments.png)
+- View Appointment Modal
+![Appointment Modal](deliverables\images\receptionist\appointment_modal.png)
+- Delete Appointment Warning
+![Delete Appointment](deliverables\images\receptionist\delete_appointment.png)
+- Receptionist Page Sidebar
+![Receptionist Sidebar](deliverables\images\receptionist\sidebar.png)
+
+### Patient Portal
+
+Patients can view, edit, and delete their appointments, update contact details, and communicate with clinical staff through the patient portal.
+
+- Schudeled Appointments Table
+![Schudeled Appointments](deliverables\images\patient\schudeled_appointments.png)
+- Delete Appointments Success
+![Delete Appointments](deliverables\images\patient\delete_appointment.png)
+- Completed Appointments Table (no results)
+![Completed Appointments](deliverables\images\patient\completed_appointments.png)
+- Cancelled Appointments Table
+![Cancelled Appointments](deliverables\images\patient\cancelled_appointments.png)
+- Restore Appointment Success
+![Restore Appointment](deliverables\images\patient\restore_appointment.png)
+- Restore Appointment Failed
+![Cannot Restore Past Appointment](deliverables\images\patient\cannot_restore_past_appointment.png)
+- View Appointment Modal
+![Appointment Modal](deliverables\images\patient\appointment_modal.png)
+- Patient Page Sidebar
+![Patient Sidebar](deliverables\images\patient\sidebar.png)
+- Edit Profile
+![Edit Profile](deliverables\images\patient\edit_profile.png)
 
 ### Appointment Scheduling
-The scheduling feature for doctors and receptionists helps manage appointments and avoid conflicts.
+
+The scheduling feature for patients and receptionists helps manage appointments and avoid conflicts.
+
+- Find Account Step
+![Find Account](deliverables\images\appointment\find_account.png)
+- Results Not Found Image
+![Account Not Found](deliverables\images\appointment\account_not_found.png)
+- Vitals Step
+![Vitals](deliverables\images\appointment\vitals.png)
+- Allergies Step
+![Allergies](deliverables\images\appointment\allergies.png)
+- Appointment Info Step
+![Appointment Info](deliverables\images\appointment\appointment_info.png)
+
+#### **Receptionist book appointment**
+
+For the receptionist, there is more two steps in case the patient does not have an account.
+
+- Create Account Step
+![Create Account](deliverables\images\appointment\receptionist\create_account.png)
+- Personal Info Step
+![Personal Info](deliverables\images\appointment\receptionist\personal_info.png)
+- Account Already Exists Error
+![Account Already Exists](deliverables\images\appointment\receptionist\account_already_exists.png)
 
 ### Search Functionality
+
 Raseel's integrated search engine enables efficient searches for patients, doctors, and staff members using Elasticsearch.
 
 - Searching Patient By Phone Number
-![Doctor Interface (Search Patient by phone)](images\doctor_dashboard_patient_search_by_phone.png)
+![Doctor Interface (Search Patient by phone)](deliverables\images\doctor_dashboard_patient_search_by_phone.png)
 - Searching Staff Members by Name
-![Admin Interface](images\admin_dashboard_search_by_name.png)
-
-### Patient Portal
-Patients can view their appointments, update contact details, and communicate with clinical staff through the patient portal.
+![Admin Interface](deliverables\images\admin_dashboard_search_by_name.png)
 
 ## Challenges
 
@@ -226,10 +314,11 @@ Patients can view their appointments, update contact details, and communicate wi
 ## Learning Outcomes
 
 **Mazen Atef Atlam**:
+
 - Mastered Flask's backend capabilities and developed advanced frontend components using CSS, HTML, and JavaScript.
 
-
 **Ahmed Abdelghafar Shehab**:
+
 - Learned to integrate **Elasticsearch** for enhanced search capabilities.
 - Improved Python multithreading skills and integrated Flask-Babel for localization (including Arabic).
 - Gained experience in using **GitHub Actions** for CI pipelines, ensuring the reliability of code with automated testing.
@@ -241,8 +330,8 @@ Patients can view their appointments, update contact details, and communicate wi
 
 ## Contributors
 
-- **Mazen Atef Atlam** – Full-Stack Developer: Worked on the **patient portal** and **appointment scheduling**.
-- **Ahmed Abdelghafar Shehab** – Full-Stack Developer: Focused on **admin systems**, **authentication**, and **search functionality**.
+- **Mazen Atef Atlam** – Full-Stack Developer: Worked on **medical departmnents page**, **patient portal**, **receptionist interface**, **api**, **database**, and **appointment scheduling**.
+- **Ahmed Abdelghafar Shehab** – Full-Stack Developer: Focused on **admin systems**, **doctor interface**, **search functionality**, **api**, **authentication**, **project structure**, **database**, **landing page**, **about page**, and **edit profile page**.
 
 ## License
 

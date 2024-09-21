@@ -121,8 +121,7 @@
                             </a>
 
                             <ul class="dropdown-menu text-small shadow">
-                                <li><a class="dropdown-item" href="{{ url_for('main.edit_profile') }}">Edit Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                {% block dropdown_menu_items %}{% endblock dropdown_menu_items %}
                                 <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Sign out</a></li>
                             </ul>
                         </div>
