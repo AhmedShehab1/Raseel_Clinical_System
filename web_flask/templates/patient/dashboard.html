@@ -22,6 +22,11 @@
 
 {% endblock nav_pills %}
 
+{% block dropdown_menu_items %}
+    <li><a class="dropdown-item" href="{{ url_for('main.edit_profile') }}">Edit Profile</a></li>
+    <li><hr class="dropdown-divider"></li>
+{% endblock dropdown_menu_items %}
+
 {% block content %}
     <h2 class="fw-bold text-center mt-3">{{current_user.name}}'s Dashboard</h2>
     <p class="ms-3 fw-bold text-body-tertiary lead text-center" id="current-time">{{ moment().format('LLLL', refresh = True) }}</p>

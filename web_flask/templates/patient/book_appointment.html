@@ -21,6 +21,11 @@
     </li>
 {% endblock nav_pills %}
 
+{% block dropdown_menu_items %}
+    <li><a class="dropdown-item" href="{{ url_for('main.edit_profile') }}">Edit Profile</a></li>
+    <li><hr class="dropdown-divider"></li>
+{% endblock dropdown_menu_items %}
+
 {% block progressbar_li_extra %}{% endblock progressbar_li_extra %}
 
 {% block search_step_nav_buttons %}
