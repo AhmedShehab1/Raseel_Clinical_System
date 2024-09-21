@@ -184,7 +184,7 @@ This project adheres to an MVC/MVT (Model-View-Template) architecture utilizing 
 
 ## Database Design
 
-![MySQL ERD](deliverables\images\sql_ERD.png)
+![MySQL ERD](./deliverables/images/sql_ERD.png)
 
 Figure 1: ERD of the MySQL Database used in the project.
 
@@ -214,94 +214,94 @@ Below are some visual representations of the Raseel Clinical System interfaces f
 
 The Admin dashboard provides a comprehensive view of the clinic's operations, including staff management, patient records, and more.
 
-![Admin Interface](deliverables\images\dashboard_admin.png)
-![Admin Interface (edit member)](deliverables\images\admin_dashboard_edit_member.png)
-![Admin Interface edit member on success](deliverables\images\admin_interface_update_member_on_success.png)
+![Admin Interface](./deliverables/images/dashboard_admin.png)
+![Admin Interface (edit member)](./deliverables/images/admin_dashboard_edit_member.png)
+![Admin Interface edit member on success](./deliverables/images/admin_interface_update_member_on_success.png)
 
 ### Doctor Interface
 
 The Doctor's dashboard allows quick access to patient information, appointment scheduling, and clinical records. Here’s an example of the doctor interface while viewing a patient's record:
 
-![Doctor Interface](deliverables\images\doctor_interface.png)
-![Doctor Interface (Patient Modal)](deliverables\images\doctor_dashboard_patient_modal.png)
-![Doctor Interface (Patient Modal)](deliverables\images\doctor_dashboard_patient_modal_1.png)
+![Doctor Interface](./deliverables/images/doctor_interface.png)
+![Doctor Interface (Patient Modal)](./deliverables/images/doctor_dashboard_patient_modal.png)
+![Doctor Interface (Patient Modal)](./deliverables/images/doctor_dashboard_patient_modal_1.png)
 
 ### Receptionist Interface
 
 Receptionists can view and delete appointments over a week for patients or certain patient that they search for him/her.
 
 - Search for Patient
-![Search Patient](deliverables\images\receptionist\search_patient.png)
+![Search Patient](./deliverables/images/receptionist/search_patient.png)
 - View Patient Modal
-![Patient Modal](deliverables\images\receptionist\patient_modal.png)
+![Patient Modal](./deliverables/images/receptionist/patient_modal.png)
 - Today Appointments Table
-![Today Appointments](deliverables\images\receptionist\today_appointments.png)
+![Today Appointments](./deliverables/images/receptionist/today_appointments.png)
 - This week Appointments Table
-![This week Appointments](deliverables\images\receptionist\this_week_appointments.png)
+![This week Appointments](./deliverables/images/receptionist/this_week_appointments.png)
 - View Appointment Modal
-![Appointment Modal](deliverables\images\receptionist\appointment_modal.png)
+![Appointment Modal](./deliverables/images/receptionist/appointment_modal.png)
 - Delete Appointment Warning
-![Delete Appointment](deliverables\images\receptionist\delete_appointment.png)
+![Delete Appointment](./deliverables/images/receptionist/delete_appointment.png)
 - Receptionist Page Sidebar
-![Receptionist Sidebar](deliverables\images\receptionist\sidebar.png)
+![Receptionist Sidebar](./deliverables/images/receptionist/sidebar.png)
 
 ### Patient Portal
 
 Patients can view, edit, and delete their appointments, update contact details, and communicate with clinical staff through the patient portal.
 
 - Schudeled Appointments Table
-![Schudeled Appointments](deliverables\images\patient\schudeled_appointments.png)
+![Schudeled Appointments](./deliverables/images/patient/schudeled_appointments.png)
 - Delete Appointments Success
-![Delete Appointments](deliverables\images\patient\delete_appointment.png)
+![Delete Appointments](./deliverables/images/patient/delete_appointment.png)
 - Completed Appointments Table (no results)
-![Completed Appointments](deliverables\images\patient\completed_appointments.png)
+![Completed Appointments](./deliverables/images/patient/completed_appointments.png)
 - Cancelled Appointments Table
-![Cancelled Appointments](deliverables\images\patient\cancelled_appointments.png)
+![Cancelled Appointments](./deliverables/images/patient/cancelled_appointments.png)
 - Restore Appointment Success
-![Restore Appointment](deliverables\images\patient\restore_appointment.png)
+![Restore Appointment](./deliverables/images/patient/restore_appointment.png)
 - Restore Appointment Failed
-![Cannot Restore Past Appointment](deliverables\images\patient\cannot_restore_past_appointment.png)
+![Cannot Restore Past Appointment](./deliverables/images/patient/cannot_restore_past_appointment.png)
 - View Appointment Modal
-![Appointment Modal](deliverables\images\patient\appointment_modal.png)
+![Appointment Modal](./deliverables/images/patient/appointment_modal.png)
 - Patient Page Sidebar
-![Patient Sidebar](deliverables\images\patient\sidebar.png)
+![Patient Sidebar](./deliverables/images/patient/sidebar.png)
 - Edit Profile
-![Edit Profile](deliverables\images\patient\edit_profile.png)
+![Edit Profile](./deliverables/images/patient/edit_profile.png)
 
 ### Appointment Scheduling
 
 The scheduling feature for patients and receptionists helps manage appointments and avoid conflicts.
 
 - Find Account Step
-![Find Account](deliverables\images\appointment\find_account.png)
+![Find Account](./deliverables/images/appointment/find_account.png)
 - Results Not Found Image
-![Account Not Found](deliverables\images\appointment\account_not_found.png)
+![Account Not Found](./deliverables/images/appointment/account_not_found.png)
 - Vitals Step
-![Vitals](deliverables\images\appointment\vitals.png)
+![Vitals](./deliverables/images/appointment/vitals.png)
 - Allergies Step
-![Allergies](deliverables\images\appointment\allergies.png)
+![Allergies](./deliverables/images/appointment/allergies.png)
 - Appointment Info Step
-![Appointment Info](deliverables\images\appointment\appointment_info.png)
+![Appointment Info](./deliverables/images/appointment/appointment_info.png)
 
 #### **Receptionist book appointment**
 
 For the receptionist, there is more two steps in case the patient does not have an account.
 
 - Create Account Step
-![Create Account](deliverables\images\appointment\receptionist\create_account.png)
+![Create Account](./deliverables/images/appointment/receptionist/create_account.png)
 - Personal Info Step
-![Personal Info](deliverables\images\appointment\receptionist\personal_info.png)
+![Personal Info](./deliverables/images/appointment/receptionist/personal_info.png)
 - Account Already Exists Error
-![Account Already Exists](deliverables\images\appointment\receptionist\account_already_exists.png)
+![Account Already Exists](./deliverables/images/appointment/receptionist/account_already_exists.png)
 
 ### Search Functionality
 
 Raseel's integrated search engine enables efficient searches for patients, doctors, and staff members using Elasticsearch.
 
 - Searching Patient By Phone Number
-![Doctor Interface (Search Patient by phone)](deliverables\images\doctor_dashboard_patient_search_by_phone.png)
+![Doctor Interface (Search Patient by phone)](./deliverables/images/doctor_dashboard_patient_search_by_phone.png)
 - Searching Staff Members by Name
-![Admin Interface](deliverables\images\admin_dashboard_search_by_name.png)
+![Admin Interface](./deliverables/images/admin_dashboard_search_by_name.png)
 
 ## Challenges
 
