@@ -7,7 +7,13 @@ function nextClicked(event) {
         if (patientID !== null) {
             fieldsetData['patient_id'] = patientID;
         } else {
-            alert('Please select a patient or continue with your account');
+            swal({
+                title: 'Error',
+                text: 'Please select a patient or continue with your account',
+                icon: 'error',
+                buttons: 'Ok',
+                dangerMode: true,
+            });
             event.preventDefault();
             event.stopPropagation();
             return;
