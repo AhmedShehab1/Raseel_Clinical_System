@@ -66,7 +66,11 @@
 
         <fieldset id='fieldset_3' class="needs-validation"
               oninput='inputPulse.setCustomValidity((inputPulse.value < 0 || inputPulse.value > 250) ? "please, enter a valid number." : "");
-                      inputTemperature.setCustomValidity((inputTemperature.value < 20 || inputTemperature.value > 49) ? "please, enter a valid number." : "");'>
+                      inputTemperature.setCustomValidity((inputTemperature.value < 20 || inputTemperature.value > 49) ? "please, enter a valid number." : "");
+                      inputHeightCM.setCustomValidity((inputHeightCM.value < 0 || inputHeightCM.value > 300) ? "please, enter a valid number." : "");
+                      inputHeightIn.setCustomValidity((inputHeightIn.value < 0 || inputHeightIn.value > 118.11) ? "please, enter a valid number." : "");
+                      inputWeightKg.setCustomValidity((inputWeightKg.value < 0 || inputWeightKg.value > 999) ? "please, enter a valid number." : "");
+                      inputWeightLBS.setCustomValidity((inputWeightLBS.value < 0 || inputWeightLBS.value > 2202.42) ? "please, enter a valid number." : "");'>
             <div class="row g-3" style="margin-top:0px; margin-bottom:30px; margin-right:20px; margin-left:20px;">
               <p class='fieldset-title text-center'>{{_('Vitals')}}</p>
 
@@ -81,7 +85,7 @@
                   <input name="height_in" type="tel" class="form-control" id="inputHeightIn" style="width: 100%" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
                   <label class="form-label fst-italic" for="inputHeightIn" style="margin: 0 10px">in</label>
                 </div>
-                <label class="visually-hidden format-label form-label" id="input-Height" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
+                <label class="visually-hidden format-label form-label" id="input-Height" for="inputWeightKg">Please, enter a valid number and use a dot "." for the decimal point.</label>
               </div>
 
               <div class="col-md-12">
@@ -92,10 +96,10 @@
                 <div class="d-flex align-items-center">
                   <input name="weight" type="tel" class="form-control" id="inputWeightKg" style="width: 100%" min="0" max="999" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
                   <label class="form-label fst-italic" for="inputWeightKg" style="margin: 0 10px">kg</label>
-                  <input name="weight_lbs" type="tel" class="form-control" id="inputWeightLBS" style="width: 100%" required pattern="^[0-9]{1,3}(\.[0-9]+){0,1}$">
+                  <input name="weight_lbs" type="tel" class="form-control" id="inputWeightLBS" style="width: 100%" required pattern="^[0-9]{1,4}(\.[0-9]+){0,1}$">
                   <label class="form-label fst-italic" for="inputHeightLBS" style="margin: 0 10px">lbs</label>
                 </div>
-                <label class="visually-hidden format-label form-label" id="input-Weight" for="inputWeightKg">Please, enter only numbers and a dot "." for the decimal point.</label>
+                <label class="visually-hidden format-label form-label" id="input-Weight" for="inputWeightKg">Please, enter a valid number and use a dot "." for the decimal point.</label>
               </div>
 
               <div class="col-md-6">
