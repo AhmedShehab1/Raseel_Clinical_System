@@ -170,7 +170,7 @@ $(document).ready(function(){
         if (isNaN(weightKg)) {
             return;
         }
-        const weightLBS = parseFloat(weightKg / 2.204623);
+        const weightLBS = parseFloat(weightKg * 2.204623);
         const weightLBSField = $('#inputWeightLBS')[0];
 
         weightLBSField.value = weightLBS.toFixed(2);
